@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>HalloVR</title>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/three.min.js"></script>
+	<script src="assets/js/snap.svg.js"></script>
+    <script src="assets/js/CSS3DRenderer.js"></script>
+    <script src="assets/js/OrbitControls.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div id="container"></div>
+	<!-- Templates -->  
+	<div id='item-1' >
+		<link rel="stylesheet" type="text/css" href="components/logo/logo.css" />
+		<div id="logo">
+		</div>
+	</div>
+	  
+	<div id='item-2' class="vrElement">
+		<svg id="portfolio">
+			<defs>
+				<mask id='hide_lines'>
+					<circle cx="0" cy="0" r="10000" fill='white' />
+					<path transform="translate(500,480)" fill="rgba(0,0,0,1)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</mask>
+			</defs>
+			<g>
+				<circle cx="500" cy="480" r="100" class="itemOpener" />
+				<g class="mainCircle" fill-rule="evenodd">
+					<path transform="translate(500,480)" id="mainBodyCircle"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</g>
+			</g>		
+		</svg>
+		
+		<div id="content-1" class="vrContent" x="200" y="200">
+			<div class="icon">
+			</div>
+			<div class="content">
+				<p style="font-size: 24px;color: #2196F3;">HALLO_VR</p>
+				<p style="font-size: 18px;color: white;">This website gonna ROCK THE WORLD!</p>
+			</div>	
+		</div>
+
+		<div id="content-2" class="vrContent" x="400" y="800">
+			<div class="icon">
+			</div>
+			<div class="content">
+				<div class="vrChild" x="300" y="100">
+					<div class="icon">
+					</div>
+					<div class="content">
+						
+					</div>	
+				</div>
+			</div>	
+		</div>
+
+		<div id="content-3" class="vrContent" x="800" y="400">
+			<div class="icon">
+			</div>
+			<div class="content video">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
+			</div>	
+		</div>
+	</div> 
+	<!-- / Templates -->
+    <script src="assets/js/main.js"></script>
+	<script src="assets/js/actions.js"></script>
+  </body>
+</html>
