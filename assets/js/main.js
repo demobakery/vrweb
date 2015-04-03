@@ -20,9 +20,17 @@ var HalloVR = {
 				 
         // request new frame
 		   
-		  requestAnimationFrame(function(){
-			  animate();
-		  }); 
+		requestAnimationFrame(function(){
+			animate();
+		});
+
+		HalloVR.items['top-menu'].rotation = camera.rotation;
+		HalloVR.items['item-2'].rotation.y = camera.rotation.y;
+		HalloVR.items['item-3'].rotation.y = camera.rotation.y;
+
+
+		Objects3D[0].rotation.y += camera.rotation.y/10;
+		Objects3D[1].rotation.y -= camera.rotation.y/10;
 
         // render
         rendererGl.render(sceneGL, camera);
@@ -145,6 +153,8 @@ var HalloVR = {
       //addPage("components/video_component/", "1424px", "1424px", "", "", -1000 , 0 , -500, 0, Math.PI/3, 0);
 	  //addPage("components/gallery_component/", "1624px", "1424px", "", "", 1500 , 0 , -500, 0, -Math.PI/2.5, 0);
 	  addPage("item-2", "", -5, -50);
+	  addPage("item-3", "", -5, 35);
+	  addPage("top-menu","",90, -20);
 	  	//addPage("item-2-1", "", -4, -70, 'item-2');
 
 
@@ -177,7 +187,7 @@ var HalloVR = {
 	  
 	  geometry = new THREE.Geometry();
 
-		  for ( i = 0; i < 15000; i++ ) {
+		  for ( i = 0; i < 8000; i++ ) {
 
 			  var vertex = new THREE.Vector3();
 			  vertex.x = Math.random() * 2000 - 1000;
@@ -256,19 +266,30 @@ var HalloVR = {
 	  spherePoli[3].rotation.z = -7 * Math.PI/180 ;
       sceneGL.add(spherePoli[3]);
 	  
-	var wireframeMaterial = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true, transparent: true, wireframeLinewidth: 1 } ); 
+	var wireframeMaterial = new THREE.MeshBasicMaterial( { color: 'white', wireframe: true, transparent: true, wireframeLinewidth: 0.6 } ); 
 	var multiMaterial = [ wireframeMaterial ];
+
+	var Objects3D = [];
 	  
 	  
 	// -- 3d Objects for Menus -- //  
 	  
-	var pyramide = THREE.SceneUtils.createMultiMaterialObject( 
+	Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject( 
 		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
 		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
 		multiMaterial );
-	pyramide.rotation.z = -Math.PI;
-	pyramide.position = HalloVR.items['item-2'].position;
-	sceneGL.add( pyramide );
+	Objects3D[0].rotation.z = -Math.PI;
+	Objects3D[0].position = HalloVR.items['item-2'].position;
+	sceneGL.add( Objects3D[0] );
+
+	Objects3D[1] = THREE.SceneUtils.createMultiMaterialObject( 
+		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
+		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
+		multiMaterial );
+	Objects3D[1].rotation.z = -Math.PI;
+	Objects3D[1].position = HalloVR.items['item-3'].position;
+	sceneGL.add( Objects3D[1] );
+
 	  
 	  
 	// -- / 3d Objects for Menus  -- //  

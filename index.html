@@ -12,14 +12,14 @@
   <body>
     <div id="container"></div>
 	<!-- Templates -->  
-	<div id='item-1' >
+	<div id='item-1' type="item" >
 		<link rel="stylesheet" type="text/css" href="components/logo/logo.css" />
 		<div id="logo">
 		</div>
 	</div>
 	  
-	<div id='item-2' class="vrElement">
-		<svg id="portfolio">
+	<div id='item-2' type="item" class="vrElement">
+		<svg>
 			<defs>
 				<mask id='hide_lines'>
 					<circle cx="0" cy="0" r="10000" fill='white' />
@@ -51,7 +51,14 @@
 					<div class="icon">
 					</div>
 					<div class="content">
-						
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
+					</div>	
+				</div>
+				<div class="vrChild" x="100" y="300">
+					<div class="icon">
+					</div>
+					<div class="content">
+						<p>This is child of child</p>
 					</div>	
 				</div>
 			</div>	
@@ -64,7 +71,39 @@
 				<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
 			</div>	
 		</div>
-	</div> 
+	</div>
+	<div id="item-3" type="item" class="vrElement">
+		<svg>
+			<defs>
+				<mask id='hide_lines'>
+					<circle cx="0" cy="0" r="10000" fill='white' />
+					<path transform="translate(500,480)" fill="rgba(0,0,0,1)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</mask>
+			</defs>
+			<g>
+				<circle cx="500" cy="480" r="100" class="itemOpener" />
+				<g class="mainCircle" fill-rule="evenodd">
+					<path transform="translate(500,480)" id="mainBodyCircle"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</g>
+			</g>		
+		</svg>
+
+		<div id="content-3" class="vrContent" x="100" y="100">
+			<div class="icon">
+			</div>
+			<div class="content video">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
+			</div>	
+		</div>
+	</div>
+	<div id="top-menu" type="top-menu">
+		<div class="hamburger cross">
+		  <div></div>
+		  <svg x="0" y="0" width="50px" height="50px" viewBox="0 0 50 50">
+		    <circle cx="25" cy="25" r="24">
+		  </svg>
+		</div>
+	</div>
 	<!-- / Templates -->
     <script src="assets/js/main.js"></script>
 	<script src="assets/js/actions.js"></script>
