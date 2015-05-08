@@ -1,0 +1,38 @@
+.start-edit{
+	position: fixed;
+	bottom: 10px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background-color: #000000!important;
+	font-size: 32px;
+}
+
+.form-container{
+	max-height: 500px;
+	width: 350px;
+	position: relative;
+	top: 10px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+
+	padding: 10px;
+	margin: auto;
+	border-radius: 3px;
+}
+.form-container form{
+	width: 100%;
+}
+md-whiteframe{
+	padding: 10px;
+}
+.md-select {
+  margin-top: 0;
+}
+.md-button.close-button, .md-button.close-button:hover{
+	-ms-transform: rotate(45deg)!important;
+	-webkit-transform: rotate(45deg)!important;
+	transform: rotate45deg)!important;
+}

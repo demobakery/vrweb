@@ -1,0 +1,54 @@
+<html ng-app="vrweb">
+  <head>
+    <title>HalloVR</title>
+    
+    <meta name="viewport" content="initial-scale=1" />
+   
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+    
+    <link rel="stylesheet" href="/editor/libs/angular-material.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/editor/style.css" />
+   
+    
+  </head>
+  <body >
+
+    <!-- Start Editor -->
+    <editform></editform>
+  	<!-- End Editor -->
+
+    <!-- Start Container -->
+    <div ng-class="{ {{ vrweb.controller }}: true }" ng-view></div>
+	<!-- End Container -->
+
+    <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/three.min.js"></script>
+    <script type="text/javascript" src="/assets/js/snap.svg.js"></script>
+    <script type="text/javascript" src="/assets/js/CSS3DRenderer.js"></script>
+    <script type="text/javascript" src="/assets/js/OrbitControls.js"></script>
+    
+    <!-- Angularjs -->
+    <script type="text/javascript" src="/editor/libs/underscore-min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/ng-underscore.min.js"></script>
+
+    
+    <script type="text/javascript" src="/editor/libs/angular-aria.min.js"></script>
+    <script type="text/javascript" src="/editor/libs/angular-material.min.js"></script>
+
+
+    <script type="text/javascript" src="/editor/js/app.js"></script>
+    <script type="text/javascript" src="/editor/js/directives.js"></script>
+    <script type="text/javascript" src="/editor/js/factories.js"></script>
+    <script type="text/javascript" src="/editor/js/controllers.js"></script>
+  </body>
+</html>

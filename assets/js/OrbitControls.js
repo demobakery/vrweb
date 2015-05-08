@@ -259,7 +259,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		if ( lastPosition.distanceTo( this.object.position ) > 0 ) {
 
-			this.dispatchEvent( changeEvent );
+			// this.dispatchEvent( changeEvent );
 
 			lastPosition.copy( this.object.position );
 
@@ -571,16 +571,52 @@ THREE.OrbitControls = function ( object, domElement ) {
 		state = STATE.NONE;
 	}
 
-	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
-	this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-	this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-	this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+	// this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
+	// this.domElement.addEventListener( 'mousedown', onMouseDown, false );
+	// this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
+	// this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
 
-	this.domElement.addEventListener( 'keydown', onKeyDown, false );
+	// this.domElement.addEventListener( 'keydown', onKeyDown, false );
 
-	this.domElement.addEventListener( 'touchstart', touchstart, false );
-	this.domElement.addEventListener( 'touchend', touchend, false );
-	this.domElement.addEventListener( 'touchmove', touchmove, false );
+	// this.domElement.addEventListener( 'touchstart', touchstart, false );
+	// this.domElement.addEventListener( 'touchend', touchend, false );
+	// this.domElement.addEventListener( 'touchmove', touchmove, false );
+
+	checkCanvas();
+
+	function checkCanvas() {
+		if($('canvas#rendererGL').length > 0) {
+
+			rend_gl = document.querySelector("canvas#rendererGL");
+			rend_css = document.querySelector("#rendererCSS");
+
+			rend_gl.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
+			rend_gl.addEventListener( 'mousedown', onMouseDown, false );
+			rend_gl.addEventListener( 'mousewheel', onMouseWheel, false );
+			rend_gl.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+
+			rend_gl.addEventListener( 'keydown', onKeyDown, false );
+
+			rend_gl.addEventListener( 'touchstart', touchstart, false );
+			rend_gl.addEventListener( 'touchend', touchend, false );
+			rend_gl.addEventListener( 'touchmove', touchmove, false );
+
+			rend_css.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
+			rend_css.addEventListener( 'mousedown', onMouseDown, false );
+			rend_css.addEventListener( 'mousewheel', onMouseWheel, false );
+			rend_css.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
+
+			rend_css.addEventListener( 'keydown', onKeyDown, false );
+
+			rend_css.addEventListener( 'touchstart', touchstart, false );
+			rend_css.addEventListener( 'touchend', touchend, false );
+			rend_css.addEventListener( 'touchmove', touchmove, false );
+
+		} else {
+			console.log('netu');
+			setTimeout(checkCanvas, 500);
+		}
+	}
 
 };
 
