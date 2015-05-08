@@ -35,6 +35,8 @@ THREE.CSS3DRenderer = function () {
 	var _width, _height;
 	var _widthHalf, _heightHalf;
 	var _projector = new THREE.Projector();
+	
+	console.log(_projector);
 
 	var _tmpMatrix = new THREE.Matrix4();
 
@@ -110,7 +112,7 @@ THREE.CSS3DRenderer = function () {
 			epsilon( elements[ 15 ] ) +
 		')';
 
-	}
+	};
 
 	var getObjectCSSMatrix = function ( matrix ) {
 
@@ -135,7 +137,7 @@ THREE.CSS3DRenderer = function () {
 			epsilon( elements[ 15 ] ) +
 		')';
 
-	}
+	};
 
 	this.render = function ( sceneCSS, camera ) {
 
@@ -146,7 +148,7 @@ THREE.CSS3DRenderer = function () {
 		this.domElement.style.oPerspective = fov + "px";
 		this.domElement.style.perspective = fov + "px";
 
-		var objects = _projector.projectScene( sceneCSS, camera, false ).objects;
+		var objects = (new THREE.Projector()).projectScene( sceneCSS, camera, false ).objects;
 
 		var style = "translate3d(0,0," + fov + "px)" + getCameraCSSMatrix( camera.matrixWorldInverse ) + " translate3d(" + _widthHalf + "px," + _heightHalf + "px, 0)";
 

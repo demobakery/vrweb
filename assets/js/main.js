@@ -5,12 +5,39 @@ var HalloVR = {
   init: function(){
     // -- Calling Three.js Installer -- //
     this.installThree();
+
   },
   items: {},
   tools: {
 	  pageFocus: true
   },
+  map: null,
   hatsDown: true,
+  initializeMap: function() {
+	// Create an array of styles.
+  var styles = [{"featureType":"road","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"administrative","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"weight":1}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"weight":0.8}]},{"featureType":"landscape","stylers":[{"color":"#ffffff"}]},{"featureType":"water","stylers":[{"visibility":"off"}]},{"featureType":"transit","stylers":[{"visibility":"off"}]},{"elementType":"labels","stylers":[{"visibility":"off"}]},{"elementType":"labels.text","stylers":[{"visibility":"on"}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"elementType":"labels.text.fill","stylers":[{"color":"#000000"}]},{"elementType":"labels.icon","stylers":[{"visibility":"on"}]}];
+
+
+  // Create a new StyledMapType object, passing it the array of styles,
+  // as well as the name to be displayed on the map type control.
+  var styledMap = new google.maps.StyledMapType(styles,{name: "Styled Map"});
+
+  // Create a map object, and include the MapTypeId to add
+  // to the map type control.
+  var mapOptions = {
+    zoom: 8,
+    center: new google.maps.LatLng(55.6468, 37.581),
+    mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+    }
+  };
+  HalloVR.map = new google.maps.Map(document.getElementById('map_canvas'),
+    mapOptions);
+
+  //Associate the styled map with the MapTypeId and set it to display.
+  HalloVR.map.mapTypes.set('map_style', styledMap);
+  HalloVR.map.setMapTypeId('map_style');
+  },
   installThree: function(){
 
       var t = Math.PI/2;
@@ -18,7 +45,7 @@ var HalloVR = {
       function animate(){
 		  
 				 
-        // request new frame
+        // -- Requesting new animation frame --
 		   
 		requestAnimationFrame(function(){
 			animate();
@@ -27,10 +54,12 @@ var HalloVR = {
 		HalloVR.items['top-menu'].rotation = camera.rotation;
 		HalloVR.items['item-2'].rotation.y = camera.rotation.y;
 		HalloVR.items['item-3'].rotation.y = camera.rotation.y;
+		HalloVR.items['item-4'].rotation.y = camera.rotation.y;
 
 
-		Objects3D[0].rotation.y += camera.rotation.y/10;
-		Objects3D[1].rotation.y -= camera.rotation.y/10;
+		Objects3D[0].rotation.y += camera.rotation.y/50;
+		Objects3D[1].rotation.y -= camera.rotation.y/50;
+		Objects3D[2].rotation.y += camera.rotation.y/50;
 
         // render
         rendererGl.render(sceneGL, camera);
@@ -39,6 +68,8 @@ var HalloVR = {
 		spherePoli[1].rotation.y += 0.005;
 		spherePoli[2].rotation.y += 0.009;
 		spherePoli[3].rotation.y += 0.007;
+
+		// -- Rendering our blue hats animation --
 		  
 		t += Math.PI/180 * 0.1; 
 		  
@@ -61,9 +92,11 @@ var HalloVR = {
 			if( spherePoli[3].material.map.offset.y < 0 )  
 				spherePoli[3].material.map.offset.y += 0.3 / Math.PI/(t);
 		}
+
+		// -- / Blue hats Animation --
 		 
 
-		//Particle animation
+		// -- Animating and rendering our particles
 		  
 		time = Date.now() * 0.00005;
 		  
@@ -79,20 +112,26 @@ var HalloVR = {
 
 		}
 		  
-		// /Particle animation
+		// -- /Particle animation --
       }
 
-   	var addPage = function(id, class_name, lat, lng, parent){
+   	var addItem = function(id, lat, lng){
 		
 		phi   = ( 85 - lat ) * ( Math.PI/180 );
 		theta = ( lng + 279 ) * ( Math.PI/180 );
 		radius = 800;
 
+		// -- Getting the element with this id --
+
 		element = document.querySelector('#' + id);
+
+		// -- Positioning it to our Frame Sphere fot lat, lng --
 		
-		pos_x = -( ( radius ) * Math.sin( phi ) * Math.cos( theta ));
-		pos_z = ( ( radius ) * Math.sin( phi ) * Math.sin( theta ));
-		pos_y = ( ( radius ) * Math.cos( phi ) );
+		pos_x = -( ( radius ) * Math.sin( phi ) * Math.cos( theta )); // Position x
+		pos_z = ( ( radius ) * Math.sin( phi ) * Math.sin( theta )); // Position z
+		pos_y = ( ( radius ) * Math.cos( phi ) ); // Position y
+
+		// -- Creating CSS Object for our scene -- 
 
    		objectCSS   = new THREE.CSS3DObject( element );
 		
@@ -102,16 +141,13 @@ var HalloVR = {
    		objectCSS.position.x = pos_x || 0;
 		objectCSS.lookAt( camera.position );
 		
-		if(!parent) {
-			HalloVR.items[id] = objectCSS;
-		} else {
-			HalloVR.items[parent].childs = [];
-			HalloVR.items[parent].childs[id] = objectCSS;
-		}
+		HalloVR.items[id] = objectCSS;
+
+		// -- Adding out object to scene --
 		
   		sceneCSS.add( objectCSS );
    	};
-
+   	  var mouse = new THREE.Vector2();
       var container = document.querySelector("#container");
       var projector = new THREE.Projector();
 
@@ -128,6 +164,10 @@ var HalloVR = {
       rendererCss.domElement.appendChild(rendererGl.domElement);
 
       container.appendChild(rendererCss.domElement);
+
+      var domEvents	= new THREEx.DomEvents(camera, rendererGl.domElement);
+
+      console.log(domEvents);
 
       // scene
       var sceneGL = new THREE.Scene();
@@ -147,18 +187,16 @@ var HalloVR = {
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0;
 
-      // -- Scene Code Goes Here -- //
+      // -- Dear Coder, here you can add an Item to your HelloVR world --
 
-      addPage("item-1", "", 0, 0);
-      //addPage("components/video_component/", "1424px", "1424px", "", "", -1000 , 0 , -500, 0, Math.PI/3, 0);
-	  //addPage("components/gallery_component/", "1624px", "1424px", "", "", 1500 , 0 , -500, 0, -Math.PI/2.5, 0);
-	  addPage("item-2", "", -5, -50);
-	  addPage("item-3", "", -5, 35);
-	  addPage("top-menu","",90, -20);
-	  	//addPage("item-2-1", "", -4, -70, 'item-2');
+      addItem("item-1", 0, 0);
+	  addItem("item-2", -5, -50);
+	  addItem("item-3", -5, 35);
+	  addItem("item-4", -5, -100);
+	  addItem("top-menu", 87, -22);
 
 
-      //Creating our Sphere with Texture
+      // -- Creating our Sphere with Texture --
       var sphereBack = new THREE.Mesh(
         new THREE.SphereGeometry(2000, 20, 20),
         new THREE.MeshBasicMaterial({
@@ -166,7 +204,7 @@ var HalloVR = {
         })
       );
 	  
-      //Adding scale with x axis
+      // -- Adding scale with x axis --
       sphereBack.scale.x = -1;
       sceneGL.add(sphereBack);
 	  
@@ -179,9 +217,14 @@ var HalloVR = {
 			opacity: 0.05
         })
       );
-      //sceneGL.add(sphereFrame);
+
+      sceneGL.add(sphereFrame);
+
+      domEvents.addEventListener(sphereBack, 'click', function(event){
+			console.log('you clicked on mesh', sphereBack)
+		}, false)
 	  
-	  //Particles 
+	  // -- Adding particles 
 	  
 	  var particles, geometry, materials = [], parameters, i, h, color, size;
 	  
@@ -223,7 +266,7 @@ var HalloVR = {
 
 		  }
 	  
-	  // / Particles
+	  // -- / Particles --
 	  
 	  
 	  var spherePoli = [];
@@ -273,6 +316,8 @@ var HalloVR = {
 	  
 	  
 	// -- 3d Objects for Menus -- //  
+
+
 	  
 	Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject( 
 		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
@@ -282,6 +327,8 @@ var HalloVR = {
 	Objects3D[0].position = HalloVR.items['item-2'].position;
 	sceneGL.add( Objects3D[0] );
 
+
+
 	Objects3D[1] = THREE.SceneUtils.createMultiMaterialObject( 
 		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
 		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
@@ -289,6 +336,14 @@ var HalloVR = {
 	Objects3D[1].rotation.z = -Math.PI;
 	Objects3D[1].position = HalloVR.items['item-3'].position;
 	sceneGL.add( Objects3D[1] );
+
+	Objects3D[2] = THREE.SceneUtils.createMultiMaterialObject( 
+		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
+		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
+		multiMaterial );
+	Objects3D[2].rotation.z = -Math.PI;
+	Objects3D[2].position = HalloVR.items['item-4'].position;
+	sceneGL.add( Objects3D[2] );
 
 	  
 	  
@@ -325,10 +380,13 @@ var HalloVR = {
 
 };
 
+// -- Initializing our HalloVR world -- //
 HalloVR.init();
 
-
 $(document).ready(function(){
+
+	HalloVR.initializeMap();
+
 	$('body').fadeIn(1500);
 	$(window).blur(function(e) {
     	HalloVR.tools.pageFocus = false;

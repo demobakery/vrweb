@@ -1,6 +1,4 @@
-
-body
-{
+body {
   margin: 0;
   padding: 0;
   display: none;
@@ -41,18 +39,38 @@ body
 	fill: none;
 	stroke-width: 2;
 }
-.vrContent, .vrContent .content, .vrChild, .vrChild .content
+.vrContent, .vrChild
 {
-	display: none;
+  display: none;
+}
+.vrContent .content, .vrChild .content
+{
+  opacity: 0;
+  margin-left: 0px;
 }
 .vrContent, .vrChild
 {
 	position: absolute;
 }
+.vrChild
+{
+  margin-left: -50px;
+  margin-top: 50px;
+}
+.icon .title
+{
+  position: absolute;
+  top: -40px;
+  left: -75px;
+  color: white;
+  font-weight: 200;
+  font-size: 18px;
+  text-transform: uppercase;
+}
 .vrContent .icon, .vrChild .icon
 {
-	width: 7px;
-	height: 7px;
+	width: 3px;
+	height: 3px;
 	background-color: #00ffff;
 	border: 2px solid white;
 	border-radius: 100%;
@@ -69,11 +87,12 @@ body
 	min-width: 1000px;
 	left: 50px;
 	top: -50px;
-	transition: margin 500ms ease-in-out;
+	transition: all 500ms ease-in-out;
 }
 .vrContent .content.margined, .vrChild .content.margined
 {
 	margin-left: 20px;
+  opacity: 1;
 }
 .mainCircle path:first-child
 {
@@ -152,4 +171,13 @@ svg path
 .cross.clicked svg {
   stroke-dashoffset: 0;
   transform: rotate(-180deg);
+}
+
+#map_canvas
+{
+  width: 350px;
+  height: 350px;
+  left: -335px;
+  top: 30px;
+  border-radius: 50%;
 }
