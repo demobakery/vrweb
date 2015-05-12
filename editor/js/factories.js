@@ -62,6 +62,36 @@ app.factory('HalloVR', [function(){
 				console.log("Intersected object", obj); 
 			} 
 		},
+		object3D: function(item){
+			var Objects3D = [];
+	 console.log('item', item);
+	 item.position = {};
+	 item.position.x = 0;
+	 item.position.y = 10;
+	 item.position.z = 52;
+			var wireframeMaterial = new THREE.MeshPhongMaterial( { wireframe: true, wireframeLinewidth: 0.6, opacity: 0.2 } );
+			var fillMaterial = new THREE.MeshPhongMaterial({ color: 'black', transparent: true, opacity: 0.8, shininess: 200, emissive: '#000000', specular: '#ffffff' }); 
+			var multiMaterial = [ wireframeMaterial, fillMaterial ];
+
+			var loader = new THREE.JSONLoader(); // init the loader util
+
+			// init loading
+			loader.load('/assets/object_7.js', function (geometry) {	  
+			  // create a mesh with models geometry and material
+			  Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject( 
+			    geometry,
+			    multiMaterial
+			  );
+
+			  Objects3D[0].scale.set(15,15,15);
+			  Objects3D[0].lookAt(camera.position);
+			  Objects3D[0].position.set(item.position.x,item.position.y,item.position.z);
+			  
+			  Objects3D[0].rotation.y = -Math.PI/5;
+			  
+			  sceneGL.add(Objects3D[0]);
+			});
+		},
 		animate: function(){
         	// request new frame
 		   var self = this; 
@@ -209,19 +239,19 @@ app.factory('HalloVR', [function(){
 			}  
 			
 				// -- 3d Objects for Menus -- //  
-			_.each(this.items, function(item, key){
-				if(item.type == 'item'){
-					var Obj3D = THREE.SceneUtils.createMultiMaterialObject( 
-						new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
-						multiMaterial 
-					);
-						Obj3D.rotation.z = -Math.PI;
-						Obj3D.position = item.position;
-						sceneGL.add( Obj3D );
+			// _.each(this.items, function(item, key){
+			// 	if(item.type == 'item'){
+			// 		var Obj3D = THREE.SceneUtils.createMultiMaterialObject( 
+			// 			new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
+			// 			multiMaterial 
+			// 		);
+			// 			Obj3D.rotation.z = -Math.PI;
+			// 			Obj3D.position = item.position;
+			// 			sceneGL.add( Obj3D );
 
-					Objects3D.push(Obj3D);
-				}
-			})	  
+			// 		Objects3D.push(Obj3D);
+			// 	}
+			// }); 	  
 			angular.element('body').css('display','block');
 			// start animation
 			this.animate();
@@ -297,6 +327,10 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						_.each(scope.newVrObjectForm.services, function(itemservice,key){
 							// scope.halloVRObj[0].itemBind = window[key](itemservice);
 							scope.halloVRObj[0].itemBind = typeOfFunctions[key](itemservice);
+							// if(itemservice.obj3D) HalloVR.object3D(itemservice);
+
+							HalloVR.object3D(itemservice);
+							console.log('itemservice', itemservice);
 						})
 					}
 				} 
@@ -347,29 +381,28 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
                 angular.element('body').append(content);
                 $timeout(function(){
                 	HalloVR.addPage(scope.halloVRObj[0]);
-                	scope.newVrObjectForm = {};
 
-					scope.forItem = false;
-					scope.forMenu = false;
-					scope.forFooter = false;
-
-				 	scope.forLogo = false;
-					scope.forGallery = false;
-					scope.forBlogPostsList = false;
-					scope.forPortfolio = false;
-					scope.forServices = false;
-					scope.forContacts = false;
-					scope.forHTML = false;
-
-
-                	$rootScope.vrweb.form = false;
-                },1000)
+					scope.close();
+                },500)
 				
 	    	}
 	    	
 	    	scope.close = function(){
 	    		$rootScope.vrweb.form = false;
 	    		scope.newVrObjectForm = {}
+
+	    		scope.forItem = false;
+				scope.forMenu = false;
+				scope.forFooter = false;
+
+			 	scope.forLogo = false;
+				scope.forGallery = false;
+				scope.forBlogPostsList = false;
+				scope.forPortfolio = false;
+				scope.forServices = false;
+				scope.forContacts = false;
+				scope.forHTML = false;
+
 	    	}
 
 	    	scope.newElements = function(){
@@ -449,13 +482,21 @@ typeOfFunctions['logo'] = function(logoObj){
 	return "<div id=\"logo\" style=" + style + "></div>";
 }
 
-typeOfFunctions['html'] = function(htmlObj){
-	var width = (htmlObj.width)?htmlObj.width:200;
-	var height = (htmlObj.height)?htmlObj.height:200;
-	var style = "\"width: " + width + "px;"+
-		"height: " + height + "px;"+
-		"background-image: url('"+htmlObj.url+"');"+
-		"background-repeat: no-repeat;"+
-		"background-size: 100% auto;\"";
-	return "<div id=\"logo\" style=" + style + "></div>";
+typeOfFunctions['portfolio'] = function(htmlObj){
+	var portfolioItem = "<svg>";
+	portfolioItem +="<defs>";
+	portfolioItem +="<mask id='hide_lines'>";
+	portfolioItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
+	portfolioItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	portfolioItem +="</mask>";
+	portfolioItem +="</defs>";
+	portfolioItem +="<g>";
+	portfolioItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(item, $event)'/>";
+	portfolioItem +="<g class='mainCircle' fill-rule='evenodd'>";
+	portfolioItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	portfolioItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in item.content' strokedashoffset='0'></path-line>";
+	portfolioItem +="</g>";
+	portfolioItem +="</g>";
+	portfolioItem +="</svg>";
+	return portfolioItem;
 }

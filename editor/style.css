@@ -12,21 +12,29 @@
 	max-height: 500px;
 	width: 350px;
 	position: relative;
-	top: 10px;
+	top: 10%;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 10;
-
-	padding: 10px;
+	padding: 15px;
 	margin: auto;
 	border-radius: 3px;
 }
 .form-container form{
 	width: 100%;
+	margin: 0;
 }
 md-whiteframe{
 	padding: 10px;
+}
+.md-button.md-fab.md-mini {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.md-button.md-default-theme.md-fab {
+  line-height: 1;
 }
 .md-select {
   margin-top: 0;

@@ -17,6 +17,7 @@ controllers
 		});
 
 		$scope.vrContentvsvrChild = function(obj, event){
+			console.log('vrContentvsvrChild',obj);
 			var svg = event.currentTarget.closest("svg");
 			var svgElement = event.currentTarget.closest(".vrElement");
 			var mainCircle = angular.element(svg.querySelectorAll('.mainCircle path'));

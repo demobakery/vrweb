@@ -1,6 +1,5 @@
 <md-content class="form-container" ng-show='vrweb.form'  layout="column" layout-align="center" ng-init="submitted=false">
-	<section layout="column" layout-sm="column"  layout-align="center end" ><md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + </md-button>
-	</section>
+	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + </md-button>
 	<md-whiteframe layout layout-align="center">
 		<form name="myForm" flex novalidate>
 			<section layout="column" layout-sm="column" >
@@ -26,7 +25,6 @@
 				<md-select name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
 					<md-option ng-value="opt.id" ng-repeat="opt in selectPlugins">{{ opt.type }}</md-option>
 				</md-select>
-				<md-divider></md-divider>
 				<!-- <div layout>
 					<md-switch ng-init="cb1=false" ng-model="cb1" aria-label="Switch 1">
 				    	Custom HTML: {{ cb1 }}
@@ -47,30 +45,70 @@
 						<md-divider></md-divider>
 					</div>
 				</div> -->
-				<md-content layout="row" layout-sm="column" ng-show="forLogo">
-					<md-input-container>
-						<label>Image Url </label>
-						<input ng-model="newVrObjectForm.services.logo.url" type="url" />
-					</md-input-container>
-					<md-content layout="row" layout-sm="column">
+				<section ng-show="forLogo">
+					<md-content>
 						<md-input-container>
+							<label>Image Url </label>
+							<input ng-model="newVrObjectForm.services.logo.url" type="url" />
+						</md-input-container>
+					</md-content>
+					<md-content layout="row" layout-sm="column">
+						<md-input-container flex>
 							<label>Width (in px) </label>
 							<input ng-model="newVrObjectForm.services.logo.width" type="number" step = "any" />
 						</md-input-container>
-						<md-input-container>
+						<md-input-container flex>
 							<label>Height (in px) </label>
 							<input ng-model="newVrObjectForm.services.logo.height" type="number" step = "any" />
 						</md-input-container>
 					</md-content>
-				</md-content>
+				</section>
+				<section ng-show="forPortfolio">
+					<md-content>
+						<md-input-container>
+							<label>Image Url </label>
+							<input ng-model="newVrObjectForm.services.portfolio.url" type="url" />
+						</md-input-container>
+					</md-content>
+					<md-content>
+						<md-input-container>
+							<label>Border Size (in px) </label>
+							<input ng-model="newVrObjectForm.services.portfolio.border" type="number" step = "any" />
+						</md-input-container>
+					</md-content>
+
+					<label>Wire colors </label>
+					<md-content  layout="row" layout-sm="column">
+						<md-input-container flex>
+							<label>Start </label>
+							<input ng-model="newVrObjectForm.services.portfolio.wireColorStart" type="color" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>End </label>
+							<input ng-model="newVrObjectForm.services.portfolio.wireColorStop" type="color" />
+						</md-input-container>
+					</md-content>
+					<label>Curveness of wire  </label>
+					<md-content layout="row" layout-sm="column">
+						<md-input-container flex>
+							<label>Start </label>
+							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.first" type="number" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>Middle </label>
+							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.second" type="number" />
+						</md-input-container>
+						<md-input-container flex>
+							<label>End </label>
+							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.last" type="number" />
+						</md-input-container>
+					</md-content>
+				</section>
 				<section layout="row" layout-sm="column" ng-show="forGallery">
 					forGallery
 				</section>
 				<section layout="row" layout-sm="column" ng-show="forBlogPostsList">
 					forBlogPostsList
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forPortfolio">
-					forPortfolio
 				</section>
 				<section layout="row" layout-sm="column" ng-show="forServices">
 					forServices
@@ -126,7 +164,7 @@
 				
 			</div> -->
 	
-			<section layout="row" layout-sm="column" style="margin-top: 1.4em;">
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
 				<md-button ng-disabled="myForm.$invalid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
 			</section>
 			{{newVrObjectForm.$valid}}
