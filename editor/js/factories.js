@@ -6,6 +6,8 @@ app.factory('HalloVR', [function(){
 	var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
 	var rendererGl = new THREE.WebGLRenderer({alpha:true, antialias: true });
 
+	var loader = new THREE.JSONLoader(); // init the loader util
+
 
 	// renderer
 	var rendererCss = new THREE.CSS3DRenderer();
@@ -15,7 +17,7 @@ app.factory('HalloVR', [function(){
 	var sceneCSS = new THREE.Scene();
 	
 	var sphereFrame = new THREE.Mesh(
-		new THREE.SphereGeometry(800, 200, 200),
+		new THREE.SphereGeometry(800, 20, 20),
 		new THREE.MeshBasicMaterial({
 			wireframe: true,
 			color: 0xffffff,
@@ -23,6 +25,10 @@ app.factory('HalloVR', [function(){
 			opacity: 0.05
 		})
 	);
+
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+
 
 	var controls = new THREE.OrbitControls(camera);
 			
@@ -44,53 +50,20 @@ app.factory('HalloVR', [function(){
 		hatsDown: true,
 
 		onDocumentMouseDown: function( e ) { 
-			e.preventDefault(); 
+			 event.preventDefault();
 
-			var SCREEN_WIDTH = window.innerWidth;
-			var SCREEN_HEIGHT = window.innerHeight;
+		    mouse.x = ( event.clientX / rendererGl.domElement.clientWidth ) * 2 - 1;
+		    mouse.y = - ( event.clientY / rendererGl.domElement.clientHeight ) * 2 + 1;
 
-			var mouseVector = new THREE.Vector3(); 
-				mouseVector.x = 2 * (e.clientX / SCREEN_WIDTH) - 1; 
-				mouseVector.y = 1 - 2 * ( e.clientY / SCREEN_HEIGHT ); 
+		    raycaster.setFromCamera( mouse, camera );
 
-			var raycaster = projector.pickingRay( mouseVector.clone(), camera ); 
-			var intersects = raycaster.intersectObject( e.target ); 
-			console.log('intersects', intersects);
-			for( var i = 0; i < intersects.length; i++ ) { 
-				var intersection = intersects[ i ], obj = intersection.object; 
+		    var intersects = raycaster.intersectObjects( sphereFrame ); 
 
-				console.log("Intersected object", obj); 
-			} 
-		},
-		object3D: function(item){
-			var Objects3D = [];
-	 console.log('item', item);
-	 item.position = {};
-	 item.position.x = 0;
-	 item.position.y = 10;
-	 item.position.z = 52;
-			var wireframeMaterial = new THREE.MeshPhongMaterial( { wireframe: true, wireframeLinewidth: 0.6, opacity: 0.2 } );
-			var fillMaterial = new THREE.MeshPhongMaterial({ color: 'black', transparent: true, opacity: 0.8, shininess: 200, emissive: '#000000', specular: '#ffffff' }); 
-			var multiMaterial = [ wireframeMaterial, fillMaterial ];
+		    if ( intersects.length > 0 ) {
 
-			var loader = new THREE.JSONLoader(); // init the loader util
+		        intersects[0].object.callback();
 
-			// init loading
-			loader.load('/assets/object_7.js', function (geometry) {	  
-			  // create a mesh with models geometry and material
-			  Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject( 
-			    geometry,
-			    multiMaterial
-			  );
-
-			  Objects3D[0].scale.set(15,15,15);
-			  Objects3D[0].lookAt(camera.position);
-			  Objects3D[0].position.set(item.position.x,item.position.y,item.position.z);
-			  
-			  Objects3D[0].rotation.y = -Math.PI/5;
-			  
-			  sceneGL.add(Objects3D[0]);
-			});
+		    }
 		},
 		animate: function(){
         	// request new frame
@@ -143,6 +116,25 @@ app.factory('HalloVR', [function(){
 		removeFrame: function(){
 			sceneGL.remove(sphereFrame);
 		},
+		load_object_for: function(item, obj_name) {
+		  loader.load('assets/' + obj_name + '.js', function (geometry) {	  
+			  // create a mesh with models geometry and material
+			  object = THREE.SceneUtils.createMultiMaterialObject( 
+				geometry,
+				multiMaterial
+			  );
+
+			  object.scale.set(15,15,15);
+			  object.lookAt(camera.position);
+			  object.position.set(item.position.x,item.position.y,item.position.z);
+
+			  object.rotation.y = -Math.PI/5;
+			  
+			  Objects3D.push(object);
+
+			  sceneGL.add(object);
+			});
+	   },
 		installThree: function(halloObjects, settings){
 
 			var self = this;
@@ -281,6 +273,12 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "contacts",  type: 'Contacts' },
 				{ id: "html",  type: 'HTML' }
 			];
+			scope.selectObj3D =  [
+				{ id: "object_5",  type: 'object_5' },
+				{ id: "object_6",  type: 'object_6' },
+				{ id: "object_7",  type: 'object_7' }
+			];
+
 			
 		 	// scope.selectMenuItems = [ {id:"menu",type:"menu"}];
 		 	// scope.selectFooterItems = [ {id:"footer",type:"footer"}]
@@ -327,9 +325,15 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						_.each(scope.newVrObjectForm.services, function(itemservice,key){
 							// scope.halloVRObj[0].itemBind = window[key](itemservice);
 							scope.halloVRObj[0].itemBind = typeOfFunctions[key](itemservice);
-							// if(itemservice.obj3D) HalloVR.object3D(itemservice);
+							if(itemservice.id !="logo"){ 
+								itemservice.position = {
+									x: 0,
+									y: 20,
+									z: 0
+								}
+							  	HalloVR.load_object_for(itemservice, itemservice.itemObj3D);
+							}
 
-							HalloVR.object3D(itemservice);
 							console.log('itemservice', itemservice);
 						})
 					}
@@ -375,7 +379,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				// 		// }
 				// 	}
 				// })
-			console.log('qweqweqwe',scope.halloVRObj);
+				console.log('qweqweqwe',scope.halloVRObj);
 				var content = $compile("<div id=\"{{ item.id }}\" type=\"{{ item.type }}\" ng-class=\"{ 'vrElement':item.vrElement}\" ng-repeat=\"(key, item) in halloVRObj\" >" +
 			                    			scope.halloVRObj[0].itemBind + "</div>")(scope);
                 angular.element('body').append(content);
@@ -420,6 +424,24 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	};
 
 	    	scope.isItem = function(selectedItem){
+	    		scope.forItem = false;
+	    		scope.forSubItem = false;
+	    		scope.forMenu = false;
+	    		scope.forFooter = false;
+	    		switch(selectedItem){
+	    			case 'item':
+	    				scope.forItem = true; break;
+	    			case 'sub-item':
+	    				scope.forSubItem = true; break;
+	    			case 'menu':
+	    				scope.forMenu = true; break;
+	    			case 'footer':
+	    				scope.forFooter = true; break;
+	    			default: break;
+	    		}
+	    	}
+
+	    	scope.isObj3D = function(selectedItem){
 	    		scope.forItem = false;
 	    		scope.forSubItem = false;
 	    		scope.forMenu = false;
