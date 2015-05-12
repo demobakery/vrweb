@@ -11,7 +11,7 @@ controllers
 			}else{
 				$timeout(function(){
 					HalloVR.installThree([], $rootScope.vrweb.settings);	
-				}, 2000)
+				}, 10)
 				
 			}
 		});
