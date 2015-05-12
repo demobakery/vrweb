@@ -305,8 +305,11 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"isWhich": false,
 					"draw": false,
 					// "itemName": scope.newVrObjectForm.itemName,
-					"lat":0,
-					"lng":0,
+					
+					"x": 0,
+					"y": 20,
+					"z": 0
+
 					"content": [{
 						"isMargined": false,
 						"d": "M500 500 L" + (200 + 5)+ " " + (300 + 5),
