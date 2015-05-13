@@ -45,14 +45,14 @@ var HalloVR = {
 	  var random_fixed = Math.random();
 
       function animate(){
-		  
-				 
+
+
         // -- Requesting new animation frame --
-		   
+
 		requestAnimationFrame(function(){
 			animate();
 		});
-		
+
 		if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 			controls.update();
 		}
@@ -65,53 +65,53 @@ var HalloVR = {
 		if(Objects3D[0])
 		{
 			Objects3D.forEach(function(item){
-				item.rotation.y += camera.rotation.y/ (20 + 30 * Math.random());
-				item.rotation.x += camera.rotation.x/ (20 + 30 * Math.random());
-				item.rotation.z += camera.rotation.z/ (20 + 30 * Math.random());
-			});		
+				item.rotation.y += camera.rotation.y/ (40 + 10 * Math.random());
+				item.rotation.x += camera.rotation.x/ (40 + 10 * Math.random());
+				item.rotation.z += camera.rotation.z/ (40 + 10 * Math.random());
+			});
 		}
-			
+
 
         // render
         rendererGl.render(sceneGL, camera);
         rendererCss.render(sceneCSS, camera);
-		  
+
 		spherePoli[1].rotation.y += 0.005;
 		spherePoli[2].rotation.y += 0.009;
 		spherePoli[3].rotation.y += 0.007;
 
 		// -- Rendering our blue hats animation --
-		  
-		t += Math.PI/180 * 0.1; 
-		  
+
+		t += Math.PI/180 * 0.1;
+
 		if(!HalloVR.hatsDown) {
-			if( spherePoli[1].material.map.offset.y > -0.3 )  
+			if( spherePoli[1].material.map.offset.y > -0.3 )
 				spherePoli[1].material.map.offset.y -= 0.3 / Math.PI/(t);
-			
-			if( spherePoli[2].material.map.offset.y > -0.3 )  
+
+			if( spherePoli[2].material.map.offset.y > -0.3 )
 				spherePoli[2].material.map.offset.y -= 0.2 / Math.PI/(t);
-			
-			if( spherePoli[3].material.map.offset.y > -0.3 )  
+
+			if( spherePoli[3].material.map.offset.y > -0.3 )
 				spherePoli[3].material.map.offset.y -= 0.1 / Math.PI/(t);
 		} else {
-			if( spherePoli[1].material.map.offset.y < 0 )  
+			if( spherePoli[1].material.map.offset.y < 0 )
 				spherePoli[1].material.map.offset.y += 0.1 / Math.PI/(t);
-			
-			if( spherePoli[2].material.map.offset.y < 0 )  
+
+			if( spherePoli[2].material.map.offset.y < 0 )
 				spherePoli[2].material.map.offset.y += 0.2 / Math.PI/(t);
-			
-			if( spherePoli[3].material.map.offset.y < 0 )  
+
+			if( spherePoli[3].material.map.offset.y < 0 )
 				spherePoli[3].material.map.offset.y += 0.3 / Math.PI/(t);
 		}
 
 		// -- / Blue hats Animation --
-		 
+
 
 		// -- Animating and rendering our particles
-		  
+
 		if(!HalloVR.isMobile) {
 			time = Date.now() * 0.00005;
-		  
+
 			for ( i = 0; i < sceneGL.children.length; i ++ ) {
 
 				var object = sceneGL.children[ i ];
@@ -123,13 +123,13 @@ var HalloVR = {
 				}
 
 			}
-		}  
-		  
+		}
+
 		// -- /Particle animation --
       }
 
    	var addItem = function(id, lat, lng){
-		
+
 		phi   = ( 85 - lat ) * ( Math.PI/180 );
 		theta = ( lng + 279 ) * ( Math.PI/180 );
 		radius = 800;
@@ -139,25 +139,25 @@ var HalloVR = {
 		element = document.querySelector('#' + id);
 
 		// -- Positioning it to our Frame Sphere fot lat, lng --
-		
+
 		pos_x = -Math.round( ( radius ) * Math.sin( phi ) * Math.cos( theta )); // Position x
 		pos_z = Math.round( ( radius ) * Math.sin( phi ) * Math.sin( theta )); // Position z
 		pos_y = Math.round( ( radius ) * Math.cos( phi ) ); // Position y
 
-		// -- Creating CSS Object for our scene -- 
+		// -- Creating CSS Object for our scene --
 
    		objectCSS   = new THREE.CSS3DObject( element );
-		
+
   		window.objectCSS  = objectCSS;
    		objectCSS.position.z = pos_z || 0;
    		objectCSS.position.y = pos_y || 0;
    		objectCSS.position.x = pos_x || 0;
 		objectCSS.lookAt( camera.position );
-		
+
 		HalloVR.items[id] = objectCSS;
 
 		// -- Adding out object to scene --
-		
+
   		sceneCSS.add( objectCSS );
    	};
    	  var mouse = new THREE.Vector2();
@@ -195,12 +195,12 @@ var HalloVR = {
       // add subtle ambient lighting
       var ambientLight = new THREE.AmbientLight(0x000000);
       sceneGL.add(ambientLight);
-      
+
       // directional lighting
       var directionalLight = new THREE.DirectionalLight(0xffffff);
       directionalLight.position.set(400, 0, 0).normalize();
       sceneGL.add(directionalLight);
-	  
+
 	  HalloVR.tools.camera = camera;
 
 	  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -215,16 +215,16 @@ var HalloVR = {
 	    controls.autoRotateSpeed = 0;
 	  }
 
-      
+
 
       // -- Dear Coder, here you can add an Item to your HelloVR world --
 
-      addItem("item-1", 0, 0);
+    addItem("item-1", 0, 0);
 	  addItem("item-2", -5, -50);
 	  addItem("item-3", -5, 35);
 	  addItem("item-4", -5, -100);
 	  addItem("top-menu", 87, -22);
-	  
+
 	  var backgroundTexture = THREE.ImageUtils.loadTexture('assets/picsart.jpg');
 	  backgroundTexture.minFilter = THREE.LinearFilter;
 
@@ -236,11 +236,11 @@ var HalloVR = {
           map: backgroundTexture
         })
       );
-	  
+
       // -- Adding scale with x axis --
       sphereBack.scale.x = -1;
       sceneGL.add(sphereBack);
-	  
+
 	  var sphereFrame = new THREE.Mesh(
         new THREE.SphereGeometry(800, 20, 20),
         new THREE.MeshBasicMaterial({
@@ -251,15 +251,14 @@ var HalloVR = {
         })
       );
 
-      //sceneGL.add(sphereFrame);
+      sceneGL.add(sphereFrame);
 
         var raycaster = new THREE.Raycaster();
 		var mouse = new THREE.Vector2();
 
-		console.log(raycaster);
 
 		document.onclick = function(event){
-			//onDocumentMouseDown(event);
+			onDocumentMouseDown(event);
 		};
 
 		function onDocumentMouseDown( event ) {
@@ -271,20 +270,30 @@ var HalloVR = {
 
 		    raycaster.setFromCamera( mouse, camera );
 
-		    var intersects = raycaster.intersectObjects( objects ); 
+		    var intersects = raycaster.intersectObjects( sceneGL.children );
 
 		    if ( intersects.length > 0 ) {
 
-		        intersects[0].object.callback();
+		        point = intersects[0].point;
+
+
+            cube_geo = new THREE.BoxGeometry(10,10,10);
+            cube_mat = new THREE.MeshNormalMaterial();
+            cube = new THREE.Mesh(cube_geo, cube_mat);
+            cube.position.set(point.x, point.y, point.z);
+            sceneGL.add(cube);
+
+            return point;
+
 
 		    }
 
 		}
-	  
-	  // -- Adding particles 
-	  
+
+	  // -- Adding particles
+
 	  var particles, geometry, materials = [], parameters, i, h, color, size;
-	  
+
 	  geometry = new THREE.Geometry();
 
 		  for ( i = 0; i < 5000; i++ ) {
@@ -319,27 +328,27 @@ var HalloVR = {
 			  particles.rotation.y = Math.random() * 0.5 ;
 			  particles.rotation.z = Math.random() * 0.5 ;
 			  particles.overdraw = true;
-			
+
 			  if(!HalloVR.isMobile)
 				  {
 					  sceneGL.add( particles );
 				  }
-			  
+
 
 		  }
-	  
+
 	  // -- / Particles --
-	  
-	  
+
+
 	  var spherePoli = [];
-	  
+
 	  var textureHat = new THREE.ImageUtils.loadTexture('assets/hat.png');
 	  textureHat.minFilter = THREE.LinearFilter;
-	  
+
 	  spherePoli[1] = new THREE.Mesh(
-        new THREE.SphereGeometry(920, 200, 200),
+        new THREE.SphereGeometry(800, 200, 200),
         new THREE.MeshBasicMaterial({
-       		map: textureHat,
+       		map: THREE.ImageUtils.loadTexture('assets/hat.png'),
 			transparent: true,
 			opacity: 0.3
         })
@@ -348,12 +357,12 @@ var HalloVR = {
 	  spherePoli[1].rotation.z = 5 * Math.PI/180;
 	  if(!HalloVR.isMobile)
       	sceneGL.add(spherePoli[1]);
-	  
-	  
+
+
 	  spherePoli[2] = new THREE.Mesh(
-        new THREE.SphereGeometry(921, 200, 200),
+        new THREE.SphereGeometry(805, 200, 200),
         new THREE.MeshBasicMaterial({
-       		map: textureHat,
+       		map: THREE.ImageUtils.loadTexture('assets/hat.png'),
 			transparent: true,
 			opacity: 0.2
         })
@@ -362,10 +371,10 @@ var HalloVR = {
 	  spherePoli[2].rotation.z = 10 * Math.PI/180 ;
 	  if(!HalloVR.isMobile)
       	sceneGL.add(spherePoli[2]);
-	  
-	  
+
+
 	  spherePoli[3] = new THREE.Mesh(
-        new THREE.SphereGeometry(922, 200, 200),
+        new THREE.SphereGeometry(810, 200, 200),
         new THREE.MeshBasicMaterial({
        		map: textureHat,
 			transparent: true,
@@ -376,20 +385,20 @@ var HalloVR = {
 	  spherePoli[3].rotation.z = -7 * Math.PI/180 ;
 	  if(!HalloVR.isMobile)
       	sceneGL.add(spherePoli[3]);
-	  
+
 	var wireframeMaterial = new THREE.MeshPhongMaterial( { wireframe: true, wireframeLinewidth: 0.6, opacity: 0.2 } );
-	var fillMaterial = new THREE.MeshPhongMaterial({ color: 'black', transparent: true, opacity: 0.8, shininess: 200, emissive: '#000000', specular: '#ffffff' }); 
+	var fillMaterial = new THREE.MeshPhongMaterial({ color: 'black', transparent: true, opacity: 0.8, shininess: 200, emissive: '#000000', specular: '#ffffff' });
 	var multiMaterial = [ wireframeMaterial, fillMaterial ];
 
 	var Objects3D = [];
-	  
-	  
-	// -- 3d Objects for Menus -- //  
 
-	  
-	/*Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject( 
+
+	// -- 3d Objects for Menus -- //
+
+
+	/*Objects3D[0] = THREE.SceneUtils.createMultiMaterialObject(
 		// radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
-		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ), 
+		new THREE.CylinderGeometry( 0, 85, 125, 4, 1 ),
 		multiMaterial );
 	Objects3D[0].rotation.z = -Math.PI;
 	Objects3D[0].position = HalloVR.items['item-2'].position;
@@ -399,11 +408,11 @@ var HalloVR = {
 	var loader = new THREE.JSONLoader(); // init the loader util
 
 	// init loading
-	  
+
 	  function load_object_for(item_name, obj_name) {
-		  loader.load('assets/' + obj_name + '.js', function (geometry) {	  
+		  loader.load('assets/' + obj_name + '.js', function (geometry) {
 			  // create a mesh with models geometry and material
-			  object = THREE.SceneUtils.createMultiMaterialObject( 
+			  object = THREE.SceneUtils.createMultiMaterialObject(
 				geometry,
 				multiMaterial
 			  );
@@ -413,29 +422,29 @@ var HalloVR = {
 			  object.position.set(HalloVR.items[item_name].position.x,HalloVR.items[item_name].position.y,HalloVR.items[item_name].position.z);
 
 			  object.rotation.y = -Math.PI/5;
-			  
+
 			  Objects3D.push(object);
 
 			  sceneGL.add(object);
 			});
 	  }
-	  
-	  
+
+
 	  load_object_for('item-2', 'object_7');
 	  load_object_for('item-3', 'object_6');
 	  load_object_for('item-4', 'object_5');
-	
+
 
 
 
 	//console.log(HalloVR.items['item-4'].position);
 
-	  
-	  
-	// -- / 3d Objects for Menus  -- //  
-	  
-	  
-	  
+
+
+	// -- / 3d Objects for Menus  -- //
+
+
+
     	/*
       var geometry = new THREE.SphereGeometry(10000, 60, 40 );
 			geometry.applyMatrix( new THREE.Matrix4().makeScale( -1, 1, 1 ) );
