@@ -255,7 +255,22 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    link: function(scope, el, attr) {
 	    	scope.newVrObjectForm = {};
 	    	scope.indexId = 0;
-	   		scope.selectOptions = [
+	   		
+		 	scope.forItem = false;
+			scope.forMenu = false;
+			scope.forFooter = false;
+			
+		 	scope.forLogo = false;
+			scope.forGallery = false;
+			scope.forBlogPostsList = false;
+			scope.forPortfolio = false;
+			scope.forServices = false;
+			scope.forContacts = false;
+			scope.forHTML = false;
+
+			scope.halloVRObj = {};
+
+			scope.selectOptions = [
 				{ id: "item",  type: 'Item' },
 				{ id: "menu",  type: 'Menu' }, 
 				{ id: "footer",  type: 'Footer' }
@@ -275,24 +290,10 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "object_7",  type: 'object_7' }
 			];
 
-			
+			var position = {};
 		 	// scope.selectMenuItems = [ {id:"menu",type:"menu"}];
 		 	// scope.selectFooterItems = [ {id:"footer",type:"footer"}]
 
-		 	scope.forItem = false;
-			scope.forMenu = false;
-			scope.forFooter = false;
-			
-		 	scope.forLogo = false;
-			scope.forGallery = false;
-			scope.forBlogPostsList = false;
-			scope.forPortfolio = false;
-			scope.forServices = false;
-			scope.forContacts = false;
-			scope.forHTML = false;
-
-			scope.halloVRObj = {};
-			scope.halloVRObj.position = {};
 
 			scope.halloObj = function(){
 				scope.halloVRObj = {
@@ -302,6 +303,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"isWhich": false,
 					"draw": false,
 					// "itemName": scope.newVrObjectForm.itemName,
+					"position": position,
 					// "position":{
 					// 	"x": 0,
 					// 	"y": 0,
@@ -372,7 +374,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				angular.element('body').css('cursor','crosshair');
 				$document.on("dblclick", function($event){
 
-					scope.halloVRObj.position = HalloVR.onDocumentMouseDown($event);
+					position = HalloVR.onDocumentMouseDown($event);
+					console.log('scope.halloVRObj.position', scope.halloVRObj.position);
 					scope.$apply(function() {
 						HalloVR.removeFrame();
 						$rootScope.vrweb.form = true;
