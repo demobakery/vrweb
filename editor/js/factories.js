@@ -277,9 +277,9 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 			];
 			scope.selectPlugins =  [
 				{ id: "logo",  type: 'Logo' },
+				{ id: "portfolio",  type: 'Portfolio' }, 
 				{ id: "gallery",  type: 'Gallery' },
 				{ id: "blog-post-list",  type: 'Blog Posts List' }, 
-				{ id: "portfolio",  type: 'Portfolio' }, 
 				{ id: "services",  type: 'Services' }, 
 				{ id: "contacts",  type: 'Contacts' },
 				{ id: "html",  type: 'HTML' }
@@ -291,8 +291,6 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 			];
 
 			var position = {};
-		 	// scope.selectMenuItems = [ {id:"menu",type:"menu"}];
-		 	// scope.selectFooterItems = [ {id:"footer",type:"footer"}]
 
 
 			scope.halloObj = function(){
@@ -302,13 +300,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"vrElement": false,
 					"isWhich": false,
 					"draw": false,
-					// "itemName": scope.newVrObjectForm.itemName,
 					"position": position,
-					// "position":{
-					// 	"x": 0,
-					// 	"y": 0,
-					// 	"z": 0
-					// },
 					"content": [{
 						"isMargined": false,
 						"d": "M500 500 L" + (200 + 5)+ " " + (300 + 5),
@@ -326,6 +318,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					if(scope.newVrObjectForm.services){
 						_.each(scope.newVrObjectForm.services, function(itemservice,key){
 							scope.halloVRObj.itemBind = typeOfFunctions[key](itemservice);
+							
 
 							if(scope.halloVRObj.type == "item" && scope.halloVRObj.service != "logo"){ 
 								HalloVR.load_object_for(scope.halloVRObj.position, itemservice.itemObj3D);
@@ -449,20 +442,41 @@ typeOfFunctions['logo'] = function(logoObj){
 }
 
 typeOfFunctions['portfolio'] = function(htmlObj){
-	var portfolioItem = "<svg>";
-	portfolioItem +="<defs>";
-	portfolioItem +="<mask id='hide_lines'>";
-	portfolioItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
-	portfolioItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	portfolioItem +="</mask>";
-	portfolioItem +="</defs>";
-	portfolioItem +="<g>";
-	portfolioItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(halloVRObj, $event)'/>";
-	portfolioItem +="<g class='mainCircle' fill-rule='evenodd'>";
-	portfolioItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	portfolioItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in halloVRObj.content' strokedashoffset='0'></path-line>";
-	portfolioItem +="</g>";
-	portfolioItem +="</g>";
-	portfolioItem +="</svg>";
-	return portfolioItem;
+	console.log('htmlObj', htmlObj);
+	var pItem = "<svg>";
+	pItem +="<defs>";
+	pItem +="<mask id='hide_lines'>";
+	pItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
+	pItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	pItem +="</mask>";
+	pItem +="</defs>";
+	pItem +="<g>";
+	pItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(halloVRObj, $event)' />";
+	pItem +="<g class='mainCircle' fill-rule='evenodd'>";
+	pItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	pItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in halloVRObj.content' strokedashoffset='0'></path-line>";
+	pItem +="</g>";
+	pItem +="</g>";
+	pItem +="</svg>";
+	return pItem;
+}
+typeOfFunctions['gallery'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['blog-post-list'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['services'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['contacts'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['html'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
 }
