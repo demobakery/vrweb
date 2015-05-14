@@ -219,7 +219,7 @@ var HalloVR = {
 
       // -- Dear Coder, here you can add an Item to your HelloVR world --
 
-    addItem("item-1", 0, 0);
+      addItem("item-1", 0, 0);
 	  addItem("item-2", -5, -50);
 	  addItem("item-3", -5, 35);
 	  addItem("item-4", -5, -100);
