@@ -330,6 +330,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				$rootScope.halloVRItems.push(scope.halloVRObj);
 				console.log('scope.halloVRObj', scope.halloVRObj);
 				var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
+											"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild()\">+</md-button>"+
 			                    			scope.halloVRObj.itemBind + "</div>"))(scope);
 
     			// ng-repeat=\"(key, item) in halloVRObj\" 
@@ -342,7 +343,14 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
                 },500)
 				
 	    	}
-	    	
+	    	scope.createChild = function(){
+	    		//check is content or vrChild and  call functions or contet or child
+	    	}
+
+	    	scope.addVRChild = function(){
+	    	}
+	    	scope.addContent = function(){
+	    	}
 	    	scope.close = function(){
 	    		$rootScope.vrweb.form = false;
 	    		scope.newVrObjectForm = {};
