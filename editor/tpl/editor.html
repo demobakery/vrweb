@@ -1,50 +1,22 @@
 <md-content class="form-container" ng-show='vrweb.form'  layout="column" layout-align="center" ng-init="submitted=false">
-	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + </md-button>
+	<h4>Editor</h4>
+	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + 
+		<md-tooltip>
+        	Close
+      	</md-tooltip>
+  	</md-button>
 	<md-whiteframe layout layout-align="center">
-		<form name="myForm" flex novalidate>
+		<form name="halloVRForm" flex novalidate>
 			<section layout="column" layout-sm="column" >
 				<md-select name="types" ng-change="isItem(newVrObjectForm.type)" placeholder="Select a type" ng-model="newVrObjectForm.type">
 					<md-option ng-value="opt.id" ng-repeat="opt in selectOptions">{{ opt.type }}</md-option>
 				</md-select>
 			</section>
-	       <!--  <div layout>
-		        <md-input-container flex>
-		          <label>Item Name</label>
-		          <input ng-model="newVrObjectForm.itemName" placeholder="Item name">
-		        </md-input-container>
-	        </div>
-			<div layout ng-show="forLogo">
-				<label>Logo</label>
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.logo">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectItems">{{ opt.type }}</md-option>
-				</md-select>
-				<md-divider></md-divider>
-			</div> -->
-			
+	       
 			<section layout="column" layout-sm="column" ng-show="forItem">
 				<md-select name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
 					<md-option ng-value="opt.id" ng-repeat="opt in selectPlugins">{{ opt.type }}</md-option>
 				</md-select>
-				<!-- <div layout>
-					<md-switch ng-init="cb1=false" ng-model="cb1" aria-label="Switch 1">
-				    	Custom HTML: {{ cb1 }}
-				  	</md-switch>
-			  	</div> -->
-			  	<!-- <div layout ng-show="cb1">
-					<md-input-container flex>
-						<label>Text Field</label>
-						<textarea ng-model="newVrObjectForm.htmlBinder" columns="1" md-maxlength="150"></textarea>
-					</md-input-container>
-				</div>
-			  	<div layout ng-hide="cb1">
-					<div layout>
-						<md-input-container>
-							<label>URL of Blog list, Portfolio and etc </label>
-							<input type="url" ng-model="newVrObjectForm.other">
-						</md-input-container>
-						<md-divider></md-divider>
-					</div>
-				</div> -->
 				<section ng-show="forLogo">
 					<md-content>
 						<md-input-container>
@@ -65,10 +37,11 @@
 				</section>
 				<section ng-show="forPortfolio">
 					<md-content>
-						<label>3D Object</label>
+						<label class="label">3D Object</label>
 						<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.services.portfolio.itemObj3D">
 							<md-option ng-value="opt.id" ng-repeat="opt in selectObj3D">{{ opt.type }}</md-option>
 						</md-select>
+						<md-divider></md-divider>
 					</md-content>
 					<md-content>
 						<md-input-container>
@@ -165,7 +138,7 @@
 			</div> -->
 	
 			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
-				<md-button ng-disabled="myForm.$invalid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
 			</section>
 			{{newVrObjectForm.$valid}}
 		</form>

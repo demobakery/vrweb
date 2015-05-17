@@ -87,36 +87,54 @@ app.factory('HalloVR', [function(){
 	        rendererGl.render(sceneGL, camera);
 	        rendererCss.render(sceneCSS, camera);
 		},
-		addItem: function(halloObject){
-			console.log('halloObject', halloObject);
-			var element = document.querySelector('#' + halloObject.id);
+		// addItem: function(halloObject){
+		// 	console.log('halloObject', halloObject);
+		// 	var element = document.querySelector('#' + halloObject.id);
 
-			var phi   = ( 85 - halloObject.lat ) * ( Math.PI/180 );
-			var theta = ( halloObject.lng + 279 ) * ( Math.PI/180 );
-			var radius = 800;
+		// 	var phi   = ( 85 - halloObject.lat ) * ( Math.PI/180 );
+		// 	var theta = ( halloObject.lng + 279 ) * ( Math.PI/180 );
+		// 	var radius = 800;
 			
 
-			var pos_x = -( ( radius ) * Math.sin( phi ) * Math.cos( theta ));
-			var pos_z = ( ( radius ) * Math.sin( phi ) * Math.sin( theta ));
-			var pos_y = ( ( radius ) * Math.cos( phi ) );
+		// 	var pos_x = -( ( radius ) * Math.sin( phi ) * Math.cos( theta ));
+		// 	var pos_z = ( ( radius ) * Math.sin( phi ) * Math.sin( theta ));
+		// 	var pos_y = ( ( radius ) * Math.cos( phi ) );
 
-			var objectCSS   = new THREE.CSS3DObject( element );
+		// 	var objectCSS   = new THREE.CSS3DObject( element );
 
+		// 	window.objectCSS  = objectCSS;
+		// 	objectCSS.position.z = pos_z || 0;
+		// 	objectCSS.position.y = pos_y || 0;
+		// 	objectCSS.position.x = pos_x || 0;
+		// 	objectCSS.lookAt( camera.position );
+			
+		// 	if(!halloObject.parent) {
+		// 		this.items[halloObject.id] = objectCSS;
+		// 		this.items[halloObject.id].type = halloObject.type;
+		// 	} else {
+		// 		this.items[halloObject.parent].childs = [];
+		// 		this.items[halloObject.parent].childs[halloObject.id] = objectCSS;
+		// 		this.items[halloObject.parent].childs[halloObject.id].type = halloObject.type;
+		// 	}
+
+		// 	sceneCSS.add( objectCSS );
+		// },
+		addItem: function(halloObject){
+			// -- Getting the element with this id --
+			element = document.querySelector('#' + halloObject.id);
+			pos_x = halloObject.position.x;
+			pos_y = halloObject.position.y;
+			pos_z = halloObject.position.z;
+
+			// -- Creating CSS Object for our scene --
+			objectCSS   = new THREE.CSS3DObject( element );
 			window.objectCSS  = objectCSS;
 			objectCSS.position.z = pos_z || 0;
 			objectCSS.position.y = pos_y || 0;
 			objectCSS.position.x = pos_x || 0;
 			objectCSS.lookAt( camera.position );
-			
-			if(!halloObject.parent) {
-				this.items[halloObject.id] = objectCSS;
-				this.items[halloObject.id].type = halloObject.type;
-			} else {
-				this.items[halloObject.parent].childs = [];
-				this.items[halloObject.parent].childs[halloObject.id] = objectCSS;
-				this.items[halloObject.parent].childs[halloObject.id].type = halloObject.type;
-			}
-
+			this.items[halloObject.id] = objectCSS;
+			// -- Adding out object to scene --
 			sceneCSS.add( objectCSS );
 		},
 		addFrame: function(){
