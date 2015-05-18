@@ -279,6 +279,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 			scope.forFooter = false;
 			
 		 	scope.forLogo = false;
+			scope.forTopLevel = false;
 			scope.forGallery = false;
 			scope.forBlogPostsList = false;
 			scope.forPortfolio = false;
@@ -290,17 +291,19 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 			scope.selectOptions = [
 				{ id: "item",  type: 'Item' },
+				{ id: "sub-item", type: "Sub-Item"},
 				{ id: "menu",  type: 'Menu' }, 
 				{ id: "footer",  type: 'Footer' }
 			];
 			scope.selectPlugins =  [
 				{ id: "logo",  type: 'Logo' },
-				{ id: "portfolio",  type: 'Portfolio' }, 
-				{ id: "gallery",  type: 'Gallery' },
-				{ id: "blog-post-list",  type: 'Blog Posts List' }, 
-				{ id: "services",  type: 'Services' }, 
-				{ id: "contacts",  type: 'Contacts' },
-				{ id: "html",  type: 'HTML' }
+				{ id: "top-level", type: "ITEM top level" }
+				// { id: "portfolio",  type: 'Portfolio' }, 
+				// { id: "gallery",  type: 'Gallery' },
+				// { id: "blog-post-list",  type: 'Blog Posts List' }, 
+				// { id: "services",  type: 'Services' }, 
+				// { id: "contacts",  type: 'Contacts' },
+				// { id: "html",  type: 'HTML' }
 			];
 			scope.selectObj3D =  [
 				{ id: "object_5",  type: 'object_5' },
@@ -380,6 +383,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 			 	scope.forLogo = false;
 				scope.forGallery = false;
+				scope.forTopLevel = false;
 				scope.forBlogPostsList = false;
 				scope.forPortfolio = false;
 				scope.forServices = false;
@@ -425,6 +429,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	scope.isService = function(services){
 	    		scope.forLogo = false;
 				scope.forGallery = false;
+				scope.forTopLevel = false;
 				scope.forBlogPostsList = false;
 				scope.forPortfolio = false;
 				scope.forServices = false;
@@ -436,6 +441,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    				scope.forLogo = true; break;
 	    			case 'gallery':
 	    				scope.forGallery = true; break;
+	    			case 'top-level':
+	    				scope.forTopLevel = true; break;
 	    			case 'blog-post-list':
 	    				scope.forBlogPostsList = true; break;
 	    			case 'portfolio':
