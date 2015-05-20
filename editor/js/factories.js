@@ -277,6 +277,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 		 	scope.forItem = false;
 			scope.forMenu = false;
 			scope.forFooter = false;
+			scope.subItem = false;
 			
 		 	scope.forLogo = false;
 			scope.forTopLevel = false;
@@ -287,11 +288,11 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 			scope.forContacts = false;
 			scope.forHTML = false;
 
+
 			scope.halloVRObj = {};
 
 			scope.selectOptions = [
 				{ id: "item",  type: 'Item' },
-				{ id: "sub-item", type: "Sub-Item"},
 				{ id: "menu",  type: 'Menu' }, 
 				{ id: "footer",  type: 'Footer' }
 			];
@@ -304,6 +305,14 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				// { id: "services",  type: 'Services' }, 
 				// { id: "contacts",  type: 'Contacts' },
 				// { id: "html",  type: 'HTML' }
+			];
+			scope.selectSubItems =  [
+				{ id: "portfolio",  type: 'Portfolio' }, 
+				{ id: "gallery",  type: 'Gallery' },
+				{ id: "blog-post-list",  type: 'Blog Posts List' }, 
+				{ id: "services",  type: 'Services' }, 
+				{ id: "contacts",  type: 'Contacts' },
+				{ id: "html",  type: 'HTML' }
 			];
 			scope.selectObj3D =  [
 				{ id: "object_5",  type: 'object_5' },
@@ -322,6 +331,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"isWhich": false,
 					"draw": false,
 					"position": position,
+					// "TopLevel": null,
 					"content": [{
 						"isMargined": false,
 						"d": "M500 500 L" + (200 + 5)+ " " + (300 + 5),
@@ -333,21 +343,34 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				}
 
 	    		if(scope.newVrObjectForm.type == "item"){
-					if(scope.newVrObjectForm.service)
-						scope.halloVRObj.service = scope.newVrObjectForm.service;
-					
-					if(scope.newVrObjectForm.services){
-						_.each(scope.newVrObjectForm.services, function(itemservice,key){
-							scope.halloVRObj.itemBind = typeOfFunctions[key](itemservice);
-							
+	    			if(scope.newVrObjectForm.itemTopLevel){
+						
+						scope.halloVRObj.itemBind = topLevelType(scope.newVrObjectForm.itemTopLevel);
+						console.log('itemObj3D', scope.halloVRObj);
+						if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
+							HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+						}
 
-							if(scope.halloVRObj.type == "item" && scope.halloVRObj.service != "logo"){ 
-								HalloVR.load_object_for(scope.halloVRObj.position, itemservice.itemObj3D);
-							}
-						})
+						// if(scope.newVrObjectForm.itemTopLevel.url){ 
+						// 	// HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+						// }
 					}
 				}
+/*
+if(scope.newVrObjectForm.service)
+	scope.halloVRObj.service = scope.newVrObjectForm.service;
 
+if(scope.newVrObjectForm.services){
+	_.each(scope.newVrObjectForm.services, function(itemservice,key){
+		scope.halloVRObj.itemBind = typeOfFunctions[key](itemservice);
+		
+
+		if(scope.halloVRObj.type == "item" && scope.halloVRObj.service != "logo"){ 
+			HalloVR.load_object_for(scope.halloVRObj.position, itemservice.itemObj3D);
+		}
+	})
+}
+*/
 				$rootScope.halloVRItems.push(scope.halloVRObj);
 				console.log('scope.halloVRObj', scope.halloVRObj);
 				var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
@@ -366,6 +389,10 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	}
 	    	scope.createChild = function(){
 	    		//check is content or vrChild and  call functions or contet or child
+	    		//selectSubItems
+	    		$rootScope.vrweb.form = true;
+	    		scope.subItem = true;
+	    		
 	    	}
 
 	    	scope.addVRChild = function(){
@@ -380,6 +407,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    		scope.forItem = false;
 				scope.forMenu = false;
 				scope.forFooter = false;
+				scope.subItem = false;
 
 			 	scope.forLogo = false;
 				scope.forGallery = false;
@@ -476,22 +504,6 @@ typeOfFunctions['logo'] = function(logoObj){
 
 typeOfFunctions['portfolio'] = function(htmlObj){
 	console.log('htmlObj', htmlObj);
-	var pItem = "<svg>";
-	pItem +="<defs>";
-	pItem +="<mask id='hide_lines'>";
-	pItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
-	pItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	pItem +="</mask>";
-	pItem +="</defs>";
-	pItem +="<g>";
-	pItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(halloVRObj, $event)' />";
-	pItem +="<g class='mainCircle' fill-rule='evenodd'>";
-	pItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	pItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in halloVRObj.content' strokedashoffset='0'></path-line>";
-	pItem +="</g>";
-	pItem +="</g>";
-	pItem +="</svg>";
-	return pItem;
 }
 typeOfFunctions['gallery'] = function(htmlObj){
 	console.log('htmlObj', htmlObj);
@@ -513,3 +525,22 @@ typeOfFunctions['html'] = function(htmlObj){
 	console.log('htmlObj', htmlObj);
 
 }
+var topLevelType = function(typeObj){
+		console.log('typeObj', typeObj);
+	var tItem = "<svg>";
+	tItem +="<defs>";
+	tItem +="<mask id='hide_lines'>";
+	tItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
+	tItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	tItem +="</mask>";
+	tItem +="</defs>";
+	tItem +="<g>";
+	tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(halloVRObj, $event)' />";
+	tItem +="<g class='mainCircle' fill-rule='evenodd'>";
+	tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+	tItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in halloVRObj.content' strokedashoffset='0'></path-line>";
+	tItem +="</g>";
+	tItem +="</g>";
+	tItem +="</svg>";
+	return tItem;
+};

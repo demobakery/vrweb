@@ -7,17 +7,17 @@
   	</md-button>
 	<md-whiteframe layout layout-align="center">
 		<form name="halloVRForm" flex novalidate>
-			<section layout="column" layout-sm="column" >
+			<section layout="column" layout-sm="column" ng-show="!subItem">
 				<md-select name="types" ng-change="isItem(newVrObjectForm.type)" placeholder="Select a type" ng-model="newVrObjectForm.type">
 					<md-option ng-value="opt.id" ng-repeat="opt in selectOptions">{{ opt.type }}</md-option>
 				</md-select>
 			</section>
 	       
 			<section layout="column" layout-sm="column" ng-show="forItem">
-				<md-select name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
+				<md-select ng-show="!subItem" name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
 					<md-option ng-value="opt.id" ng-repeat="opt in selectPlugins">{{ opt.type }}</md-option>
 				</md-select>
-				<section ng-show="forLogo">
+				<section ng-show="forLogo && !subItem">
 					<md-content>
 						<md-input-container>
 							<label>Image Url </label>
@@ -35,35 +35,35 @@
 						</md-input-container>
 					</md-content>
 				</section>
-				<section ng-show="forTopLevel">
+				<section ng-show="forTopLevel && !subItem">
 					<md-content>
 						<md-input-container>
 							<label>Name </label>
-							<input ng-model="newVrObjectForm.item.name" type="text" />
+							<input ng-model="newVrObjectForm.itemTopLevel.name" type="text" />
 						</md-input-container>
 					</md-content>
 					<md-content>
-						<md-switch ng-model="cb1" aria-label="Switch 1">
+						<!-- <md-switch ng-model="cb1" aria-label="Switch 1">
 							{{ cb1?"Icon URL":"3D URL" }}
-						</md-switch>
-						<div layout ng-show="cb1">
+						</md-switch> -->
+						<!-- <div layout ng-show="cb1"> -->
 							<label class="label">3D Object</label>
-							<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.services.itemTopLevel.itemObj3D">
+							<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.itemTopLevel.itemObj3D">
 								<md-option ng-value="opt.id" ng-repeat="opt in selectObj3D">{{ opt.type }}</md-option>
 							</md-select>
 							<md-divider></md-divider>
-						</div>
-					  	<div layout ng-hide="cb1">
+						<!-- </div> -->
+					  	<!-- <div layout ng-hide="cb1">
 							<md-input-container>
 								<label>Image Url </label>
-								<input ng-model="newVrObjectForm.services.logo.url" type="url" />
+								<input ng-model="newVrObjectForm.itemTopLevel.url" type="url" />
 							</md-input-container>
-						</div>
+						</div> -->
 					</md-content>
 					<md-content>
 						<md-input-container>
 							<label>Border Size (in px) </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.border" type="number" step = "any" />
+							<input ng-model="newVrObjectForm.itemTopLevel.border" type="number" step = "any" />
 						</md-input-container>
 					</md-content>
 
@@ -71,30 +71,34 @@
 					<md-content  layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Start </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.wireColorStart" type="color" />
+							<input ng-model="newVrObjectForm.itemTopLevel.wireColorStart" type="color" />
 						</md-input-container>
 						<md-input-container flex>
 							<label>End </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.wireColorStop" type="color" />
+							<input ng-model="newVrObjectForm.itemTopLevel.wireColorStop" type="color" />
 						</md-input-container>
 					</md-content>
 					<label>Curveness of wire  </label>
 					<md-content layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Start </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.curvenessOfWire.first" type="number" />
+							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.first" type="number" />
 						</md-input-container>
 						<md-input-container flex>
 							<label>Middle </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.curvenessOfWire.second" type="number" />
+							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.second" type="number" />
 						</md-input-container>
 						<md-input-container flex>
 							<label>End </label>
-							<input ng-model="newVrObjectForm.services.itemTopLevel.curvenessOfWire.last" type="number" />
+							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.last" type="number" />
 						</md-input-container>
 					</md-content>
 				</section>
-				<!-- <section ng-show="forPortfolio">
+			</section>
+
+			<section layout="column" layout-sm="column" ng-show="subItem">
+			child
+				<section ng-show="forPortfolio">
 					<md-content>
 						<label class="label">3D Object</label>
 						<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.services.portfolio.itemObj3D">
@@ -150,7 +154,7 @@
 				</section>
 				<section layout="row" layout-sm="column" ng-show="forHTML">
 					forHTML
-				</section> -->
+				</section>
 			</section>
 			<section layout="column" layout-sm="column" ng-show="forMenu">
 				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.menu">
@@ -199,7 +203,7 @@
 			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
 			</section>
-			{{newVrObjectForm.$valid}}
+			
 		</form>
 	</md-whiteframe>
 </md-content>
