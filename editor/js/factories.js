@@ -87,38 +87,6 @@ app.factory('HalloVR', [function(){
 	        rendererGl.render(sceneGL, camera);
 	        rendererCss.render(sceneCSS, camera);
 		},
-		// addItem: function(halloObject){
-		// 	console.log('halloObject', halloObject);
-		// 	var element = document.querySelector('#' + halloObject.id);
-
-		// 	var phi   = ( 85 - halloObject.lat ) * ( Math.PI/180 );
-		// 	var theta = ( halloObject.lng + 279 ) * ( Math.PI/180 );
-		// 	var radius = 800;
-			
-
-		// 	var pos_x = -( ( radius ) * Math.sin( phi ) * Math.cos( theta ));
-		// 	var pos_z = ( ( radius ) * Math.sin( phi ) * Math.sin( theta ));
-		// 	var pos_y = ( ( radius ) * Math.cos( phi ) );
-
-		// 	var objectCSS   = new THREE.CSS3DObject( element );
-
-		// 	window.objectCSS  = objectCSS;
-		// 	objectCSS.position.z = pos_z || 0;
-		// 	objectCSS.position.y = pos_y || 0;
-		// 	objectCSS.position.x = pos_x || 0;
-		// 	objectCSS.lookAt( camera.position );
-			
-		// 	if(!halloObject.parent) {
-		// 		this.items[halloObject.id] = objectCSS;
-		// 		this.items[halloObject.id].type = halloObject.type;
-		// 	} else {
-		// 		this.items[halloObject.parent].childs = [];
-		// 		this.items[halloObject.parent].childs[halloObject.id] = objectCSS;
-		// 		this.items[halloObject.parent].childs[halloObject.id].type = halloObject.type;
-		// 	}
-
-		// 	sceneCSS.add( objectCSS );
-		// },
 		addItem: function(halloObject){
 			// -- Getting the element with this id --
 			element = document.querySelector('#' + halloObject.id);
@@ -271,24 +239,40 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 		replace: true,
 		templateUrl: '/editor/tpl/editor.html',
 	    link: function(scope, el, attr) {
+	    	scope.settings = function(){
+
+				scope.forItem = false;
+				scope.forMenu = false;
+				scope.forFooter = false;
+				scope.subItem = false;
+
+				scope.forLogo = false;
+				scope.forTopLevel = false;
+				scope.forGallery = false;
+				scope.forBlogPostsList = false;
+				scope.forPortfolio = false;
+				scope.forServices = false;
+				scope.forContacts = false;
+				scope.forHTML = false;
+
+				scope.subPortfolioItem = false;
+				scope.subPlugins = false;
+				scope.subHtml = false;
+
+				scope.itemSubLevelHtml = false;
+				scope.subHtmlIconTitle = false;
+				scope.subHtmlImageTitle = false;
+				scope.subHtmlImageTitleText = false;
+				scope.subVideoTitle = false; 
+				scope.subVideoTitleText = false;
+
+	    	};
+
+
+
 	    	scope.newVrObjectForm = {};
 	    	scope.indexId = 0;
-	   		
-		 	scope.forItem = false;
-			scope.forMenu = false;
-			scope.forFooter = false;
-			scope.subItem = false;
-			
-		 	scope.forLogo = false;
-			scope.forTopLevel = false;
-			scope.forGallery = false;
-			scope.forBlogPostsList = false;
-			scope.forPortfolio = false;
-			scope.forServices = false;
-			scope.forContacts = false;
-			scope.forHTML = false;
-
-
+	   		scope.settings();
 			scope.halloVRObj = {};
 
 			scope.selectOptions = [
@@ -296,17 +280,17 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "menu",  type: 'Menu' }, 
 				{ id: "footer",  type: 'Footer' }
 			];
-			scope.selectPlugins =  [
+			scope.selectService =  [
 				{ id: "logo",  type: 'Logo' },
 				{ id: "top-level", type: "ITEM top level" }
-				// { id: "portfolio",  type: 'Portfolio' }, 
-				// { id: "gallery",  type: 'Gallery' },
-				// { id: "blog-post-list",  type: 'Blog Posts List' }, 
-				// { id: "services",  type: 'Services' }, 
-				// { id: "contacts",  type: 'Contacts' },
-				// { id: "html",  type: 'HTML' }
 			];
-			scope.selectSubItems =  [
+			// { id: "portfolio",  type: 'Portfolio' }, 
+			// { id: "gallery",  type: 'Gallery' },
+			// { id: "blog-post-list",  type: 'Blog Posts List' }, 
+			// { id: "services",  type: 'Services' }, 
+			// { id: "contacts",  type: 'Contacts' },
+			// { id: "html",  type: 'HTML' }
+			scope.subLevelPluginItems =  [
 				{ id: "portfolio",  type: 'Portfolio' }, 
 				{ id: "gallery",  type: 'Gallery' },
 				{ id: "blog-post-list",  type: 'Blog Posts List' }, 
@@ -314,16 +298,43 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "contacts",  type: 'Contacts' },
 				{ id: "html",  type: 'HTML' }
 			];
+			scope.subLevelItems =  [
+				{ id: "html",  type: 'HTML' },
+				{ id: "portfolio-item",  type: 'Portfolio Item' },
+				{ id: "plugins",  type: 'Plugins' }
+			]
 			scope.selectObj3D =  [
 				{ id: "object_5",  type: 'object_5' },
 				{ id: "object_6",  type: 'object_6' },
 				{ id: "object_7",  type: 'object_7' }
 			];
+			scope.itemSubLevelHtmlList = [
+				{ id: "IconTitle",  type: 'Icon + Title' },
+				{ id: "ImageTitle",  type: 'Image + Title' },
+				{ id: "ImageTitleText",  type: 'Image + Title + Text' },
+				{ id: "VideoTitle",  type: 'Video + Title' },
+				{ id: "VideoTitleText",  type: 'Video + Title + Text' }
+			];
 
 			var position = {};
+	    	scope.newElements = function(){
+	    		HalloVR.addFrame();
+				angular.element('body').css('cursor','crosshair');
+				$document.on("dblclick", function($event){
+
+					position = HalloVR.onDocumentMouseDown($event);
+					console.log('scope.halloVRObj.position', scope.halloVRObj.position);
+					scope.$apply(function() {
+						HalloVR.removeFrame();
+						$rootScope.vrweb.form = true;
+						angular.element('body').css('cursor','default');
+						$document.off('dblclick');
+					})
+				})
+	    	};
 
 
-			scope.halloObj = function(){
+			scope.halloObj = function(isChild){
 				scope.halloVRObj = {
 					"id": scope.newVrObjectForm.type + "-" + (scope.indexId++),
 					"type": scope.newVrObjectForm.type,
@@ -342,60 +353,67 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						"vrChildren":[]
 					}]
 				}
+				
+				if(!isChild){
+		    		if(scope.newVrObjectForm.type == "item"){
+		    			if(scope.newVrObjectForm.itemTopLevel){
+							
+							scope.halloVRObj.itemBind = topLevelType(scope.newVrObjectForm.itemTopLevel);
+							
+							if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
+								HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+							}
 
-	    		if(scope.newVrObjectForm.type == "item"){
-	    			if(scope.newVrObjectForm.itemTopLevel){
-						
-						scope.halloVRObj.itemBind = topLevelType(scope.newVrObjectForm.itemTopLevel);
-						
-						if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
-							HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+							// if(scope.newVrObjectForm.itemTopLevel.url){ 
+							// 	// HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+							// }
 						}
-
-						// if(scope.newVrObjectForm.itemTopLevel.url){ 
-						// 	// HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
-						// }
 					}
-				}
-				
-				if(scope.newVrObjectForm.logo){
-					scope.halloVRObj.itemBind = typeOfFunctions["logo"](scope.newVrObjectForm.logo);
-				}
-				
-				if(scope.newVrObjectForm.menu){
-					scope.halloVRObj.itemBind = typeOfFunctions["menu"](scope.newVrObjectForm.menu);
-				}
-				
-/*
-if(scope.newVrObjectForm.service)
-	scope.halloVRObj.service = scope.newVrObjectForm.service;
+					
+					if(scope.newVrObjectForm.logo){
+						scope.halloVRObj.itemBind = typeOfFunctions["logo"](scope.newVrObjectForm.logo);
+					}
+					
+					if(scope.newVrObjectForm.menu){
+						scope.halloVRObj.itemBind = typeOfFunctions["menu"](scope.newVrObjectForm.menu);
+					}
+					
+						/*
+						if(scope.newVrObjectForm.service)
+							scope.halloVRObj.service = scope.newVrObjectForm.service;
 
-if(scope.newVrObjectForm.services){
-	_.each(scope.newVrObjectForm.services, function(itemservice,key){
-		scope.halloVRObj.itemBind = typeOfFunctions[key](itemservice);
-		
+						if(scope.newVrObjectForm.services){
+							_.each(scope.newVrObjectForm.services, function(itemservice,key){
+								scope.halloVRObj.itemBind = typeOfFunctions[key](itemservice);
+								
 
-		if(scope.halloVRObj.type == "item" && scope.halloVRObj.service != "logo"){ 
-			HalloVR.load_object_for(scope.halloVRObj.position, itemservice.itemObj3D);
-		}
-	})
-}
-*/
-		var notLogo = (!scope.newVrObjectForm.logo)?"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild(" + scope.halloVRObj + ")\">+</md-button>":'';
-				$rootScope.halloVRItems.push(scope.halloVRObj);
-				console.log('scope.halloVRObj', scope.halloVRObj);
-				var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
-											notLogo +
-			                    			scope.halloVRObj.itemBind + "</div>"))(scope);
+								if(scope.halloVRObj.type == "item" && scope.halloVRObj.service != "logo"){ 
+									HalloVR.load_object_for(scope.halloVRObj.position, itemservice.itemObj3D);
+								}
+							})
+						}
+						*/
+					var notLogo = (!scope.newVrObjectForm.logo)?"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild('" + scope.halloVRObj.id + "')\">+</md-button>":'';
+					$rootScope.halloVRItems.push(scope.halloVRObj);
+					
+					console.log('scope.halloVRObj', scope.halloVRObj);
+					
+					var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
+												notLogo +
+				                    			scope.halloVRObj.itemBind + "</div>"))(scope);
 
-    			// ng-repeat=\"(key, item) in halloVRObj\" 
-                angular.element('body').append(content);
-                
-                $timeout(function(){
-                	HalloVR.addItem(scope.halloVRObj);
+	    			angular.element('body').append(content);
+	                
+	                $timeout(function(){
+	                	HalloVR.addItem(scope.halloVRObj);
 
-					scope.close();
-                },500)
+						scope.close();
+	                },500)
+	            }
+
+	            if(isChild){
+
+	            }
 				
 	    	}
 	    	scope.createChild = function(parent){
@@ -411,46 +429,18 @@ if(scope.newVrObjectForm.services){
 	    	}
 	    	scope.addContent = function(){
 	    	}
+
 	    	scope.close = function(){
 	    		$rootScope.vrweb.form = false;
 	    		scope.newVrObjectForm = {};
 	    		scope.halloVRObj = {};
 
-	    		scope.forItem = false;
-				scope.forMenu = false;
-				scope.forFooter = false;
-				scope.subItem = false;
-
-			 	scope.forLogo = false;
-				scope.forGallery = false;
-				scope.forTopLevel = false;
-				scope.forBlogPostsList = false;
-				scope.forPortfolio = false;
-				scope.forServices = false;
-				scope.forContacts = false;
-				scope.forHTML = false;
-
+	    		scope.settings();
 	    	}
 
-	    	scope.newElements = function(){
-	    		HalloVR.addFrame();
-				angular.element('body').css('cursor','crosshair');
-				$document.on("dblclick", function($event){
-
-					position = HalloVR.onDocumentMouseDown($event);
-					console.log('scope.halloVRObj.position', scope.halloVRObj.position);
-					scope.$apply(function() {
-						HalloVR.removeFrame();
-						$rootScope.vrweb.form = true;
-						angular.element('body').css('cursor','default');
-						$document.off('dblclick');
-					})
-				})
-	    	};
-
+	    	/** Onchange functions*/
 	    	scope.isItem = function(selectedItem){
 	    		scope.forItem = false;
-	    		scope.forSubItem = false;
 	    		scope.forMenu = false;
 	    		scope.forFooter = false;
 	    		switch(selectedItem){
@@ -462,6 +452,48 @@ if(scope.newVrObjectForm.services){
 	    				scope.forFooter = true; break;
 	    			default: break;
 	    		}
+	    	}
+	    	scope.isSubHTML = function(selectedType){
+				scope.subHtmlIconTitle = false;
+				scope.subHtmlImageTitle = false;
+				scope.subHtmlImageTitleText = false;
+				scope.subVideoTitle = false; 
+				scope.subVideoTitleText = false;
+
+				scope.itemSubLevelHtml = true;
+
+	    		switch(selectedType){
+	    			case 'IconTitle':
+	    				scope.subHtmlIconTitle = true; break;
+	    			case 'ImageTitle':
+	    				scope.subHtmlImageTitle = true; break;
+	    			case 'ImageTitleText':
+	    				scope.subHtmlImageTitleText = true; break;
+	    			case 'VideoTitle':
+	    				scope.subVideoTitle = true; break;
+	    			case 'VideoTitleText':
+	    				scope.subVideoTitleText = true; break;
+	    			default: break;
+	    		}
+	    		
+	    	}
+
+	    	scope.isSubItem = function(selectedSubItem){
+				scope.subPortfolioItem = false;
+				scope.subPlugins = false;
+				scope.subHtml = false;
+				scope.itemSubLevelHtml = false;
+
+	    		switch(selectedSubItem){
+	    			case 'html':
+	    				scope.subHtml = true; break;
+	    			case 'portfolio-item':
+	    				scope.subPortfolioItem = true; break;
+	    			case 'plugins':
+	    				scope.subPlugins = true; break;
+	    			default: break;
+	    		}
+	    		
 	    	}
 
 	    	scope.isService = function(services){

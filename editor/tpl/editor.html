@@ -15,7 +15,7 @@
 	       
 			<section layout="column" layout-sm="column" ng-show="forItem">
 				<md-select ng-show="!subItem" name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectPlugins">{{ opt.type }}</md-option>
+					<md-option ng-value="opt.id" ng-repeat="opt in selectService">{{ opt.type }}</md-option>
 				</md-select>
 				<section ng-show="forLogo && !subItem">
 					<md-content>
@@ -97,13 +97,70 @@
 			</section>
 
 			<section layout="column" layout-sm="column" ng-show="subItem">
-				<label class="label">3D Object</label>
-				<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.itemTopLevel.itemObj3D">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectObj3D">{{ opt.type }}</md-option>
+				<label class="label">Item Type</label>
+				<md-select name="subItem" ng-change="isSubItem(newVrObjectForm.subLevelItem)" placeholder="Select a type" ng-model="newVrObjectForm.subLevelItem">
+					<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
 				</md-select>
-				<md-divider></md-divider>
-				
-				<section ng-show="forPortfolio">
+
+				<section layout="column" layout-sm="column" ng-show="subPlugins">
+					<label class="label">Plugins</label>
+					<md-select name="subItem" placeholder="Select a type" ng-model="newVrObjectForm.itemSubLevel">
+						<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
+					</md-select>
+					<md-divider></md-divider>
+				</section>
+				<section layout="column" lay out-sm="column" ng-show="subPortfolioItem">
+					<label class="label">subPortfolioItem</label>
+					<md-select name="subItem" placeholder="Select a type" ng-model="newVrObjectForm.itemSubLevel">
+						<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
+					</md-select>
+					<md-divider></md-divider>
+				</section>
+				<section layout="column" layout-sm="column" ng-show="subHtml">
+					<label class="label">subHtml</label>
+					<md-select name="subItemHtml" placeholder="Select a type" ng-model="newVrObjectForm.subLevelItemHtml"  ng-change="isSubHTML(newVrObjectForm.subLevelItemHtml)" >
+						<md-option ng-value="opt.id" ng-repeat="opt in itemSubLevelHtmlList">{{ opt.type }}</md-option>
+					</md-select>
+					<md-divider></md-divider>
+					<md-content ng-show="itemSubLevelHtml">
+						<md-input-container>
+							<label>Title</label>
+							<input ng-model="newVrObjectForm.itemSubLevel.html.title" type="text" />
+						</md-input-container>
+					</md-content>
+
+					<section layout="column" layout-sm="column" ng-show="subHtmlIconTitle">
+						<md-content>
+							<md-input-container>
+								<label>URL</label>
+								<input ng-model="newVrObjectForm.itemSubLevel.html.icon" type="url" />
+							</md-input-container>
+						</md-content>
+					</section>
+					<section layout="column" layout-sm="column" ng-show="subHtmlImageTitle || subHtmlImageTitleText">
+						<md-content>
+							<md-input-container>
+								<label>Image</label>
+								<input ng-model="newVrObjectForm.itemSubLevel.html.image" type="url" />
+							</md-input-container>
+						</md-content>
+					</section>
+					<section layout="column" layout-sm="column" ng-show="subHtmlImageTitleText || subVideoTitleText">
+						<md-input-container>
+							<label>Text</label>
+							<textarea ng-model="newVrObjectForm.itemSubLevel.html.text" columns="1" md-maxlength="250"></textarea>
+						</md-input-container>
+					</section>
+					<section layout="column" layout-sm="column" ng-show="subVideoTitle || subVideoTitleText">
+						<md-content>
+							<md-input-container>
+								<label>Video Url</label>
+								<input ng-model="newVrObjectForm.itemSubLevel.html.video" type="url" />
+							</md-input-container>
+						</md-content>
+					</section>
+				</section>
+				<!-- <section ng-show="forPortfolio">
 					<md-content>
 						<label class="label">3D Object</label>
 						<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.services.portfolio.itemObj3D">
@@ -159,7 +216,7 @@
 				</section>
 				<section layout="row" layout-sm="column" ng-show="forHTML">
 					forHTML
-				</section>
+				</section> -->
 			</section>
 
 			<section layout="column" layout-sm="column" ng-show="forMenu">
@@ -211,7 +268,7 @@
 			</section>
 	
 			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
-				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj(subItem)" class="md-raised md-primary md-button">Add</md-button>
 			</section>
 			
 		</form>
