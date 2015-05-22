@@ -330,6 +330,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"vrElement": false,
 					"isWhich": false,
 					"draw": false,
+					"itemBind": "",
 					"position": position,
 					// "TopLevel": null,
 					"content": [{
@@ -346,7 +347,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    			if(scope.newVrObjectForm.itemTopLevel){
 						
 						scope.halloVRObj.itemBind = topLevelType(scope.newVrObjectForm.itemTopLevel);
-						console.log('itemObj3D', scope.halloVRObj);
+						
 						if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
 							HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
 						}
@@ -356,6 +357,15 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						// }
 					}
 				}
+				
+				if(scope.newVrObjectForm.logo){
+					scope.halloVRObj.itemBind = typeOfFunctions["logo"](scope.newVrObjectForm.logo);
+				}
+				
+				if(scope.newVrObjectForm.menu){
+					scope.halloVRObj.itemBind = typeOfFunctions["menu"](scope.newVrObjectForm.menu);
+				}
+				
 /*
 if(scope.newVrObjectForm.service)
 	scope.halloVRObj.service = scope.newVrObjectForm.service;
@@ -371,10 +381,11 @@ if(scope.newVrObjectForm.services){
 	})
 }
 */
+		var notLogo = (!scope.newVrObjectForm.logo)?"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild(" + scope.halloVRObj + ")\">+</md-button>":'';
 				$rootScope.halloVRItems.push(scope.halloVRObj);
 				console.log('scope.halloVRObj', scope.halloVRObj);
 				var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
-											"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild()\">+</md-button>"+
+											notLogo +
 			                    			scope.halloVRObj.itemBind + "</div>"))(scope);
 
     			// ng-repeat=\"(key, item) in halloVRObj\" 
@@ -387,9 +398,10 @@ if(scope.newVrObjectForm.services){
                 },500)
 				
 	    	}
-	    	scope.createChild = function(){
+	    	scope.createChild = function(parent){
 	    		//check is content or vrChild and  call functions or contet or child
 	    		//selectSubItems
+	    		console.log('parent',parent)
 	    		$rootScope.vrweb.form = true;
 	    		scope.subItem = true;
 	    		
@@ -444,8 +456,6 @@ if(scope.newVrObjectForm.services){
 	    		switch(selectedItem){
 	    			case 'item':
 	    				scope.forItem = true; break;
-	    			case 'sub-item':
-	    				scope.forSubItem = true; break;
 	    			case 'menu':
 	    				scope.forMenu = true; break;
 	    			case 'footer':
@@ -502,6 +512,25 @@ typeOfFunctions['logo'] = function(logoObj){
 	return "<div id=\"logo\" style=" + style + "></div>";
 }
 
+typeOfFunctions['menu'] = function(menuObj){
+	
+	var width = (menuObj.width)?menuObj.width:100;
+	var height = (menuObj.height)?menuObj.height:60;
+	console.log('menuObj', menuObj);
+	var style = "\"width: " + width + "px;"+
+		"height: " + height + "px;"+
+		"background-image: url('"+menuObj.url+"');"+
+		"background-repeat: no-repeat;"+
+		"background-size: 100% auto;\"";
+	return "<div id=\"menu\" style=" + style + "></div>";
+
+}
+typeOfFunctions['footer'] = function(footerObj){
+	
+	console.log('sdfsdf', footerObj);
+}
+
+/*SubItem*/
 typeOfFunctions['portfolio'] = function(htmlObj){
 	console.log('htmlObj', htmlObj);
 }

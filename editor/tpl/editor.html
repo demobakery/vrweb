@@ -21,17 +21,17 @@
 					<md-content>
 						<md-input-container>
 							<label>Image Url </label>
-							<input ng-model="newVrObjectForm.services.logo.url" type="url" />
+							<input ng-model="newVrObjectForm.logo.url" type="url" />
 						</md-input-container>
 					</md-content>
 					<md-content layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Width (in px) </label>
-							<input ng-model="newVrObjectForm.services.logo.width" type="number" step = "any" />
+							<input ng-model="newVrObjectForm.logo.width" type="number" step = "any" />
 						</md-input-container>
 						<md-input-container flex>
 							<label>Height (in px) </label>
-							<input ng-model="newVrObjectForm.services.logo.height" type="number" step = "any" />
+							<input ng-model="newVrObjectForm.logo.height" type="number" step = "any" />
 						</md-input-container>
 					</md-content>
 				</section>
@@ -97,7 +97,12 @@
 			</section>
 
 			<section layout="column" layout-sm="column" ng-show="subItem">
-			child
+				<label class="label">3D Object</label>
+				<md-select name="service" placeholder="Select a type" ng-model="newVrObjectForm.itemTopLevel.itemObj3D">
+					<md-option ng-value="opt.id" ng-repeat="opt in selectObj3D">{{ opt.type }}</md-option>
+				</md-select>
+				<md-divider></md-divider>
+				
 				<section ng-show="forPortfolio">
 					<md-content>
 						<label class="label">3D Object</label>
@@ -156,49 +161,54 @@
 					forHTML
 				</section>
 			</section>
+
 			<section layout="column" layout-sm="column" ng-show="forMenu">
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.menu">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectMenuItems">{{ opt.type }}</md-option>
-				</md-select>
-				<md-divider></md-divider>
+				<md-content>
+					<md-content>
+						<md-input-container>
+							<label>Name </label>
+							<input ng-model="newVrObjectForm.menu.name" type="text" />
+						</md-input-container>
+					</md-content>
+					<md-input-container>
+						<label>Image Url </label>
+						<input ng-model="newVrObjectForm.menu.url" type="url" />
+					</md-input-container>
+				</md-content>
 			</section>
 			
-			<div ng-show="forFooter">
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.footer">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectFooterItems">{{ opt.type }}</md-option>
-				</md-select>
-				<div layout>
-					<md-input-container flex>
-						<label>Text Field</label>
-						<textarea ng-model="newVrObjectForm.htmlBinder" columns="1" md-maxlength="150"></textarea>
-					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Facebook </label>
-						<input type="url" ng-model="newVrObjectForm.footer.socials.facebook">
-					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Twitter </label>
-						<input type="url" ng-model="newVrObjectForm.footer.socials.twitter">
-					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Instagram </label>
-						<input type="url" ng-model="newVrObjectForm.footer.socials.instagram">
-					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Google+ </label>
-						<input type="url" ng-model="newVrObjectForm.footer.socials.gplus">
-					</md-input-container>
-				</div>
-				
-			</div>
+			<section layout="column" layout-sm="column" ng-show="forFooter">
+				<md-input-container flex>
+					<label>Name</label>
+					<input type="url" ng-model="newVrObjectForm.footer.name">
+				</md-input-container>
+				<md-input-container flex>
+					<label>Name</label>
+					<textarea ng-model="newVrObjectForm.footer.texarea" columns="1" md-maxlength="150"></textarea>
+				</md-input-container>
+				<md-input-container>
+					<label>Facebook </label>
+					<input type="url" ng-model="newVrObjectForm.footer.socials.facebook">
+				</md-input-container>
+			
+			
+				<md-input-container>
+					<label>Twitter </label>
+					<input type="url" ng-model="newVrObjectForm.footer.socials.twitter">
+				</md-input-container>
+			
+			
+				<md-input-container>
+					<label>Instagram </label>
+					<input type="url" ng-model="newVrObjectForm.footer.socials.instagram">
+				</md-input-container>
+			
+			
+				<md-input-container>
+					<label>Google+ </label>
+					<input type="url" ng-model="newVrObjectForm.footer.socials.gplus">
+				</md-input-container>
+			</section>
 	
 			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
