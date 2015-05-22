@@ -104,8 +104,8 @@
 
 				<section layout="column" layout-sm="column" ng-show="subPlugins">
 					<label class="label">Plugins</label>
-					<md-select name="subItem" placeholder="Select a type" ng-model="newVrObjectForm.itemSubLevel">
-						<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
+					<md-select name="plugins" placeholder="Select a plugin" ng-model="newVrObjectForm.itemSubLevel.plugins">
+						<md-option ng-value="opt.id" ng-repeat="opt in itemSubLevelPluginsList">{{ opt.type }}</md-option>
 					</md-select>
 					<md-divider></md-divider>
 				</section>

@@ -284,20 +284,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "logo",  type: 'Logo' },
 				{ id: "top-level", type: "ITEM top level" }
 			];
-			// { id: "portfolio",  type: 'Portfolio' }, 
-			// { id: "gallery",  type: 'Gallery' },
-			// { id: "blog-post-list",  type: 'Blog Posts List' }, 
-			// { id: "services",  type: 'Services' }, 
-			// { id: "contacts",  type: 'Contacts' },
-			// { id: "html",  type: 'HTML' }
-			scope.subLevelPluginItems =  [
-				{ id: "portfolio",  type: 'Portfolio' }, 
-				{ id: "gallery",  type: 'Gallery' },
-				{ id: "blog-post-list",  type: 'Blog Posts List' }, 
-				{ id: "services",  type: 'Services' }, 
-				{ id: "contacts",  type: 'Contacts' },
-				{ id: "html",  type: 'HTML' }
-			];
+
+			
 			scope.subLevelItems =  [
 				{ id: "html",  type: 'HTML' },
 				{ id: "portfolio-item",  type: 'Portfolio Item' },
@@ -315,7 +303,15 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				{ id: "VideoTitle",  type: 'Video + Title' },
 				{ id: "VideoTitleText",  type: 'Video + Title + Text' }
 			];
-
+			scope.itemSubLevelPluginsList = [
+				{ id: "portfolio",  type: 'Portfolio', dir: '/plugins' },
+				{ id: "gallery",  type: 'Gallery', dir: '/gallery' },
+				{ id: "blog-post-list",  type: 'Blog Posts List', dir: '/blog-post-list'  }, 
+				{ id: "services",  type: 'Services', dir: '/services'  }, 
+				{ id: "contacts",  type: 'Contacts', dir: '/contacts'  },
+				{ id: "html",  type: 'HTML', dir: '/html'  }
+			];
+			
 			var position = {};
 	    	scope.newElements = function(){
 	    		HalloVR.addFrame();
@@ -353,7 +349,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						"vrChildren":[]
 					}]
 				}
-				
+
 				if(!isChild){
 		    		if(scope.newVrObjectForm.type == "item"){
 		    			if(scope.newVrObjectForm.itemTopLevel){
@@ -412,7 +408,12 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	            }
 
 	            if(isChild){
-
+	            	if(scope.newVrObjectForm.itemSubLevel.html){
+	            		
+	            	}
+	            	if(scope.newVrObjectForm.itemSubLevel.plugins){
+	            		
+	            	}
 	            }
 				
 	    	}
