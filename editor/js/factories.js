@@ -333,6 +333,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						</div>
 						<span svg-line child="{{vrChild}}" parent="{{ content }}" parentIndex="{{ k }}"></span>
 					</div>*/
+					
+				scope.close();
 			};
 
 			var position = {};
@@ -470,7 +472,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	            	}
 	            }
 
-	            scope.close();
+
 				
 	    	}
 	    	scope.createChild = function(parent){
