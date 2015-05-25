@@ -69,3 +69,21 @@ function makeNode(name, element, settings) {
 	
 	return node;
 }
+
+
+app.factory('generator', [function(){
+
+    var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    
+	return {
+		ID: function() {
+            var id = '';
+            for (var i = 1; i <= 15; i++) {
+                var randPos = Math.floor(Math.random() * charSet.length);
+                id += charSet[randPos];
+            }
+            return id;
+        }
+	}
+
+}])
