@@ -1,9 +1,7 @@
 <md-content class="form-container" ng-show='vrweb.form'  layout="column" layout-align="center" ng-init="submitted=false">
 	<h4>Editor</h4>
 	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + 
-		<md-tooltip>
-        	Close
-      	</md-tooltip>
+		<md-tooltip>Close</md-tooltip>
   	</md-button>
 	<md-whiteframe layout layout-align="center">
 		<form name="halloVRForm" flex novalidate>
@@ -63,7 +61,7 @@
 					<md-content>
 						<md-input-container>
 							<label>Border Size (in px) </label>
-							<input ng-model="newVrObjectForm.itemTopLevel.border" type="number" step = "any" />
+							<input ng-model="newVrObjectForm.pathSettings.border" type="number" step = "any" />
 						</md-input-container>
 					</md-content>
 
@@ -71,15 +69,15 @@
 					<md-content  layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Start </label>
-							<input ng-model="newVrObjectForm.itemTopLevel.wireColorStart" type="color" />
+							<input ng-model="newVrObjectForm.pathSettings.wireColorStart" type="color" />
 						</md-input-container>
 						<md-input-container flex>
 							<label>End </label>
-							<input ng-model="newVrObjectForm.itemTopLevel.wireColorStop" type="color" />
+							<input ng-model="newVrObjectForm.pathSettings.wireColorStop" type="color" />
 						</md-input-container>
 					</md-content>
 					<label>Curveness of wire  </label>
-					<md-content layout="row" layout-sm="column">
+					<!-- <md-content layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Start </label>
 							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.first" type="number" />
@@ -92,7 +90,7 @@
 							<label>End </label>
 							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.last" type="number" />
 						</md-input-container>
-					</md-content>
+					</md-content> -->
 				</section>
 			</section>
 

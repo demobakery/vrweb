@@ -702,8 +702,8 @@ typeOfFunctions['html'] = function(htmlObj){
 
 var topLevelType = function(typeObj){
 	
-	typeObj.itemTopLevel.wireColorStart = typeObj.itemTopLevel.wireColorStart? typeObj.itemTopLevel.wireColorStart : "#ffff00";
-	typeObj.itemTopLevel.wireColorStop = typeObj.itemTopLevel.wireColorStop? typeObj.itemTopLevel.wireColorStop : "#ff0000";
+	typeObj.pathSettings.wireColorStart = typeObj.pathSettings.wireColorStart? typeObj.pathSettings.wireColorStart : "#ffff00";
+	typeObj.pathSettings.wireColorStop = typeObj.pathSettings.wireColorStop? typeObj.pathSettings.wireColorStop : "#ff0000";
 	
 	var tItem = "<svg>";
 		tItem +="<defs>";
@@ -712,15 +712,15 @@ var topLevelType = function(typeObj){
 		tItem +="<path transform='translate(500,480)' fill='#"+typeObj.id +"-"+ typeObj.itemTopLevel.name +"'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
 		tItem +="</mask>";
 		tItem += "<linearGradient id=\""+typeObj.id +"-"+ typeObj.itemTopLevel.name+"\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"0%\">";
-		tItem += "<stop offset=\"0%\" style=\"stop-color:"+ typeObj.itemTopLevel.wireColorStart +";stop-opacity:1\" />";
-		tItem += "<stop offset=\"100%\" style=\"stop-color:"+ typeObj.itemTopLevel.wireColorStop +";stop-opacity:1\" />";
+		tItem += "<stop offset=\"0%\" style=\"stop-color:"+ typeObj.pathSettings.wireColorStart +";stop-opacity:1\" />";
+		tItem += "<stop offset=\"100%\" style=\"stop-color:"+ typeObj.pathSettings.wireColorStop +";stop-opacity:1\" />";
 		tItem += "</linearGradient>";
 		tItem +="</defs>";
 		tItem +="<g>";
 		tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild("+JSON.stringify(typeObj)+", $event)' />";
 		tItem +="<g class='mainCircle' fill-rule='evenodd'>";
 		tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-		tItem +="<path-line d='"+ typeObj.content[0].d +"' stroke='white' mask='url(#hide_lines)' strokedashoffset='0'></path-line>";
+		// tItem +="<path-line d='"+ typeObj.content[0].d +"' stroke='white' mask='url(#hide_lines)' strokedashoffset='0'></path-line>";
 		tItem +="</g>";
 		tItem +="</g>";
 		tItem +="</svg>";
