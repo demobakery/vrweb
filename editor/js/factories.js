@@ -112,7 +112,7 @@ app.factory('HalloVR', [function(){
 			sceneGL.remove(sphereFrame);
 		},
 		load_object_for: function(position, obj_name) {
-			console.log('eeee', position);
+			
 		  loader.load('assets/' + obj_name + '.js', function (geometry) {	  
 			  // create a mesh with models geometry and material
 			  object = THREE.SceneUtils.createMultiMaterialObject( 
@@ -202,8 +202,8 @@ app.factory('HalloVR', [function(){
 				color = parameters[i][0];
 				size  = parameters[i][1];
 
-				materials[i] = new THREE.ParticleBasicMaterial( { size: size, opacity: 0.3 , color: 0xffffff , map: THREE.ImageUtils.loadTexture( 'assets/particle.png' ), transparent: true } );
-				particles = new THREE.ParticleSystem( geometry, materials[i] );
+				materials[i] = new THREE.PointCloudMaterial( { size: size, opacity: 0.3 , color: 0xffffff , map: THREE.ImageUtils.loadTexture( 'assets/particle.png' ), transparent: true } );
+				particles = new THREE.PointCloud( geometry, materials[i] );
 
 				particles.rotation.x = Math.random() * 0.5 ;
 				particles.rotation.y = Math.random() * 0.5 ;
@@ -315,19 +315,31 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				var iframe = document.createElement('iframe');
 				iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(data.html);
 				
-				html += "<div class=\"vrContent\" ng-style=\"{ 'left': "+200+", 'top': "+ 100 +" }\" x=\""+200+"\" y=\""+ 100 +"\" ng-class=\"{'margined': "+false+"}\" ng-show=\""+false+"\">";
-				html += "<div class=\"icon\"></div><div class=\"content\" ng-class=\"{ 'margined': "+true+" }\" >";
-				html +=	"<div class=\"fordata\">";
-				// html += iframe;
-				html += "</div></div></div>";
+				html += "<div class=\"vrContent\" ng-style=\"{ 'left': "+ data.x +", 'top': "+ data.y +" }\" x=\""+data.x+"\" y=\""+ data.y +"\" ng-class=\"{'margined': "+data.isMargined+"}\" ng-show=\""+data.isMargined+"\">";
+				html += "<div class=\"icon\"></div><div class=\"content\" ng-class=\"{ 'margined': "+data.isMargined+" }\" >";
+				if(data.isVrChild){
+					html += "<div class=\"vrChild\" ng-style=\"{ 'left': data.vrChild.x, 'top': data.vrChild.y }\" x=\""+data.vrChild.x+"\" y=\""+data.vrChild.y+"\" >";
+					html += "<div class=\"icon\"></div>";
+					html += "<div class=\"content\" ng-class=\"{ 'margined': !data.isMargined }\">";
+
+					html +="</div>";
+					html += "<span svg-line child=\"{{vrChild}}\" parent=\"{{ content }}\" parentIndex=\"{{ k }}\"></span>";
+					html +="</div>";
+				}
+
+				html += "</div></div>";
 				html = $compile(angular.element(html))(scope);
-				 console.log('document.querySelector("#" + data.parentId)', document.querySelector("#" + data.parentId), data.parentId, html);
+				 
 				 angular.element(document.querySelector("#" + data.parentId)).append(html);
-				 angular.element(document.querySelector("#" + data.parentId + " .fordata")).append(iframe);
+				 if(!data.isVrChild){
+				 	angular.element(document.querySelector("#" + data.parentId + " .content")).append(iframe);
+				 }else{
+				 	angular.element(document.querySelector("#" + data.parentId + " .vrChild .content")).append(iframe);
+				 }
 
 					/*<div class="vrChild" ng-if="content.vrChildren.length" ng-style="{ 'left': vrChild.x, 'top': vrChild.y }" x="{{vrChild.x}}" y="{{vrChild.y}}" ng-repeat="vrChild in content.vrChildren">
 						<div class="icon"></div>
-						<!-- <div class="content" ng-class="{ 'margined': !content.isMargined }" ng-bind-html="vrChild.htmlBinder"></div> -->
+						
 						<div class="content" ng-class="{ 'margined': !content.isMargined }">
 							<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
 						</div>
@@ -344,7 +356,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				$document.on("dblclick", function($event){
 
 					position = HalloVR.onDocumentMouseDown($event);
-					console.log('scope.halloVRObj.position', scope.halloVRObj.position);
+
 					scope.$apply(function() {
 						HalloVR.removeFrame();
 						$rootScope.vrweb.form = true;
@@ -354,17 +366,45 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				})
 	    	};
 
+		scope.vrContentvsvrChild = function(obj, event){
+			console.log('vrContentvsvrChild',obj);
+			var svg = event.currentTarget.closest("svg");
+			var svgElement = event.currentTarget.closest(".vrElement");
+			var mainCircle = angular.element(svg.querySelectorAll('.mainCircle path'));
+			var path = angular.element(svgElement.querySelectorAll("[class^='svg_'] path"));
+
+			angular.element(document.querySelectorAll('path')).attr('class','');
+
+    		_.each($rootScope.halloVRItems, function(halloVRObj){
+    			if(halloVRObj.id != obj.id){
+	    			_.each(halloVRObj.content, function(content){    		
+	    				content.isMargined = false;
+
+	    				mainCircle.attr('class','');
+						path.attr('class','');
+	    			})
+	    		}
+    		})
+    		
+			_.each(obj.content, function(content){																																																								
+				content.isMargined = content.isMargined?false:true;
+
+				if(content.isMargined){
+					mainCircle.attr('class','draw');
+					path.attr('class','draw');
+				}
+			});
+
+			HalloVR.hatsDown = true;				
+    	};  
 
 			scope.halloObj = function(isChild){
 				scope.halloVRObj = {
 					"id": scope.newVrObjectForm.type + "-" + (scope.indexId++),
-					"type": scope.newVrObjectForm.type,
-					"vrElement": false,
 					"isWhich": false,
 					"draw": false,
 					"itemBind": "",
 					"position": position,
-					// "TopLevel": null,
 					"content": [{
 						"isMargined": false,
 						"d": "M500 500 L" + (200 + 5)+ " " + (300 + 5),
@@ -375,11 +415,15 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					}]
 				}
 
+				angular.extend(scope.halloVRObj, scope.newVrObjectForm);
+
+				console.log('scope.halloVRObj', scope.halloVRObj);
 				if(!isChild){
 		    		if(scope.newVrObjectForm.type == "item"){
 		    			if(scope.newVrObjectForm.itemTopLevel){
 							
-							scope.halloVRObj.itemBind = topLevelType(scope.newVrObjectForm.itemTopLevel);
+							// scope.halloVRObj.itemBind = $compile(angular.element(topLevelType(scope.halloVRObj)))(scope);
+							scope.halloVRObj.itemBind = topLevelType(scope.halloVRObj);
 							
 							if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
 								HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
@@ -419,7 +463,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					
 					console.log('scope.halloVRObj', scope.halloVRObj);
 					
-					var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" ng-class=\"{ 'vrElement':halloVRObj.vrElement}\">" +
+					var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + "\" type=\"" + scope.halloVRObj.type + "\" class=\"vrElement\">" +
 												notLogo +
 				                    			scope.halloVRObj.itemBind + "</div>"))(scope);
 
@@ -433,14 +477,19 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	            }
 
 	            if(isChild){
-	            	
+	            	angular.extend(scope.halloVRObj.content[0].vrChildren[0], {"id": scope.newVrObjectForm.parent + "-"+ "child" });
+
+
 	            	if(scope.newVrObjectForm.subLevelItemHtml){
 
 	            		var html = "";
 	            		var htmlVideo = "";
 	            		var obj  = {
 	            			html: "",
-	            			parentId: scope.newVrObjectForm.parent
+	            			parentId: scope.newVrObjectForm.parent,
+	            			isVrChild: !scope.newVrObjectForm.isVrChild,
+	            			x: scope.newVrObjectForm.vrContentPosition.x,
+	            			y: scope.newVrObjectForm.vrContentPosition.y
 	            		}
 	            		if(scope.newVrObjectForm.itemSubLevel.html.title){
 	            			html += "<h2>"+ scope.newVrObjectForm.itemSubLevel.html.title +"</h2>";
@@ -467,8 +516,11 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	            		}
 
 	            	}
+
+					console.log('scope.halloVRObj', scope.halloVRObj);
+	            	
 	            	if(scope.newVrObjectForm.itemSubLevelPlugins){
-	            		
+
 	            	}
 	            }
 
@@ -649,21 +701,28 @@ typeOfFunctions['html'] = function(htmlObj){
 }
 
 var topLevelType = function(typeObj){
-		console.log('typeObj', typeObj);
+	
+	typeObj.itemTopLevel.wireColorStart = typeObj.itemTopLevel.wireColorStart? typeObj.itemTopLevel.wireColorStart : "#ffff00";
+	typeObj.itemTopLevel.wireColorStop = typeObj.itemTopLevel.wireColorStop? typeObj.itemTopLevel.wireColorStop : "#ff0000";
+	
 	var tItem = "<svg>";
-	tItem +="<defs>";
-	tItem +="<mask id='hide_lines'>";
-	tItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
-	tItem +="<path transform='translate(500,480)' fill='rgba(0,0,0,1)'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	tItem +="</mask>";
-	tItem +="</defs>";
-	tItem +="<g>";
-	tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(halloVRObj, $event)' />";
-	tItem +="<g class='mainCircle' fill-rule='evenodd'>";
-	tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
-	tItem +="<path-line d='{{ content.d }}' stroke='white' mask='url(#hide_lines)' ng-repeat='(k, content) in halloVRObj.content' strokedashoffset='0'></path-line>";
-	tItem +="</g>";
-	tItem +="</g>";
-	tItem +="</svg>";
+		tItem +="<defs>";
+		tItem +="<mask id='hide_lines'>";
+		tItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
+		tItem +="<path transform='translate(500,480)' fill='#"+typeObj.id +"-"+ typeObj.itemTopLevel.name +"'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		tItem +="</mask>";
+		tItem += "<linearGradient id=\""+typeObj.id +"-"+ typeObj.itemTopLevel.name+"\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"0%\">";
+		tItem += "<stop offset=\"0%\" style=\"stop-color:"+ typeObj.itemTopLevel.wireColorStart +";stop-opacity:1\" />";
+		tItem += "<stop offset=\"100%\" style=\"stop-color:"+ typeObj.itemTopLevel.wireColorStop +";stop-opacity:1\" />";
+		tItem += "</linearGradient>";
+		tItem +="</defs>";
+		tItem +="<g>";
+		tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild("+JSON.stringify(typeObj)+", $event)' />";
+		tItem +="<g class='mainCircle' fill-rule='evenodd'>";
+		tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		tItem +="<path-line d='"+ typeObj.content[0].d +"' stroke='white' mask='url(#hide_lines)' strokedashoffset='0'></path-line>";
+		tItem +="</g>";
+		tItem +="</g>";
+		tItem +="</svg>";
 	return tItem;
 };

@@ -98,26 +98,26 @@
 
 			<section layout="column" layout-sm="column" ng-show="subItem">
 				<md-content>
-					<md-switch ng-model="cb1" aria-label="Add Content / child">
-						{{ cb1?"Add Cotnent":"Child Level" }}
-					</md-switch>
-				  	<div layout ng-show="!cb1">
-						<md-input-container>
-							<label>X </label>
-							<input ng-model="newVrObjectForm.child.x" type="number" step = "any"  />
-						</md-input-container>
-						<md-input-container>
-							<label>Y </label>
-							<input ng-model="newVrObjectForm.child.y" type="number" step = "any"  />
-						</md-input-container>
-					</div>
+					<md-input-container>
+						<label>X </label>
+						<input ng-model="newVrObjectForm.vrContentPosition.x" type="number" step = "any"  />
+					</md-input-container>
+					<md-input-container>
+						<label>Y </label>
+						<input ng-model="newVrObjectForm.vrContentPosition.y" type="number" step = "any"  />
+					</md-input-container>
 				</md-content>
-				<md-content layout ng-show="cb1">
-					<label class="label">Item Type</label>
-					<md-select name="subItem" ng-change="isSubItem(newVrObjectForm.subLevelItem)" placeholder="Select a type" ng-model="newVrObjectForm.subLevelItem">
-						<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
-					</md-select>
 
+				<md-switch ng-model="newVrObjectForm.isVrChild" aria-label="Add Content / child">
+					{{ newVrObjectForm.isVrChild?"Add Cotnent":"Child Level" }}
+				</md-switch>
+				<md-content layout ng-show="newVrObjectForm.isVrChild">
+					<section layout="column" layout-sm="column" >
+						<label class="label">Item Type</label>
+						<md-select name="subItem" ng-change="isSubItem(newVrObjectForm.subLevelItem)" placeholder="Select a type" ng-model="newVrObjectForm.subLevelItem">
+							<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
+						</md-select>
+					</section>
 					<section layout="column" layout-sm="column" ng-show="subPlugins">
 						<label class="label">Plugins</label>
 						<md-select name="plugins" placeholder="Select a plugin" ng-model="newVrObjectForm.itemSubLevelPlugins">
@@ -125,7 +125,7 @@
 						</md-select>
 						<md-divider></md-divider>
 					</section>
-					<section layout="column" lay out-sm="column" ng-show="subPortfolioItem">
+					<section layout="column" out-sm="column" ng-show="subPortfolioItem">
 						<label class="label">subPortfolioItem</label>
 						<md-select name="subItem" placeholder="Select a type" ng-model="newVrObjectForm.itemSubLevel">
 							<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
