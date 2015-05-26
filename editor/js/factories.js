@@ -320,9 +320,9 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						}
 					}) 
 					
-					htmlBind += "<div class=\"vrContent\" id=\"{{content.id}}\" ng-style=\"{ 'left': content.x, 'top': content.y }\" x=\"{{content.x}}\" y=\"{{content.y}}\" ng-repeat=\"(k, content) in item.content\" ng-class=\"{'margined': content.isMargined }\" ng-show=\"content.isMargined\">";
+					htmlBind += "<div class=\"vrContent\" id=\""+ data.id +"\" ng-style=\"{ 'left':"+ data.x +", 'top':"+ data.y +"}\" x=\""+data.x +"\" y=\""+data.y +"\" ng-repeat=\"(k, content) in item.content\" ng-show=\""+ data.isMargined +"\" >";
 					htmlBind += "<div class=\"icon\"></div>";
-					htmlBind += "<div class=\"content\" ng-class=\"{ 'margined':!content.isMargined}\" >";
+					htmlBind += "<div class=\"content margined\" >";
 					
 					htmlBind += data.htmlBind;
 					
@@ -344,7 +344,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 
 
-					// $scope.$apply(function() {
+					// scope.$apply(function() {
 					//   angular.element(document.querySelector("#" + data.parentId)).append(htmlBind);
 					// });
 					
@@ -372,10 +372,14 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 			scope.vrContentvsvrChild = function(objId, event){
 				console.log('vrContentvsvrChild',objId);
+				var item = event.currentTarget.closest("#"+ objId);
 				var svg = event.currentTarget.closest("svg");
 				var svgElement = event.currentTarget.closest(".vrElement");
 				var mainCircle = angular.element(svg.querySelectorAll('.mainCircle path'));
 				var path = angular.element(svgElement.querySelectorAll("[class^='svg_'] path"));
+
+				var vrContent = angular.element(item.querySelectorAll('.vrContent'));
+				var contentObj = angular.element(item.querySelectorAll('.content'));
 
 				angular.element(document.querySelectorAll('path')).attr('class','');
 
@@ -386,17 +390,25 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 		    				mainCircle.attr('class','');
 							path.attr('class','');
-		    			})
+							vrContent.attr('class', 'vrContent');
+							contentObj.attr('class', 'content');
+		    			});
 		    		}else{
 						_.each(halloVRObj.content, function(content){																																																								
 							content.isMargined = content.isMargined?false:true;
+							var vrcontent = content.isMargined?'vrContent':'vrContent margined';
+							var contentobj = content.isMargined?'content margined':'content';
+
+							vrContent.attr('class', vrcontent);
+							contentObj.attr('class', contentobj);
 
 							if(content.isMargined){
+
 								mainCircle.attr('class','draw');
 								path.attr('class','draw');
 							}
 						});
-				    		}
+		    		}
 	    		})
 	    		
 				HalloVR.hatsDown = true;				
