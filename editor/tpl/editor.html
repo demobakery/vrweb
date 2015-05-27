@@ -77,7 +77,7 @@
 						</md-input-container>
 					</md-content>
 					<label>Curveness of wire  </label>
-					<!-- <md-content layout="row" layout-sm="column">
+					<md-content layout="row" layout-sm="column">
 						<md-input-container flex>
 							<label>Start </label>
 							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.first" type="number" />
@@ -90,7 +90,7 @@
 							<label>End </label>
 							<input ng-model="newVrObjectForm.itemTopLevel.curvenessOfWire.last" type="number" />
 						</md-input-container>
-					</md-content> -->
+					</md-content>
 				</section>
 			</section>
 
@@ -120,13 +120,6 @@
 						<label class="label">Plugins</label>
 						<md-select name="plugins" placeholder="Select a plugin" ng-model="newVrObjectForm.itemSubLevelPlugins">
 							<md-option ng-value="opt.id" ng-repeat="opt in itemSubLevelPluginsList">{{ opt.type }}</md-option>
-						</md-select>
-						<md-divider></md-divider>
-					</section>
-					<section layout="column" out-sm="column" ng-show="subPortfolioItem">
-						<label class="label">subPortfolioItem</label>
-						<md-select name="subItem" placeholder="Select a type" ng-model="newVrObjectForm.itemSubLevel">
-							<md-option ng-value="opt.id" ng-repeat="opt in subLevelItems">{{ opt.type }}</md-option>
 						</md-select>
 						<md-divider></md-divider>
 					</section>
