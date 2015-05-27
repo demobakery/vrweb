@@ -1,0 +1,32 @@
+{
+	"basic": {
+		"categoryName": "basic",
+		"plugins": {
+			"textImage": {
+				"name": "Text with image",
+				"form": "textImage/form.html",
+				"view": "textImage/view.html"
+			},
+			"textVideo": {
+				"name": "Text with image",
+				"form": "textImage/form.html",
+				"view": "textImage/view.html"
+			},
+		}
+	},
+	"advanced": {
+		"categoryName": "advanced",
+		"plugins": {
+			"portfolio": {
+				"name": "Text with image",
+				"form": "textImage/form.html",
+				"view": "textImage/view.html"
+			},
+			"slider": {
+				"name": "Text with image",
+				"form": "textImage/form.html",
+				"view": "textImage/view.html"
+			},
+		}
+	}
+}
