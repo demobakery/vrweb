@@ -530,8 +530,42 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	}
 	    	scope.createChild = function(parent){	
 	    		scope.newVrObjectForm.parent = parent;
-	    		$rootScope.vrweb.form = true;
-	    		scope.subItem = true;	    		
+	    								scope.subItem = true;
+	    		HalloVR.addFrame();
+				angular.element('body').css('cursor','crosshair');
+				 angular.element('#'+scope.newVrObjectForm.parent).css( 'border', '2px solid rgba(194, 0, 0, 0.41)');
+				// angular.element('#'+scope.newVrObjectForm.parent).on("mousemove", function($event){
+
+				//    var parentOffset = $(this).offset();
+				//    var relX = $event.originalEvent.offsetX;
+				//    var relY = $event.originalEvent.offsetY;
+
+				//    console.log(relX, relY)
+				//    return;
+
+				// 	position = HalloVR.onDocumentMouseDown($event);
+
+				// 	scope.$apply(function() {
+				// 		HalloVR.removeFrame();
+				// 		$rootScope.vrweb.form = true;
+				// 		angular.element('body').css('cursor','default');
+							    		
+				// 		$document.off('dblclick');
+				// 	})
+				// })  
+
+				$document.on("dblclick", function($event){
+
+					position = HalloVR.onDocumentMouseDown($event);
+
+					scope.$apply(function() {
+						HalloVR.removeFrame();
+						$rootScope.vrweb.form = true;
+						angular.element('body').css('cursor','default');
+							    		
+						$document.off('dblclick');
+					})
+				})   		
 	    	}
 
 	    	scope.addVRChild = function(){
@@ -703,7 +737,7 @@ var topLevelType = function(typeObj){
 		tItem +="<defs>";
 		tItem +="<mask id='hide_lines'>";
 		tItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
-		tItem +="<path transform='translate(500,480)' fill='#"+typeObj.id +"-"+ typeObj.itemTopLevel.name +"'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		tItem +="<path transform='translate(500,480)' stroke='(#"+typeObj.id +"-"+ typeObj.itemTopLevel.name +")'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
 		tItem +="</mask>";
 		tItem += "<linearGradient id=\""+typeObj.id +"-"+ typeObj.itemTopLevel.name+"\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"0%\">";
 		tItem += "<stop offset=\"0%\" style=\"stop-color:"+ typeObj.pathSettings.wireColorStart +";stop-opacity:1\" />";
@@ -713,7 +747,7 @@ var topLevelType = function(typeObj){
 		tItem +="<g>";
 		tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(\""+typeObj.id+"\", $event)' />"; //JSON.stringify(typeObj)
 		tItem +="<g class='mainCircle' fill-rule='evenodd'>";
-		tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' stroke='url(#"+typeObj.id +"-"+ typeObj.itemTopLevel.name+")' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
 		// tItem +="<path-line d='"+ typeObj.content[0].d +"' stroke='white' mask='url(#hide_lines)' strokedashoffset='0'></path-line>";
 		tItem +="</g>";
 		tItem +="</g>";
