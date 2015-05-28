@@ -239,44 +239,57 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 		replace: true,
 		templateUrl: '/editor/tpl/editor.html',
 	    link: function(scope, el, attr) {
+	    	scope.settings = function(){
+
+				scope.forItem = false;
+				scope.forMenu = false;
+				scope.forFooter = false;
+				scope.subItem = false;
+
+				scope.forLogo = false;
+				scope.forTopLevel = false;
+				scope.forGallery = false;
+				scope.forBlogPostsList = false;
+				scope.forPortfolio = false;
+				scope.forServices = false;
+				scope.forContacts = false;
+				scope.forHTML = false;
+
+				scope.subPlugins = false;
+				scope.subHtml = false;
+
+				scope.itemSubLevelHtml = false;
+				scope.subHtmlIconTitle = false;
+				scope.subHtmlImageTitle = false;
+				scope.subHtmlImageTitleText = false;
+				scope.subVideoTitle = false; 
+				scope.subVideoTitleText = false;
+
+	    	};
+
 	    	scope.newVrObjectForm = {};
 	    	scope.indexId = 0;
-	   		
+	   		scope.settings();
 			scope.halloVRObj = {};
 
-			scope.selectOptions = {
-				"item-obj": { 
-					type: '3D Object', 
-					form: "plugins/item-obj/form.html",
-				 	view: "plugins/item-obj/view.html" 
-				},
-				"image": {  
-					type: 'Image' ,
-					form: "plugins/image/form.html",
-				 	view: "plugins/image/view.html" 
-				}
-			};
-
-			scope.selectOptionView = function(type){
-				if(type)
-					return scope.selectOptions[type].form;
-			}
-			
-			scope.selectObj3D =  {};
-			$http.get('/objects.json').then(function(response) {				
-				if(response.status == 200){
-					scope.selectObj3D = response.data;
-				}
-			});
-
-
-			// scope.pluginItems =  {};
-			// $http.get('/plugins.json').then(function(response) {				
-			// 	if(response.status == 200){
-			// 		scope.pluginItems = response.data;
-			// 	}
-			// });
-			
+			scope.selectOptions = [
+				{ id: "item",  type: 'Item' },
+				{ id: "menu",  type: 'Menu' }, 
+				{ id: "footer",  type: 'Footer' }
+			];
+			scope.selectService =  [
+				{ id: "logo",  type: 'Logo' },
+				{ id: "top-level", type: "ITEM top level" }
+			];
+			scope.subLevelItems =  [
+				{ id: "html",  type: 'HTML' },
+				{ id: "plugins",  type: 'Plugins' }
+			]
+			scope.selectObj3D =  [
+				{ id: "object_5",  type: 'object_5' },
+				{ id: "object_6",  type: 'object_6' },
+				{ id: "object_7",  type: 'object_7' }
+			];
 			scope.itemSubLevelHtmlList = [
 				{ id: "IconTitle",  type: 'Icon + Title' },
 				{ id: "ImageTitle",  type: 'Image + Title' },
@@ -344,11 +357,10 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				$document.on("dblclick", function($event){
 
 					position = HalloVR.onDocumentMouseDown($event);
-					console.log('position', position);
+
 					scope.$apply(function() {
 						HalloVR.removeFrame();
 						$rootScope.vrweb.form = true;
-
 						angular.element('body').css('cursor','default');
 						$document.off('dblclick');
 					})
@@ -416,111 +428,110 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					"isMargined": false,
 				}
 			}
-			scope.halloObj = function(){
+			scope.halloObj = function(isChild){
 				scope.reset();
+				if(!isChild){
+					
+					scope.halloVRObj.id = scope.newVrObjectForm.type + "-" + (scope.indexId++);
+					scope.halloVRObj.position = position;
 
-				scope.halloVRObj.id = scope.newVrObjectForm.type + "-" + (scope.indexId++);
-				scope.halloVRObj.position = position;
+					angular.extend(scope.halloVRObj, scope.newVrObjectForm);
 
-				angular.extend(scope.halloVRObj, scope.newVrObjectForm);
-
-				if(scope.newVrObjectForm.itemObj){ 
-					HalloVR.load_object_for(position,  scope.newVrObjectForm.itemObj);
-				}
-
-				$timeout(function(){
-					HalloVR.addItem(scope.halloVRObj);
-					scope.close();
-				},10)
-
-				// 			scope.halloVRObj.template = topLevelType(scope.halloVRObj);
+		    		if(scope.newVrObjectForm.type == "item"){
+		    			if(scope.newVrObjectForm.itemTopLevel){
 							
-				// 			if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
-				// 				HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
-				// 			}
-				// 		}
-				// 	}
+							scope.halloVRObj.template = topLevelType(scope.halloVRObj);
+							
+							if(scope.newVrObjectForm.itemTopLevel.itemObj3D){ 
+								HalloVR.load_object_for(scope.halloVRObj.position,  scope.newVrObjectForm.itemTopLevel.itemObj3D);
+							}
+						}
+					}
 					
-				// 	if(scope.newVrObjectForm.logo){
-				// 		scope.halloVRObj.template = typeOfFunctions["logo"](scope.newVrObjectForm.logo);
-				// 	}
+					if(scope.newVrObjectForm.logo){
+						scope.halloVRObj.template = typeOfFunctions["logo"](scope.newVrObjectForm.logo);
+					}
 					
-				// 	if(scope.newVrObjectForm.menu){
-				// 		scope.halloVRObj.template = typeOfFunctions["menu"](scope.newVrObjectForm.menu);
-				// 	}
+					if(scope.newVrObjectForm.menu){
+						scope.halloVRObj.template = typeOfFunctions["menu"](scope.newVrObjectForm.menu);
+					}
 					
-				// 	var notLogo = (!scope.newVrObjectForm.logo)?"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild('" + scope.halloVRObj.id + "')\">+</md-button>":'';
+					var notLogo = (!scope.newVrObjectForm.logo)?"<md-button class=\"md-fab md-mini create-child\" aria-label=\"FAB\" ng-click=\"createChild('" + scope.halloVRObj.id + "')\">+</md-button>":'';
 					
-				// 	$rootScope.halloVRItems.push(scope.halloVRObj);
+					$rootScope.halloVRItems.push(scope.halloVRObj);
 					
-				// 	var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + 
-				// 								"\" type=\"" + scope.halloVRObj.type + "\" class=\"vrElement\" ng-repeat=\"(key, item) in halloVRItems\">" +
-				// 								notLogo +
-				//                     			scope.halloVRObj.template + "</div>"))(scope);
+					var content = $compile(angular.element("<div id=\"" + scope.halloVRObj.id + 
+												"\" type=\"" + scope.halloVRObj.type + "\" class=\"vrElement\" ng-repeat=\"(key, item) in halloVRItems\">" +
+												notLogo +
+				                    			scope.halloVRObj.template + "</div>"))(scope);
 
-	   //  			angular.element('body').append(content);
+	    			angular.element('body').append(content);
 	                
-	   //              $timeout(function(){
-	   //              	HalloVR.addItem(scope.halloVRObj);
+	                $timeout(function(){
+	                	HalloVR.addItem(scope.halloVRObj);
 
-				// 		scope.close();
-	   //              },10)
-	   //          }
+						scope.close();
+	                },10)
+	            }
 
-	   //          if(isChild){
+	            if(isChild){
 
-				// 	angular.extend(scope.content, {
-				// 		id: scope.newVrObjectForm.parent + "-content-"+ generator.ID(),
-    //         			htmlBind: "",
-    //         			parentId: scope.newVrObjectForm.parent,
-    //         			isContent: scope.newVrObjectForm.isVrChild,
-    //         			x: scope.newVrObjectForm.vrContentPosition.x,
-    //         			y: scope.newVrObjectForm.vrContentPosition.y,
-    //         			d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
-    //         		});
-	   //          	if(scope.newVrObjectForm.subLevelItemHtml){
+					angular.extend(scope.content, {
+						id: scope.newVrObjectForm.parent + "-content-"+ generator.ID(),
+            			htmlBind: "",
+            			parentId: scope.newVrObjectForm.parent,
+            			isContent: scope.newVrObjectForm.isVrChild,
+            			x: scope.newVrObjectForm.vrContentPosition.x,
+            			y: scope.newVrObjectForm.vrContentPosition.y,
+            			d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
+            		});
+	            	if(scope.newVrObjectForm.subLevelItemHtml){
 	            		
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.title){
-	   //          			scope.content.htmlBind += "<h2>"+ scope.newVrObjectForm.itemSubLevel.html.title +"</h2>";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.icon){
-	   //          			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.icon +"' />";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.image){
-	   //          			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.image +"' />";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.text){
-	   //          			scope.content.htmlBind += "<div>" + scope.newVrObjectForm.itemSubLevel.html.text + "</div>";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.video){
-				// 			// var iframe = document.createElement('iframe');
-				// 			// 	iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(scope.newVrObjectForm.itemSubLevel.html.video);
-				// 			var iframe = "<iframe width=\"560\" height=\"315\" src=\""+encodeURI(scope.newVrObjectForm.itemSubLevel.html.video)+"&amp;output=embed\" frameborder=\"0\" allowfullscreen=\"\" class=\"\"></iframe>";
-		  //           			scope.content.htmlBind += iframe;
-	   //          		}
+	            		if(scope.newVrObjectForm.itemSubLevel.html.title){
+	            			scope.content.htmlBind += "<h2>"+ scope.newVrObjectForm.itemSubLevel.html.title +"</h2>";
+	            		}
+	            		if(scope.newVrObjectForm.itemSubLevel.html.icon){
+	            			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.icon +"' />";
+	            		}
+	            		if(scope.newVrObjectForm.itemSubLevel.html.image){
+	            			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.image +"' />";
+	            		}
+	            		if(scope.newVrObjectForm.itemSubLevel.html.text){
+	            			scope.content.htmlBind += "<div>" + scope.newVrObjectForm.itemSubLevel.html.text + "</div>";
+	            		}
+	            		if(scope.newVrObjectForm.itemSubLevel.html.video){
+							// var iframe = document.createElement('iframe');
+							// 	iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(scope.newVrObjectForm.itemSubLevel.html.video);
+							var iframe = "<iframe width=\"560\" height=\"315\" src=\""+encodeURI(scope.newVrObjectForm.itemSubLevel.html.video)+"&amp;output=embed\" frameborder=\"0\" allowfullscreen=\"\" class=\"\"></iframe>";
+		            			scope.content.htmlBind += iframe;
+	            		}
 	            		
-	   //          	}
+	            	}
 
-    //         		scope.createHTMLBIND(scope.content);
+            		scope.createHTMLBIND(scope.content);
 	            	
-	   //          	// if(scope.newVrObjectForm.isVrChild){
-	   //          	// 	angular.extend(scope.vrChild, {
-	   //          	// 		htmlBind: "",
-	   //          	// 		parentId: scope.newVrObjectForm.parent,
-	   //          	// 		isContent: scope.newVrObjectForm.isVrChild,
-	   //          	// 		x: scope.newVrObjectForm.vrContentPosition.x,
-	   //          	// 		y: scope.newVrObjectForm.vrContentPosition.y,
-	   //          	// 		d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
-	   //          	// 	});
+	            	// if(scope.newVrObjectForm.isVrChild){
+	            	// 	angular.extend(scope.vrChild, {
+	            	// 		htmlBind: "",
+	            	// 		parentId: scope.newVrObjectForm.parent,
+	            	// 		isContent: scope.newVrObjectForm.isVrChild,
+	            	// 		x: scope.newVrObjectForm.vrContentPosition.x,
+	            	// 		y: scope.newVrObjectForm.vrContentPosition.y,
+	            	// 		d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
+	            	// 	});
 
-	   //          	// }
+	            	// }
 	            	
-	   //          }
+	            	if(scope.newVrObjectForm.itemSubLevelPlugins){
+
+	            	}
+	            }
 				
 	    	}
 	    	scope.createChild = function(parent){	
 	    		scope.newVrObjectForm.parent = parent;
-	    		$rootScope.vrweb.form = true;    		
+	    		$rootScope.vrweb.form = true;
+	    		scope.subItem = true;	    		
 	    	}
 
 	    	scope.addVRChild = function(){
@@ -531,8 +542,181 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    		scope.newVrObjectForm = {};
 	    		scope.halloVRObj = {};
 
+	    		scope.settings();
 	    	}
+
+	    	/** Onchange functions*/
+	    	scope.isItem = function(selectedItem){
+	    		scope.forItem = false;
+	    		scope.forMenu = false;
+	    		scope.forFooter = false;
+
+	    		switch(selectedItem){
+	    			case 'item':
+	    				scope.forItem = true; break;
+	    			case 'menu':
+	    				scope.forMenu = true; break;
+	    			case 'footer':
+	    				scope.forFooter = true; break;
+	    			default: break;
+	    		}
+	    	}
+	    	scope.isSubHTML = function(selectedType){
+				scope.subHtmlIconTitle = false;
+				scope.subHtmlImageTitle = false;
+				scope.subHtmlImageTitleText = false;
+				scope.subVideoTitle = false; 
+				scope.subVideoTitleText = false;
+
+				scope.itemSubLevelHtml = true;
+
+	    		switch(selectedType){
+	    			case 'IconTitle':
+	    				scope.subHtmlIconTitle = true; break;
+	    			case 'ImageTitle':
+	    				scope.subHtmlImageTitle = true; break;
+	    			case 'ImageTitleText':
+	    				scope.subHtmlImageTitleText = true; break;
+	    			case 'VideoTitle':
+	    				scope.subVideoTitle = true; break;
+	    			case 'VideoTitleText':
+	    				scope.subVideoTitleText = true; break;
+	    			default: break;
+	    		}
+	    		
+	    	}
+
+	    	scope.isSubItem = function(selectedSubItem){
+				scope.subPlugins = false;
+				scope.subHtml = false;
+				scope.itemSubLevelHtml = false;
+
+	    		switch(selectedSubItem){
+	    			case 'html':
+	    				scope.subHtml = true; break;
+	    			case 'plugins':
+	    				scope.subPlugins = true; break;
+	    			default: break;
+	    		}
+	    		
+	    	}
+
+	    	scope.isService = function(services){
+	    		scope.forLogo = false;
+				scope.forGallery = false;
+				scope.forTopLevel = false;
+				scope.forBlogPostsList = false;
+				scope.forPortfolio = false;
+				scope.forServices = false;
+				scope.forContacts = false;
+				scope.forHTML = false;
+				
+	    		switch(services){
+	    			case 'logo':
+	    				scope.forLogo = true; break;
+	    			case 'gallery':
+	    				scope.forGallery = true; break;
+	    			case 'top-level':
+	    				scope.forTopLevel = true; break;
+	    			case 'blog-post-list':
+	    				scope.forBlogPostsList = true; break;
+	    			case 'portfolio':
+	    				scope.forPortfolio = true; break;
+	    			case 'services':
+	    				scope.forServices = true; break;
+	    			case 'contacts':
+	    				scope.forContacts = true; break;
+	    			case 'html':
+	    				scope.forHTML = true; break;
+	    			default: break;
+	    		}
+		 	
+	    	}
+
+
 
 	    }
 	};
 }]);
+
+var typeOfFunctions = {};
+typeOfFunctions['logo'] = function(logoObj){
+	var width = (logoObj.width)?logoObj.width:200;
+	var height = (logoObj.height)?logoObj.height:200;
+	var style = "\"width: " + width + "px;"+
+		"height: " + height + "px;"+
+		"background-image: url('"+logoObj.url+"');"+
+		"background-repeat: no-repeat;"+
+		"background-size: 100% auto;\"";
+	return "<div id=\"logo\" style=" + style + "></div>";
+}
+
+typeOfFunctions['menu'] = function(menuObj){
+	
+	var width = (menuObj.width)?menuObj.width:100;
+	var height = (menuObj.height)?menuObj.height:60;
+	console.log('menuObj', menuObj);
+	var style = "\"width: " + width + "px;"+
+		"height: " + height + "px;"+
+		"background-image: url('"+menuObj.url+"');"+
+		"background-repeat: no-repeat;"+
+		"background-size: 100% auto;\"";
+	return "<div id=\"menu\" style=" + style + "></div>";
+
+}
+typeOfFunctions['footer'] = function(footerObj){
+	
+	console.log('sdfsdf', footerObj);
+}
+
+/*SubItem*/
+typeOfFunctions['portfolio'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+}
+typeOfFunctions['gallery'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['blog-post-list'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['services'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['contacts'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+typeOfFunctions['html'] = function(htmlObj){
+	console.log('htmlObj', htmlObj);
+
+}
+
+var topLevelType = function(typeObj){
+	
+	typeObj.pathSettings.wireColorStart = typeObj.pathSettings.wireColorStart? typeObj.pathSettings.wireColorStart : "#000000";
+	typeObj.pathSettings.wireColorStop = typeObj.pathSettings.wireColorStop? typeObj.pathSettings.wireColorStop : "#ffffff";
+	
+	var tItem = "<svg class='svg_"+typeObj.id+"'>";
+		tItem +="<defs>";
+		tItem +="<mask id='hide_lines'>";
+		tItem +="<circle cx='0' cy='0' r='10000' fill='white' />";
+		tItem +="<path transform='translate(500,480)' fill='#"+typeObj.id +"-"+ typeObj.itemTopLevel.name +"'  d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		tItem +="</mask>";
+		tItem += "<linearGradient id=\""+typeObj.id +"-"+ typeObj.itemTopLevel.name+"\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"0%\">";
+		tItem += "<stop offset=\"0%\" style=\"stop-color:"+ typeObj.pathSettings.wireColorStart +";stop-opacity:1\" />";
+		tItem += "<stop offset=\"100%\" style=\"stop-color:"+ typeObj.pathSettings.wireColorStop +";stop-opacity:1\" />";
+		tItem += "</linearGradient>";
+		tItem +="</defs>";
+		tItem +="<g>";
+		tItem +="<circle cx='500' cy='480' r='100' class='itemOpener'  ng-click='vrContentvsvrChild(\""+typeObj.id+"\", $event)' />"; //JSON.stringify(typeObj)
+		tItem +="<g class='mainCircle' fill-rule='evenodd'>";
+		tItem +="<path transform='translate(500,480)' stroke-dashoffset='0' id='mainBodyCircle' stroke-dashoffset='1000' d='M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0'  />";
+		// tItem +="<path-line d='"+ typeObj.content[0].d +"' stroke='white' mask='url(#hide_lines)' strokedashoffset='0'></path-line>";
+		tItem +="</g>";
+		tItem +="</g>";
+		tItem +="</svg>";
+	return tItem;
+};
