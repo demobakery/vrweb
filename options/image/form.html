@@ -1,0 +1,16 @@
+<md-content>
+	<md-input-container>
+		<label>Image Url </label>
+		<input ng-model="newVrObjectForm.image.url" type="url" />
+	</md-input-container>
+</md-content>
+<md-content layout="row" layout-sm="column">
+	<md-input-container flex>
+		<label>Width (in px) </label>
+		<input ng-model="newVrObjectForm.image.width" type="number" step = "any" />
+	</md-input-container>
+	<md-input-container flex>
+		<label>Height (in px) </label>
+		<input ng-model="newVrObjectForm.image.height" type="number" step = "any" />
+	</md-input-container>
+</md-content>

@@ -1,0 +1,12 @@
+{
+	"item-obj": { 
+		"type": "3D Object", 
+		"form": "options/item-obj/form.html",
+	 	"view": "options/item-obj/view.html" 
+	},
+	"image": {  
+		"type": "Image" ,
+		"form": "options/image/form.html",
+	 	"view": "options/image/view.html" 
+	}
+}

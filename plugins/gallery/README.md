@@ -1,1 +1,1 @@
-gallery
+plugins
