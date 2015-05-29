@@ -1,4 +1,4 @@
-<div ng-repeat="(key, item) in halloVRItem" id='{{ item.id }}' type="{{ item.type }}" on-last-repeat class='vrElement' >
+<div ng-repeat="(key, item) in halloVRItem" id='{{ item.id }}' type="{{ item.type }}" class='vrElement' >
 	<md-button class="md-fab md-mini create-child" aria-label="FAB" ng-click="createChild(item.id)">+</md-button>
 	<div ng-if="item.parentImage.template" ng-include src="item.parentImage.template"></div>
 	<svg ng-if="!item.parentImage.template">

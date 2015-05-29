@@ -100,6 +100,11 @@ app.factory('HalloVR', [function(){
 			objectCSS.position.y = pos_y || 0;
 			objectCSS.position.x = pos_x || 0;
 			objectCSS.lookAt( camera.position );
+
+
+			$('body > #' + halloObject.id).remove();
+
+
 			
 			// -- Adding out object to scene --
 			sceneCSS.add( objectCSS );
