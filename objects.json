@@ -1,0 +1,14 @@
+{
+	"object_5":{
+		"name": "Object N1",
+		"source": "/objects3D/object_5.js"
+	},
+	"object_6": {
+		"name": "Object N2",
+		"source": "/objects3D/object_6.js"
+	},
+	"object_7": {
+		"name": "Object N3",
+		"source": "/objects3D/object_7.js"
+	}
+}

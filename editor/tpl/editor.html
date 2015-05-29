@@ -1,173 +1,57 @@
 <md-content class="form-container" ng-show='vrweb.form'  layout="column" layout-align="center" ng-init="submitted=false">
-	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + </md-button>
+	<h4>Editor</h4>
+	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + 
+		<md-tooltip>Close</md-tooltip>
+  	</md-button>
 	<md-whiteframe layout layout-align="center">
-		<form name="myForm" flex novalidate>
-			<section layout="column" layout-sm="column" >
-				<md-select name="types" ng-change="isItem(newVrObjectForm.type)" placeholder="Select a type" ng-model="newVrObjectForm.type">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectOptions">{{ opt.type }}</md-option>
+		<form name="halloVRForm" flex novalidate>
+			<section layout="column" layout-sm="column">
+				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.type">
+					<md-option ng-value="key" ng-repeat="(key,opt) in selectOptions">{{ opt.type }}</md-option>
 				</md-select>
 			</section>
-	       <!--  <div layout>
-		        <md-input-container flex>
-		          <label>Item Name</label>
-		          <input ng-model="newVrObjectForm.itemName" placeholder="Item name">
-		        </md-input-container>
-	        </div>
-			<div layout ng-show="forLogo">
-				<label>Logo</label>
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.logo">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectItems">{{ opt.type }}</md-option>
-				</md-select>
-				<md-divider></md-divider>
-			</div> -->
 			
-			<section layout="column" layout-sm="column" ng-show="forItem">
-				<md-select name="service" ng-change="isService(newVrObjectForm.service)" placeholder="Select a type" ng-model="newVrObjectForm.service">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectPlugins">{{ opt.type }}</md-option>
-				</md-select>
-				<!-- <div layout>
-					<md-switch ng-init="cb1=false" ng-model="cb1" aria-label="Switch 1">
-				    	Custom HTML: {{ cb1 }}
-				  	</md-switch>
-			  	</div> -->
-			  	<!-- <div layout ng-show="cb1">
-					<md-input-container flex>
-						<label>Text Field</label>
-						<textarea ng-model="newVrObjectForm.htmlBinder" columns="1" md-maxlength="150"></textarea>
+			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)">
+				<!-- append form -->
+			</section>
+			<section layout="column" layout-sm="column">
+				<md-content>
+					<md-input-container>
+						<label>Border Size (in px) </label>
+						<input ng-model="newVrObjectForm.pathSettings.border" type="number" step = "any" />
 					</md-input-container>
-				</div>
-			  	<div layout ng-hide="cb1">
-					<div layout>
-						<md-input-container>
-							<label>URL of Blog list, Portfolio and etc </label>
-							<input type="url" ng-model="newVrObjectForm.other">
-						</md-input-container>
-						<md-divider></md-divider>
-					</div>
-				</div> -->
-				<section ng-show="forLogo">
-					<md-content>
-						<md-input-container>
-							<label>Image Url </label>
-							<input ng-model="newVrObjectForm.services.logo.url" type="url" />
-						</md-input-container>
-					</md-content>
-					<md-content layout="row" layout-sm="column">
-						<md-input-container flex>
-							<label>Width (in px) </label>
-							<input ng-model="newVrObjectForm.services.logo.width" type="number" step = "any" />
-						</md-input-container>
-						<md-input-container flex>
-							<label>Height (in px) </label>
-							<input ng-model="newVrObjectForm.services.logo.height" type="number" step = "any" />
-						</md-input-container>
-					</md-content>
-				</section>
-				<section ng-show="forPortfolio">
-					<md-content>
-						<md-input-container>
-							<label>Image Url </label>
-							<input ng-model="newVrObjectForm.services.portfolio.url" type="url" />
-						</md-input-container>
-					</md-content>
-					<md-content>
-						<md-input-container>
-							<label>Border Size (in px) </label>
-							<input ng-model="newVrObjectForm.services.portfolio.border" type="number" step = "any" />
-						</md-input-container>
-					</md-content>
+				</md-content>
 
-					<label>Wire colors </label>
-					<md-content  layout="row" layout-sm="column">
-						<md-input-container flex>
-							<label>Start </label>
-							<input ng-model="newVrObjectForm.services.portfolio.wireColorStart" type="color" />
-						</md-input-container>
-						<md-input-container flex>
-							<label>End </label>
-							<input ng-model="newVrObjectForm.services.portfolio.wireColorStop" type="color" />
-						</md-input-container>
-					</md-content>
-					<label>Curveness of wire  </label>
-					<md-content layout="row" layout-sm="column">
-						<md-input-container flex>
-							<label>Start </label>
-							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.first" type="number" />
-						</md-input-container>
-						<md-input-container flex>
-							<label>Middle </label>
-							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.second" type="number" />
-						</md-input-container>
-						<md-input-container flex>
-							<label>End </label>
-							<input ng-model="newVrObjectForm.services.portfolio.curvenessOfWire.last" type="number" />
-						</md-input-container>
-					</md-content>
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forGallery">
-					forGallery
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forBlogPostsList">
-					forBlogPostsList
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forServices">
-					forServices
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forContacts">
-					forContacts
-				</section>
-				<section layout="row" layout-sm="column" ng-show="forHTML">
-					forHTML
-				</section>
-			</section>
-			<section layout="column" layout-sm="column" ng-show="forMenu">
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.menu">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectMenuItems">{{ opt.type }}</md-option>
-				</md-select>
-				<md-divider></md-divider>
-			</section>
-			<!-- 
-			<div ng-show="forFooter">
-				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.menu">
-					<md-option ng-value="opt.id" ng-repeat="opt in selectFooterItems">{{ opt.type }}</md-option>
-				</md-select>
-				<div layout>
+				<label>Wire colors </label>
+				<md-content  layout="row" layout-sm="column">
 					<md-input-container flex>
-						<label>Text Field</label>
-						<textarea ng-model="newVrObjectForm.htmlBinder" columns="1" md-maxlength="150"></textarea>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStart" type="color" />
 					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Facebook </label>
-						<input type="url" ng-model="newVrObjectForm.socials.facebook">
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStop" type="color" />
 					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Twitter </label>
-						<input type="url" ng-model="newVrObjectForm.socials.twitter">
+				</md-content>
+				<label>Curveness of wire  </label>
+				<md-content layout="row" layout-sm="column">
+					<md-input-container flex>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.first" type="number" />
 					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Instagram </label>
-						<input type="url" ng-model="newVrObjectForm.socials.instagram">
+					<md-input-container flex>
+						<label>Middle </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.second" type="number" />
 					</md-input-container>
-				</div>
-				<div layout>
-					<md-input-container>
-						<label>Google+ </label>
-						<input type="url" ng-model="newVrObjectForm.socials.gplus">
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.last" type="number" />
 					</md-input-container>
-				</div>
-				
-			</div> -->
-	
-			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
-				<md-button ng-disabled="myForm.$invalid" ng-click="submitted=true && halloObj(newVrObjectForm)" class="md-raised md-primary md-button">Add</md-button>
 			</section>
-			{{newVrObjectForm.$valid}}
+
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj()" class="md-raised md-primary md-button">Add</md-button>
+			</section>			
 		</form>
 	</md-whiteframe>
 </md-content>
