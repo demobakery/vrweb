@@ -14,6 +14,40 @@
 			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)">
 				<!-- append form -->
 			</section>
+			<section layout="column" layout-sm="column">
+				<md-content>
+					<md-input-container>
+						<label>Border Size (in px) </label>
+						<input ng-model="newVrObjectForm.pathSettings.border" type="number" step = "any" />
+					</md-input-container>
+				</md-content>
+
+				<label>Wire colors </label>
+				<md-content  layout="row" layout-sm="column">
+					<md-input-container flex>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStart" type="color" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStop" type="color" />
+					</md-input-container>
+				</md-content>
+				<label>Curveness of wire  </label>
+				<md-content layout="row" layout-sm="column">
+					<md-input-container flex>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.first" type="number" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Middle </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.second" type="number" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.last" type="number" />
+					</md-input-container>
+			</section>
 
 			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj()" class="md-raised md-primary md-button">Add</md-button>

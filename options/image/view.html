@@ -1,9 +1,9 @@
 <style>
 .vr-logo{
 	
-	width: {{ form.width }};
-	height: {{ form.height }};
-	background-image: url('{{ form.image }}');
+	width: {{ item.parentImage.width }};
+	height: {{ item.parentImage.height }};
+	background-image: url('{{ item.parentImage.url }}');
 	background-repeat: no-repeat;
 	background-size: 100% auto;
 }

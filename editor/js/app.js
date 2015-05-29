@@ -62,7 +62,7 @@ app.run(['$rootScope','$window','$cookieStore', function ($rootScope,  $window, 
         }
     }
     $rootScope.halloVRItems = [];
-
+    
     $rootScope.$on('$routeChangeSuccess', function (event, data) {
         /* set controller class on view container */
         if (data && data.$$route && data.$$route.controller) $rootScope.vrweb.controller = data.$$route.controller;

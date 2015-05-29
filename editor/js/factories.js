@@ -43,8 +43,7 @@ app.factory('HalloVR', [function(){
 	var Objects3D = [];
 
 	return {
-  		items: {},
-		tools: {
+  		tools: {
 			pageFocus: true
 		},
 		hatsDown: true,
@@ -101,7 +100,7 @@ app.factory('HalloVR', [function(){
 			objectCSS.position.y = pos_y || 0;
 			objectCSS.position.x = pos_x || 0;
 			objectCSS.lookAt( camera.position );
-			this.items[halloObject.id] = objectCSS;
+			
 			// -- Adding out object to scene --
 			sceneCSS.add( objectCSS );
 		},
@@ -130,7 +129,7 @@ app.factory('HalloVR', [function(){
 
 			  sceneGL.add(object);
 			});
-	   },
+	    },
 		installThree: function(halloObjects, settings){
 
 			var self = this;
@@ -272,8 +271,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	scope.newElements = function(itemClicked){
 	    		HalloVR.addFrame();
 				angular.element('body').css('cursor','crosshair');
-				var doc = itemClicked ? angular.element('#'+scope.newVrObjectForm.parent) : $document;
-				doc.on("dblclick", function($event){
+				// var doc = itemClicked ? angular.element('#'+scope.newVrObjectForm.parent) : $document;
+				$document.on("dblclick", function($event){
 
 				//for div
 				//  angular.element('#'+scope.newVrObjectForm.parent).css( 'border', '2px solid rgba(194, 0, 0, 0.41)');
@@ -281,7 +280,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				//    var relY = $event.originalEvent.offsetY;
 
 					position = HalloVR.onDocumentMouseDown($event);
-					console.log('position', position);
+
 					scope.$apply(function() {
 						HalloVR.removeFrame();
 						$rootScope.vrweb.form = true;
@@ -291,104 +290,58 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					})
 				})
 	    	};
-	    	scope.halloVRObj = [];
+	    	
+	    	$rootScope.halloVRItem = [];
 
 			scope.halloObj = function(){
+				$rootScope.halloVRItem = [];
+				$rootScope.halloVRItem.length = 0;
+
 				scope.halloVRObj = {
 					"draw": false,
 					"template": "/editor/tpl/item-template.html",
+					"parentImage":{},
 					"content":[]
 				};
 
 				scope.halloVRObj.id = scope.newVrObjectForm.type + "-" + generator.ID();
 				scope.halloVRObj.position = position;
+				scope.newVrObjectForm.pathSettings.wireColorStart = scope.newVrObjectForm.pathSettings ? scope.newVrObjectForm.pathSettings.wireColorStart : '#ff0000'
+				scope.newVrObjectForm.pathSettings.wireColorStop = scope.newVrObjectForm.pathSettings ? scope.newVrObjectForm.pathSettings.wireColorStop : '#ff00ff'
+				
+				if(scope.newVrObjectForm.image){
+					angular.extend(scope.newVrObjectForm.image, {
+						"template":scope.selectOptions.image.view
+					});
 
-				angular.extend(scope.halloVRObj, scope.newVrObjectForm);
-
+					angular.extend(scope.halloVRObj.parentImage, scope.newVrObjectForm.image);
+				}
+				
 				if(scope.newVrObjectForm.itemObj){ 
+					angular.extend(scope.halloVRObj, scope.newVrObjectForm);
 					HalloVR.load_object_for(position,  scope.newVrObjectForm.itemObj);
 				}
-
-				$rootScope.halloVRItems.push(scope.halloVRObj);
-
+				$rootScope.halloVRItem.push(scope.halloVRObj);
+				
 				$http.get(scope.halloVRObj.template).success(function(data, status, headers, config) {
 					if(status == 200){
-						// data = $sce.trustAsHtml(data);
-
 						var content = $compile(data)(scope);
 
 						angular.element('body').append(content);
 						$timeout(function(){
-							HalloVR.addItem(scope.halloVRObj);
-
+							HalloVR.addItem($rootScope.halloVRItem[0]);
+							$rootScope.halloVRItems.push(scope.halloVRObj);
 							scope.close();
 						},10)
 					}
 				})
-				.error(function(data, status, headers, config) {
-					console.log('error', data, status, headers, config);
-					// called asynchronously if an error occurs
-					// or server returns response with an error status.
-				});
-					
-	   //          if(isChild){
-
-				// 	angular.extend(scope.content, {
-				// 		id: scope.newVrObjectForm.parent + "-content-"+ generator.ID(),
-    //         			htmlBind: "",
-    //         			parentId: scope.newVrObjectForm.parent,
-    //         			isContent: scope.newVrObjectForm.isVrChild,
-    //         			x: scope.newVrObjectForm.vrContentPosition.x,
-    //         			y: scope.newVrObjectForm.vrContentPosition.y,
-    //         			d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
-    //         		});
-	   //          	if(scope.newVrObjectForm.subLevelItemHtml){
-	            		
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.title){
-	   //          			scope.content.htmlBind += "<h2>"+ scope.newVrObjectForm.itemSubLevel.html.title +"</h2>";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.icon){
-	   //          			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.icon +"' />";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.image){
-	   //          			scope.content.htmlBind += "<img src='"+ scope.newVrObjectForm.itemSubLevel.html.image +"' />";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.text){
-	   //          			scope.content.htmlBind += "<div>" + scope.newVrObjectForm.itemSubLevel.html.text + "</div>";
-	   //          		}
-	   //          		if(scope.newVrObjectForm.itemSubLevel.html.video){
-				// 			// var iframe = document.createElement('iframe');
-				// 			// 	iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(scope.newVrObjectForm.itemSubLevel.html.video);
-				// 			var iframe = "<iframe width=\"560\" height=\"315\" src=\""+encodeURI(scope.newVrObjectForm.itemSubLevel.html.video)+"&amp;output=embed\" frameborder=\"0\" allowfullscreen=\"\" class=\"\"></iframe>";
-		  //           			scope.content.htmlBind += iframe;
-	   //          		}
-	            		
-	   //          	}
-
-    //         		scope.createHTMLBIND(scope.content);
-	            	
-	   //          	// if(scope.newVrObjectForm.isVrChild){
-	   //          	// 	angular.extend(scope.vrChild, {
-	   //          	// 		htmlBind: "",
-	   //          	// 		parentId: scope.newVrObjectForm.parent,
-	   //          	// 		isContent: scope.newVrObjectForm.isVrChild,
-	   //          	// 		x: scope.newVrObjectForm.vrContentPosition.x,
-	   //          	// 		y: scope.newVrObjectForm.vrContentPosition.y,
-	   //          	// 		d: "M500 500 L" + (scope.newVrObjectForm.vrContentPosition.x + 5)+ " " + (scope.newVrObjectForm.vrContentPosition.y + 5)
-	   //          	// 	});
-
-	   //          	// }
-	            	
-	   //          }
-				
-	    	}
-	    	scope.createChild = function(parent){	
-	    		scope.newVrObjectForm.parent = parent;
-	    		$rootScope.vrweb.form = true;    		
+				.error(function(data, status, headers, config) { console.log('error'); });
 	    	}
 
-	    	scope.addVRChild = function(){
-	    	}
+	    	// scope.createChild = function(parent){	
+	    	// 	scope.newVrObjectForm.parent = parent;
+	    	// 	$rootScope.vrweb.form = true;    		
+	    	// }
 
 	    	scope.close = function(){
 	    		$rootScope.vrweb.form = false;
