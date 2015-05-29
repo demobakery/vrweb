@@ -4,16 +4,16 @@ controllers
 	    $scope.halloVRObj = resolveData.obj;
 	    
 	    $scope.$on('$viewContentLoaded', function(){
-	    	if($scope.halloVRObj.length > 0){
-				$scope.$on('onRepeatLast', function(scope, element, attrs){
-					HalloVR.installThree($scope.halloVRObj, $rootScope.vrweb.settings);
-				})
-			}else{
+	  //   	if($scope.halloVRObj.length > 0){
+			// 	$scope.$on('onRepeatLast', function(scope, element, attrs){
+			// 		HalloVR.installThree($scope.halloVRObj, $rootScope.vrweb.settings);
+			// 	})
+			// }else{
 				$timeout(function(){
 					HalloVR.installThree([], $rootScope.vrweb.settings);	
 				}, 10)
 				
-			}
+			// }
 		});
 
 		$scope.vrContentvsvrChild = function(obj, event){
@@ -47,4 +47,5 @@ controllers
 
 			HalloVR.hatsDown = true;				
     	};   
+
 	}])

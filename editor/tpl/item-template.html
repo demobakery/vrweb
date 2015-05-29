@@ -1,26 +1,26 @@
-<div ng-repeat="(key, item) in halloVRItem" id='{{ item.id }}' type="{{ item.type }}" class='vrElement' >
-	<md-button class="md-fab md-mini create-child" aria-label="FAB" ng-click="createChild(item.id)">+</md-button>
-	<div ng-if="item.parentImage.template" ng-include src="item.parentImage.template"></div>
-	<svg ng-if="!item.parentImage.template">
+<div ng-repeat="(key, it) in item" id='{{ it.id }}' type="{{ it.type }}" class='vrElement' >
+	<md-button class="md-fab md-mini create-child" aria-label="FAB" ng-click="it.func(it)">+</md-button>
+	<div ng-if="it.parentImage.template" ng-include src="it.parentImage.template"></div>
+	<svg ng-if="!it.parentImage.template">
 		<defs>
 			<mask id='hide_lines'>
 				<circle cx="0" cy="0" r="10000" fill='white' />
-				<path transform="translate(500,480)" stroke="url(#{{ item.id }}-lineGrad)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
-				<linearGradient id="{{ item.id }}-lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-		 			<stop offset="0%" style="stop-color:{{ item.pathSettings.wireColorStart }};stop-opacity:1" />
-		 			<stop offset="100%" style="stop-color:{{ item.pathSettings.wireColorStop }};stop-opacity:1" />
+				<path transform="translate(500,480)" stroke="url(#{{ it.id }}-lineGrad)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				<linearGradient id="{{ it.id }}-lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+		 			<stop offset="0%" style="stop-color:{{ it.pathSettings.wireColorStart }};stop-opacity:1" />
+		 			<stop offset="100%" style="stop-color:{{ it.pathSettings.wireColorStop }};stop-opacity:1" />
 	 			</linearGradient>
 			</mask>
 		</defs>
 		<g>
-			<circle cx="500" cy="480" r="100" class="itemOpener"  ng-click="vrContentvsvrChild(item, $event)"/>
+			<circle cx="500" cy="480" r="100" class="itemOpener"  ng-click="vrContentvsvrChild(it, $event)"/>
 			<g class="mainCircle" fill-rule="evenodd">
-				<path transform="translate(500,480)" stroke-dashoffset="0" id="mainBodyCircle" stroke-dashoffset="1000" d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
-				<path-line d="{{ content.d }}" stroke-width="{{item.pathSettings.width}}" stroke="url(#{{ item.id }}-lineGrad)" mask="url(#hide_lines)" ng-repeat="(k, content) in item.content" strokedashoffset="0"></path-line>
+				<path transform="translate(500,480)" stroke-dashoffset="0" stroke="url(#{{ it.id }}-lineGrad)" id="mainBodyCircle" stroke-dashoffset="1000" d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				<path-line d="{{ content.d }}" stroke-width="{{it.pathSettings.width}}" stroke="url(#{{ it.id }}-lineGrad)" mask="url(#hide_lines)" ng-repeat="(k, content) in it.content" strokedashoffset="0"></path-line>
 			</g>
 		</g>		
 	</svg>
-	<div class="vrContent" ng-style="{ 'left': content.x, 'top': content.y }" x="{{ content.x}}" y="{{ content.y }}" ng-repeat="(k, content) in item.content" ng-class="{'margined': content.isMargined}" ng-show="content.isMargined">
+	<div class="vrContent" ng-style="{ 'left': content.x, 'top': content.y }" x="{{ content.x}}" y="{{ content.y }}" ng-repeat="(k, content) in it.content" ng-class="{'margined': content.isMargined}" ng-show="content.isMargined">
 		<div class="icon"></div>
 		<div class="content" ng-class="{ 'margined': !content.isMargined }" >
 			<div ng-if="!content.vrChildren.length" ng-include="content.template"></div>
