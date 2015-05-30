@@ -11,10 +11,10 @@
 				</md-select>
 			</section>
 			
-			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)" ng-hide="isChild">
+			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)" ng-if="!isChild">
 				<!-- append form -->
 			</section>
-			<section layout="column" layout-sm="column" ng-hide="isChild">
+			<section layout="column" layout-sm="column" ng-if="!isChild">
 				<md-content>
 					<md-input-container>
 						<label>Border Size (in px) </label>
@@ -49,12 +49,12 @@
 					</md-input-container>
 			</section>
 
-			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-hide="isChild">
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-if="!isChild">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj()" class="md-raised md-primary md-button">Add</md-button>
 			</section>	
 
 
-			<section layout="column" layout-sm="column" ng-show="isChild">
+			<section layout="column" layout-sm="column" ng-if="isChild">
 				<md-select ng-model="newVrObjectForm.plugin" placeholder="Select a plugin">
 					<md-optgroup label="{{ opt.categoryName }}" ng-repeat="(key,opt) in pluginItems" >
 						<md-option ng-value="k" ng-repeat="(k,plugin) in opt.plugins">{{plugin.name}}</md-option>
@@ -65,7 +65,7 @@
 				</section>
 			</section>
 
-			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-show="isChild">
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-if="isChild">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && addChild()" class="md-raised md-primary md-button">Add</md-button>
 			</section>			
 		</form>

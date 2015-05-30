@@ -370,8 +370,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	}
 
 	    	scope.selectPluginForm = function(plugin){
-	    		var form;
-				if(plugin){
+	    		if(plugin){
+					var form = "";
 					_.each(scope.pluginItems, function(item){
 						_.each(item, function(pluginObj,i){
 							if(i == 'plugins'){
@@ -383,13 +383,25 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 							}
 						})
 					})
-					
+
 					return form;
 				}
 	    	}
 
 	    	scope.addChild = function(){
 	    		console.log('addChild', scope.newVrObjectForm);
+	   //  		"content":[{
+				// 	"isMargined": false,
+				// 	"x": 400,
+				// 	"y": 800,
+				// 	"vrChildren":[{
+				// 			"id": "child1",
+				// 			"isMargined": false,
+				// 			"x": 300,
+				// 			"y": 100
+				// 		}]
+				// 	}
+				// ]
 	    	}
 
 	    	scope.close = function(){
