@@ -297,7 +297,6 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				scope.halloVRObj = {
 					"draw": false,
 					"template": "/editor/tpl/item-template.html",
-					"parentImage":{},
 					"content":[]
 				};
 
