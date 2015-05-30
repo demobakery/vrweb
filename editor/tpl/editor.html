@@ -5,16 +5,16 @@
   	</md-button>
 	<md-whiteframe layout layout-align="center">
 		<form name="halloVRForm" flex novalidate>
-			<section layout="column" layout-sm="column">
+			<section layout="column" layout-sm="column" ng-hide="isChild">
 				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.type">
 					<md-option ng-value="key" ng-repeat="(key,opt) in selectOptions">{{ opt.type }}</md-option>
 				</md-select>
 			</section>
 			
-			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)">
+			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)" ng-hide="isChild">
 				<!-- append form -->
 			</section>
-			<section layout="column" layout-sm="column">
+			<section layout="column" layout-sm="column" ng-hide="isChild">
 				<md-content>
 					<md-input-container>
 						<label>Border Size (in px) </label>
@@ -49,8 +49,24 @@
 					</md-input-container>
 			</section>
 
-			<section layout="row" layout-sm="column" style="margin: 1.4em 0;">
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-hide="isChild">
 				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj()" class="md-raised md-primary md-button">Add</md-button>
+			</section>	
+
+
+			<section layout="column" layout-sm="column" ng-show="isChild">
+				<md-select ng-model="newVrObjectForm.plugin" placeholder="Select a plugin">
+					<md-optgroup label="{{ opt.categoryName }}" ng-repeat="(key,opt) in pluginItems" >
+						<md-option ng-value="k" ng-repeat="(k,plugin) in opt.plugins">{{plugin.name}}</md-option>
+					</md-optgroup>
+				</md-select>
+				<section layout="column" layout-sm="column" ng-include src="selectPluginForm(newVrObjectForm.plugin)" >
+					<!-- append form -->
+				</section>
+			</section>
+
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-show="isChild">
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && addChild()" class="md-raised md-primary md-button">Add</md-button>
 			</section>			
 		</form>
 	</md-whiteframe>
