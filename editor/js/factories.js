@@ -374,12 +374,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					var form = "";
 					_.each(scope.pluginItems, function(item){
 						_.each(item, function(pluginObj,i){
-							if(i == 'plugins'){
-								_.each(pluginObj, function(plItem,j){
-									if(j == plugin){
-										form = plItem.form;
-									}
-								})
+							if(i == plugin){
+								form = pluginObj.form;
 							}
 						})
 					})

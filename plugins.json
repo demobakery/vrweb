@@ -1,57 +1,51 @@
 {
 	"basic": {
-		"categoryName": "basic",
-		"plugins": {
-			"titleImage": {
-				"name": "Title and image",
-				"form": "plugins/titleImage/form.html",
-				"view": "plugins/titleImage/view.html"
-			},
-			"titleTextImage": {
-				"name": "Title, Text and image",
-				"form": "plugins/titleTextImage/form.html",
-				"view": "plugins/titleTextImage/view.html"
-			},
-			"titleVideo": {
-				"name": "Title and video",
-				"form": "plugins/titleVideo/form.html",
-				"view": "plugins/titleVideo/view.html"
-			},
-			"titleTextVideo": {
-				"name": "Title, text and video",
-				"form": "plugins/titleTextVideo/form.html",
-				"view": "plugins/titleTextVideo/view.html"
-			}
+		"titleImage": {
+			"name": "Title and image",
+			"form": "plugins/titleImage/form.html",
+			"view": "plugins/titleImage/view.html"
+		},
+		"titleTextImage": {
+			"name": "Title, Text and image",
+			"form": "plugins/titleTextImage/form.html",
+			"view": "plugins/titleTextImage/view.html"
+		},
+		"titleVideo": {
+			"name": "Title and video",
+			"form": "plugins/titleVideo/form.html",
+			"view": "plugins/titleVideo/view.html"
+		},
+		"titleTextVideo": {
+			"name": "Title, text and video",
+			"form": "plugins/titleTextVideo/form.html",
+			"view": "plugins/titleTextVideo/view.html"
 		}
 	},
 	"advanced": {
-		"categoryName": "advanced",
-		"plugins": {
-			"portfolio": {
-				"name": "Portfolio",
-				"form": "plugins/portfolio/form.html",
-				"view": "plugins/portfolio/view.html"
-			},
-			"gallery": {
-				"name": "Gallery",
-				"form": "plugins/gallery/form.html",
-				"view": "plugins/gallery/view.html"
-			},
-			"services": {
-				"name": "Services",
-				"form": "plugins/services/form.html",
-				"view": "plugins/services/view.html"
-			},
-			"contacts": {
-				"name": "Contacts",
-				"form": "plugins/contacts/form.html",
-				"view": "plugins/contacts/view.html"
-			},
-			"blog-post": {
-				"name": "Blog Post",
-				"form": "plugins/blog-post/form.html",
-				"view": "plugins/blog-post/view.html"
-			}
+		"portfolio": {
+			"name": "Portfolio",
+			"form": "plugins/portfolio/form.html",
+			"view": "plugins/portfolio/view.html"
+		},
+		"gallery": {
+			"name": "Gallery",
+			"form": "plugins/gallery/form.html",
+			"view": "plugins/gallery/view.html"
+		},
+		"services": {
+			"name": "Services",
+			"form": "plugins/services/form.html",
+			"view": "plugins/services/view.html"
+		},
+		"contacts": {
+			"name": "Contacts",
+			"form": "plugins/contacts/form.html",
+			"view": "plugins/contacts/view.html"
+		},
+		"blog-post": {
+			"name": "Blog Post",
+			"form": "plugins/blog-post/form.html",
+			"view": "plugins/blog-post/view.html"
 		}
 	}
 }

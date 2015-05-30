@@ -56,8 +56,8 @@
 
 			<section layout="column" layout-sm="column" ng-if="isChild">
 				<md-select ng-model="newVrObjectForm.plugin" placeholder="Select a plugin">
-					<md-optgroup label="{{ opt.categoryName }}" ng-repeat="(key,opt) in pluginItems" >
-						<md-option ng-value="k" ng-repeat="(k,plugin) in opt.plugins">{{plugin.name}}</md-option>
+					<md-optgroup label="{{ key }}" ng-repeat="(key,opt) in pluginItems" >
+						<md-option ng-value="k" ng-repeat="(k,plugin) in opt">{{plugin.name}}</md-option>
 					</md-optgroup>
 				</md-select>
 				<section layout="column" layout-sm="column" ng-include src="selectPluginForm(newVrObjectForm.plugin)" >
