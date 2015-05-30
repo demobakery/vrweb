@@ -336,7 +336,6 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 							HalloVR.addItem(scope.halloVRObj);
 							$rootScope.halloVRItems.push(scope.halloVRObj);
 							scope.close();
-
 						},10)
 					}
 				})
@@ -371,7 +370,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	}
 
 	    	scope.selectPluginForm = function(plugin){
-	    		var form ='';
+	    		var form;
 				if(plugin){
 					_.each(scope.pluginItems, function(item){
 						_.each(item, function(pluginObj,i){
