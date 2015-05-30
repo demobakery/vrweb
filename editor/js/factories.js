@@ -88,6 +88,7 @@ app.factory('HalloVR', [function(){
 		},
 		addItem: function(halloObject){
 			// -- Getting the element with this id --
+			
 			element = document.querySelector('#' + halloObject.id);
 			pos_x = halloObject.position.x;
 			pos_y = halloObject.position.y;
@@ -238,35 +239,6 @@ app.factory('HalloVR', [function(){
 	};
 }]);
 
-
-app.factory('functions', [function(){
-	
-	return {
-  		
-		addItem: function(halloObject){
-			
-		}
-	};
-}]);
-
-// app.directive("editbutton",[function(){
-// 	// return {
-// 	// 	// restrict: "EA",
-// 	// 	// replace: true,
-// 	// 	// template: '<md-button class="md-fab md-mini create-child" aria-label="FAB" ng-click="it.func(it)">+</md-button>',
-// 	// 	// link: function(){
-// 	// 	// 	ng-click="it.func(it)"
-// 	// 	// }
-// 	// }
-// 	return function(scope, element, attrs){
-// 		element.bind("click", function(){
-// 			console.log(attrs);
-// 			alert("This is alert #"+attrs.alert);
-// 		});
-
-// 	}
-// }])
-
 app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope','HalloVR', 'generator', '$compile', '$timeout', '$document',
 	function($route,$sce,$location,$http,$rootScope, HalloVR, generator, $compile, $timeout,$document) {
 	return {
@@ -321,9 +293,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	$rootScope.item = [];
 
 			scope.halloObj = function(){
-	    		$rootScope.item = [];
-				$rootScope.item.length = 0;
-
+	    		
 				scope.halloVRObj = {
 					"draw": false,
 					"template": "/editor/tpl/item-template.html",
@@ -359,14 +329,13 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 					if(data.status == 200){
 						var content = $compile(angular.element(data.data))(scope);
 						
-						angular.element('body').append(content);
-						angular.element(document).injector().invoke(function($compile) {
-						  var scope = angular.element(content).scope();
-						  $compile(content)(scope);
-						});
+						// angular.element( document.querySelector( '#rendererCSS > div' ) ).empty();
+						
+						if($rootScope.item.length == 1) angular.element('#rendererCSS > div').append(content);
+
 						$timeout(function(){
-							HalloVR.addItem($rootScope.item[0]);
-							$rootScope.halloVRItems.push($rootScope.item[0]);
+							HalloVR.addItem(scope.halloVRObj);
+							$rootScope.halloVRItems.push(scope.halloVRObj);
 							scope.close();
 
 						},10)
@@ -375,7 +344,6 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	}
 
 	    	scope.createChild = function(parent){	
-	    		alert('eeeeeeeeeeeee');
 	    		console.log('parentparent', parent);
 	    		scope.newVrObjectForm.parent = parent;
 	    		HalloVR.addFrame();
