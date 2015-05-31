@@ -303,8 +303,8 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				scope.halloVRObj.id = scope.newVrObjectForm.type + "-" + generator.ID();
 				scope.halloVRObj.position = position;
 				
-				scope.newVrObjectForm.pathSettings.wireColorStart = scope.newVrObjectForm.pathSettings.wireColorStart ? scope.newVrObjectForm.pathSettings.wireColorStart : '#ff0000'
-				scope.newVrObjectForm.pathSettings.wireColorStop = scope.newVrObjectForm.pathSettings.wireColorStop ? scope.newVrObjectForm.pathSettings.wireColorStop : '#ff00ff'
+				scope.newVrObjectForm.pathSettings.wireColorStart = scope.newVrObjectForm.pathSettings.wireColorStart ? scope.newVrObjectForm.pathSettings.wireColorStart : '#000000';
+				scope.newVrObjectForm.pathSettings.wireColorStop = scope.newVrObjectForm.pathSettings.wireColorStop ? scope.newVrObjectForm.pathSettings.wireColorStop : '#000000';
 				scope.halloVRObj.pathSettings = scope.newVrObjectForm.pathSettings;
 
 				scope.halloVRObj.func = scope.createChild;
@@ -323,7 +323,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				}
 
 				scope.item.push(scope.halloVRObj)
-				console.log('scope.item', scope.item);
+
 				$http.get(scope.halloVRObj.template).then(function(data) {
 					if(data.status == 200){
 						var content = $compile(angular.element(data.data))(scope);
@@ -341,7 +341,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 				})
 	    	}
 
-	    	scope.isChild = false;
+	    	scope.isChild = 0;
 	    	scope.createChild = function(parent){	
 	    		scope.newVrObjectForm.parent = parent;
 
@@ -349,18 +349,17 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    		var parentBorder = angular.element('#' + parent.id);
 				parentBorder.css( 'border', '2px solid rgba(194, 0, 0, 0.41)');
 				
-				angular.element('#'+scope.newVrObjectForm.parent.id).on("dblclick", function($event){
+				parentBorder.on("dblclick", function($event){
 
-					position = {
+					scope.newVrObjectForm.position = {
 						x: $event.originalEvent.offsetX,
-						y: $event.originalEvent.offsetY,
-						z: parent.position.z
+						y: $event.originalEvent.offsetY
 					};
 
 					scope.$apply(function() {
 						parentBorder.css( 'border', 'none');
 
-						scope.isChild = true;
+						scope.isChild = 1;
 						
 						HalloVR.removeFrame();
 						
@@ -377,6 +376,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 						_.each(item, function(pluginObj,i){
 							if(i == plugin){
 								form = pluginObj.form;
+								scope.newVrObjectForm.template = pluginObj.view;
 							}
 						})
 					})
@@ -387,20 +387,125 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 
 	    	scope.addChild = function(){
 	    		console.log('addChild', scope.newVrObjectForm);
-	   //  		"content":[{
-				// 	"isMargined": false,
-				// 	"x": 400,
-				// 	"y": 800,
-				// 	"vrChildren":[{
-				// 			"id": "child1",
-				// 			"isMargined": false,
-				// 			"x": 300,
-				// 			"y": 100
-				// 		}]
-				// 	}
-				// ]
+				if(scope.newVrObjectForm.component){
+					_.each(scope.item, function(eachItem, i){
+						if(eachItem.id == scope.newVrObjectForm.parent.id){
+							var id = scope.newVrObjectForm.parent.id + "-content-"+generator.ID();
+							eachItem.content.push({
+								"id": id,
+								"isMargined": false,
+								"iscontent": true,
+								"template": scope.newVrObjectForm.template,
+								"plugin": scope.newVrObjectForm.plugin,
+								"x": scope.newVrObjectForm.position.x,
+								"y": scope.newVrObjectForm.position.y,
+								"d": "M500 500 L" + (scope.newVrObjectForm.position.x + 5)+ " " + (scope.newVrObjectForm.position.y + 5),
+								"component": scope.newVrObjectForm.component,
+								"func": scope.createVRChild,
+								"vrChildren":[]
+	    					})
+	    				}
+	    			})
+
+					angular.extend($rootScope.halloVRItems, scope.item);
+
+					console.log(' scope.item', scope.item);
+
+					$timeout(function(){
+						scope.close();
+					},10);
+	    		}
+	    	}
+	    	scope.addVRChild = function(){
+
+				if(scope.newVrObjectForm.component){
+					_.each(scope.item, function(eachItem, i){
+						console.log('eachItem', eachItem);
+						_.each(eachItem.content, function(content, j){
+							console.log('content', content,scope.newVrObjectForm.parent);
+							if(content.id == scope.newVrObjectForm.parent.id){
+								var id = scope.newVrObjectForm.parent.id + "-vrchild-"+generator.ID();
+								content.vrChildren.push({
+									"id": id,
+									"isMargined": false,
+									"isChild": true,
+									"template": scope.newVrObjectForm.template,
+									"plugin": scope.newVrObjectForm.plugin,
+									"x": scope.newVrObjectForm.position.x,
+									"y": scope.newVrObjectForm.position.y,
+									"component": scope.newVrObjectForm.component,
+									"func": scope.createVRChild
+		    					})
+		    					console.log(' content.content', content);
+		    				}
+	    				})
+	    			})
+console.log(' scope.item', scope.item);
+					angular.extend($rootScope.halloVRItems, scope.item);
+
+					$timeout(function(){
+						scope.close();
+					},10);
+	    		}
+	    	}
+	    	scope.createVRChild = function(parent, main){
+	    		scope.newVrObjectForm.parent = parent;
+	    		console.log('parent', parent);
+	    		HalloVR.addFrame();
+	    		var parentBorder = angular.element('#' + main);
+				parentBorder.css( 'border', '2px solid rgba(194, 0, 0, 0.41)');
+				
+				parentBorder.on("dblclick", function($event){
+
+					scope.newVrObjectForm.position = {
+						x: $event.originalEvent.offsetX,
+						y: $event.originalEvent.offsetY
+					};
+
+					scope.$apply(function() {
+						parentBorder.css( 'border', 'none');
+
+						scope.isChild = 2;
+						
+						HalloVR.removeFrame();
+						
+						$rootScope.vrweb.form = true;
+						$document.off('dblclick');
+					})
+				})
 	    	}
 
+	    	scope.vrContentvsvrChild = function(obj, event){
+				
+				var svg = event.currentTarget.closest("svg");
+				var svgElement = event.currentTarget.closest(".vrElement");
+				var mainCircle = angular.element(svg.querySelectorAll('.mainCircle path'));
+				var path = angular.element(svgElement.querySelectorAll("[class^='svg_'] path"));
+
+				angular.element(document.querySelectorAll('path')).attr('class','');
+
+	    		_.each(scope.item, function(halloVRObj){
+	    			if(halloVRObj.id != obj.id){
+		    			_.each(halloVRObj.content, function(content){    		
+		    				content.isMargined = false;
+
+		    				mainCircle.attr('class','');
+							path.attr('class','');
+		    			})
+		    		}
+	    		})
+	    		
+				_.each(obj.content, function(content){																																																								
+					content.isMargined = content.isMargined?false:true;
+
+					if(content.isMargined){
+						mainCircle.attr('class','draw');
+						path.attr('class','draw');
+					}
+				});
+
+				HalloVR.hatsDown = true;				
+	    	}
 	    	scope.close = function(){
 	    		$rootScope.vrweb.form = false;
 	    		scope.newVrObjectForm = {};

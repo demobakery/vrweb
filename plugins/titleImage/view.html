@@ -1,8 +1,8 @@
 <div>
 	<div>
-		<h2> {{plugin.title}} </h2>
+		<h2> {{ (content.iscontent && vrChild.isChild)?vrChild.component.title:content.component.title }} </h2>
 	</div>
 	<div>
-		<img ng-src="plugin.url" />
+		<img ng-src="{{ (content.iscontent && vrChild.isChild)?vrChild.component.url:content.component.url  }}" />
 	</div>
 </div>
