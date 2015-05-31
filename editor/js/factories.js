@@ -344,6 +344,7 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 	    	scope.isChild = false;
 	    	scope.createChild = function(parent){	
 	    		scope.newVrObjectForm.parent = parent;
+
 	    		HalloVR.addFrame();
 	    		var parentBorder = angular.element('#' + parent.id);
 				parentBorder.css( 'border', '2px solid rgba(194, 0, 0, 0.41)');
