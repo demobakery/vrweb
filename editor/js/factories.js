@@ -440,8 +440,9 @@ app.directive("editform", [ '$route', '$sce', '$location', '$http','$rootScope',
 		    				}
 	    				})
 	    			})
-console.log(' scope.item', scope.item);
+
 					angular.extend($rootScope.halloVRItems, scope.item);
+					console.log('$rootScope.halloVRItems, scope.item', $rootScope.halloVRItems, scope.item);
 
 					$timeout(function(){
 						scope.close();

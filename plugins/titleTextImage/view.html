@@ -1,4 +1,11 @@
-<section>
-	<p style="font-size: 24px;color: #2196F3;">{{ form.title }}</p>
-	<p style="font-size: 18px;color: white;">{{ form.text }}</p>
-</section>
+<div>
+	<div>
+		<h2> {{ (content.iscontent && vrChild.isChild)?vrChild.component.title:content.component.title }} </h2>
+	</div>
+	<div>
+		<h2> {{ (content.iscontent && vrChild.isChild)?vrChild.component.text:content.component.text }} </h2>
+	</div>
+	<div>
+		<img ng-src="{{ (content.iscontent && vrChild.isChild)?vrChild.component.url:content.component.url  }}" />
+	</div>
+</div>
