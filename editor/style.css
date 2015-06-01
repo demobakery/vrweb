@@ -70,3 +70,7 @@ md-whiteframe{
 	top: 0;
 	bottom: 0;
 }
+
+.vrContent, .vrChild {
+  display: block;
+}

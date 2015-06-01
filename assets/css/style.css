@@ -94,6 +94,7 @@ body {
 	margin-left: 20px;
   opacity: 1;
 }
+
 .mainCircle path:first-child
 {
 	transition: all 500ms ease-in-out;

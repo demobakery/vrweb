@@ -23,12 +23,12 @@
 	<div class="vrContent" style="left:{{ content.x }}; top: {{  content.y }}" x="{{ content.x}}" y="{{ content.y }}" ng-repeat="(k, content) in it.content" ng-class="{'margined': content.isMargined}" ng-show="content.isMargined">
 		<md-button class="md-fab md-mini create-child" aria-label="FAB" ng-click="content.func(content, it.id)">+</md-button>
 		<div class="icon"></div>
-		<div class="content" ng-class="{ 'margined': !content.isMargined }" >
+		<div class="content" ng-class="{ 'margined': content.isMargined }" >
 			<div ng-include src="content.template"></div>
 			
-			<div class="vrChild" ng-style="{ 'left': vrChild.x, 'top': vrChild.y }" x="{{vrChild.x}}" y="{{vrChild.y}}" ng-repeat="vrChild in content.vrChildren">
+			<div class="vrChild" ng-style="{ 'left': vrChild.x, 'top': vrChild.y }" x="{{vrChild.x}}" y="{{vrChild.y}}" ng-repeat="vrChild in content.vrChildren" ng-show="content.isMargined">
 				<div class="icon"></div>
-				<div class="content" ng-class="{ 'margined': !content.isMargined }"  ng-include src="vrChild.template"></div>
+				<div class="content"  ng-class="{'margined': content.isMargined}" ng-show="content.isMargined"  ng-include src="vrChild.template"></div>
 				<span svg-line child="{{vrChild}}" parent="{{ content }}" parentIndex="{{ k }}"></span>
 			</div>
 		</div>
