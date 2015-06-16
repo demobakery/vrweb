@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <title>HalloVR</title>
+    <script src="assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="http://threejs.org/build/three.min.js"></script>
+	<script src="assets/js/snap.svg.js"></script>
+    <script src="http://threejs.org/examples/js/renderers/CSS3DRenderer.js"></script>
+    <script src="assets/js/OrbitControls.js"></script>
+    <script src="assets/js/jqfloat.min.js"></script>
+    <script src='http://jeromeetienne.github.io/threex.domevents/threex.domevents.js'></script>
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+	<script src="https://va3c.github.io/three.js/examples/js/controls/DeviceOrientationControls.js"></script>
+	<script src="http://threejs.org/examples/js/effects/StereoEffect.js"></script>
+	      
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <!-- 
+    	Dear coder, to add an item to the HalloVR world, you just need to create div
+		element with id and in main.js call addItem function 
+    -->
+    
+	<!-- Templates -->  
+	<div id='item-1' type="item" >
+		<link rel="stylesheet" type="text/css" href="components/logo/logo.css" />
+		<div id="logo">
+		</div>
+	</div>
+	  
+	<div id='item-2' type="item" class="vrElement">
+		<svg>
+			<defs>
+				<mask id='hide_lines'>
+					<circle cx="0" cy="0" r="10000" fill='white' />
+					<path transform="translate(500,480)" fill="rgba(0,0,0,1)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</mask>
+			</defs>
+			<g>
+				<circle cx="500" cy="480" r="100" class="itemOpener" />
+				<g class="mainCircle" fill-rule="evenodd">
+					<path transform="translate(500,480)" id="mainBodyCircle"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</g>
+			</g>		
+		</svg>
+		
+		<div id="content-1" class="vrContent" x="200" y="200">
+			<div class="icon">
+			</div>
+			<div class="content">
+				<p style="font-size: 24px;color: #2196F3;">HALLO_VR</p>
+				<p style="font-size: 18px;color: white;">This website gonna ROCK THE WORLD!</p>
+			</div>	
+		</div>
+
+		<div id="content-2" class="vrContent" x="400" y="800">
+			<div class="icon">
+				<span class="title">Second</span>
+			</div>
+			<div class="content">
+				<div class="vrChild" x="100" y="50">
+					<div class="icon">
+					</div>
+					<div class="content">
+						<iframe width="400" height="255" src="https://www.youtube.com/embed/m7YSNbq2KcQ" frameborder="0" allowfullscreen></iframe>
+					</div>	
+				</div>
+				<div class="vrChild" x="100" y="300">
+					<div class="icon">
+						<span class="title">Text</span>
+					</div>
+					<div class="content">
+						<p style="color: white;font-size: 20px;">This is child of child</p>
+					</div>	
+				</div>
+			</div>	
+		</div>
+
+		<div id="content-3" class="vrContent" x="800" y="400">
+			<div class="icon">
+				<span class="title">VIDEO</span>
+			</div>
+			<div class="content video">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
+			</div>	
+		</div>
+	</div>
+	<div id="item-3" type="item" class="vrElement">
+		<svg>
+			<defs>
+				<mask id='hide_lines'>
+					<circle cx="0" cy="0" r="10000" fill='white' />
+					<path transform="translate(500,480)" fill="rgba(0,0,0,1)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</mask>
+			</defs>
+			<g>
+				<circle cx="500" cy="480" r="100" class="itemOpener" />
+				<g class="mainCircle" fill-rule="evenodd">
+					<path transform="translate(500,480)" id="mainBodyCircle"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</g>
+			</g>		
+		</svg>
+
+		<div id="content-3" class="vrContent" x="100" y="100">
+			<div class="icon">
+			</div>
+			<div class="content video">
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/nH7bjV0Q_44" frameborder="0" allowfullscreen></iframe>
+			</div>	
+		</div>
+	</div>
+	<div id="item-4" type="item" class="vrElement">
+		<svg>
+			<defs>
+				<mask id='hide_lines'>
+					<circle cx="0" cy="0" r="10000" fill='white' />
+					<path transform="translate(500,480)" fill="rgba(0,0,0,1)"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</mask>
+			</defs>
+			<g>
+				<circle cx="500" cy="480" r="100" class="itemOpener" />
+				<g class="mainCircle" fill-rule="evenodd">
+					<path transform="translate(500,480)" id="mainBodyCircle"  d="M -25, 0 m -75, 0 a 75,75 0 1,0 200,0 a 75,75 0 1,0 -200,0"  />
+				</g>
+			</g>		
+		</svg>
+
+		<div id="content-1" class="vrContent" x="235" y="360">
+			<div class="icon">
+			</div>
+			<div class="content">
+				<div id="map_canvas"></div>
+			</div>
+		</div>
+		
+		<div id="content-2" class="vrContent" x="700" y="700">
+			<div class="icon">
+				<span class="title">CONTACT</span>
+			</div>
+			<div class="content">
+				<div class="vrChild" x="100" y="-300">
+					<div class="icon">
+					</div>
+					<div class="content">
+						<form>
+							<textarea placeholder></textarea>
+							<input type="text" name="surname" placeholder="surname" />
+							<input type="text" name="email" placeholder="email">
+							<input type="submit" name="submit">
+ 						</form>
+					</div>	
+				</div>
+			</div>	
+		</div>
+		
+	</div>
+	<div id="top-menu" type="top-menu">
+		<div class="hamburger cross">
+		  <div></div>
+		  <svg x="0" y="0" width="50px" height="50px" viewBox="0 0 50 50">
+		    <circle cx="25" cy="25" r="24">
+		  </svg>
+		</div>
+	</div>
+
+	<!-- / Templates -->
+
+	<!-- <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+		<a href="/editor" class="btn-floating btn-large waves-effect waves-light red">
+		  <i class="large mdi-editor-mode-edit"></i>
+		</a>
+	</div> -->
+    <script src="assets/js/main.js"></script>
+	<script src="assets/js/actions.js"></script>
+
+  </body>
+</html>

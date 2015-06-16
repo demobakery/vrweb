@@ -1,0 +1,77 @@
+<md-content class="form-container" ng-show='vrweb.form'  layout="column" layout-align="center" ng-init="submitted=false">
+	<h4>Editor</h4>
+	<md-button class="md-fab md-mini close-button" ng-click="close()" aria-label="Close"> + 
+		<md-tooltip>Close</md-tooltip>
+  	</md-button>
+	<md-whiteframe layout layout-align="center">
+		<form name="halloVRForm" flex novalidate>
+			<section layout="column" layout-sm="column" ng-show="isChild == 0">
+				<md-select name="types" placeholder="Select a type" ng-model="newVrObjectForm.type">
+					<md-option ng-value="key" ng-repeat="(key,opt) in selectOptions">{{ opt.type }}</md-option>
+				</md-select>
+			</section>
+			
+			<section layout="column" layout-sm="column" ng-include src="selectOptionForm(newVrObjectForm.type)" ng-if="isChild == 0">
+				<!-- append form -->
+			</section>
+			<section layout="column" layout-sm="column" ng-if="isChild == 0">
+				<md-content>
+					<md-input-container>
+						<label>Border Size (in px) </label>
+						<input ng-model="newVrObjectForm.pathSettings.border" type="number" step = "any" />
+					</md-input-container>
+				</md-content>
+
+				<label>Wire colors </label>
+				<md-content  layout="row" layout-sm="column">
+					<md-input-container flex>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStart" type="color" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.wireColorStop" type="color" />
+					</md-input-container>
+				</md-content>
+				<!-- <label>Curveness of wire  </label>
+				<md-content layout="row" layout-sm="column">
+					<md-input-container flex>
+						<label>Start </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.first" type="number" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>Middle </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.second" type="number" />
+					</md-input-container>
+					<md-input-container flex>
+						<label>End </label>
+						<input ng-model="newVrObjectForm.pathSettings.curvenessOfWire.last" type="number" />
+					</md-input-container>
+				</md-content> -->
+			</section>
+
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-if="isChild == 0">
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && halloObj()" class="md-raised md-primary md-button">Add</md-button>
+			</section>	
+
+
+			<section layout="column" layout-sm="column" ng-if="isChild == 1 || isChild == 2">
+				<md-select ng-model="newVrObjectForm.plugin" placeholder="Select a plugin">
+					<md-optgroup label="{{ key }}" ng-repeat="(key,opt) in pluginItems" >
+						<md-option ng-value="k" ng-repeat="(k,plugin) in opt">{{plugin.name}}</md-option>
+					</md-optgroup>
+				</md-select>
+				<section layout="column" layout-sm="column" ng-include src="selectPluginForm(newVrObjectForm.plugin)" >
+					<!-- append form -->
+				</section>
+			</section>
+
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-if="isChild == 1">
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && addChild()" class="md-raised md-primary md-button">Add</md-button>
+			</section>	
+			<section layout="row" layout-sm="column" style="margin: 1.4em 0;" ng-if="isChild == 2">
+				<md-button ng-disabled="!halloVRForm.$valid" ng-click="submitted=true && addVRChild()" class="md-raised md-primary md-button">Add</md-button>
+			</section>			
+		</form>
+	</md-whiteframe>
+</md-content>

@@ -1,0 +1,10 @@
+<div id='{{ vrweb.settings.container }}'></div>
+
+<div ng-repeat="(key, item) in halloVRObj" ng-if="halloVRObj.length > 0 " id='{{ item.id }}' type="{{ item.type }}" on-last-repeat ng-class="{ 'vrElement':item.vrElement}"  ng-include="item.template">
+</div>
+
+<md-button class="md-fab start-edit" aria-label="FAB" ng-click="newElements()">+
+	<md-tooltip>
+        Add New Item
+  	</md-tooltip>
+</md-button>

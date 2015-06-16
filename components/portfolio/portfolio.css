@@ -1,0 +1,38 @@
+
+div.hidden
+{
+	display: none;
+	color: white;
+	font-family: 'Lato', sans-serif;
+}
+div.hidden > h1
+{
+	color: #2196F3;
+	font-size: 46px;
+	font-weight: 300;
+}
+div.hidden p
+{
+	font-size: 30px;
+  	font-weight: 300;
+}
+#main_icon_path
+{
+	cursor: pointer;
+	z-index: 1;
+	position: absolute;
+}
+
+path.curve_path
+{
+	z-index: 0;
+	position: absolute;
+	fill: none;
+	stroke-width: 1px;
+	stroke-dasharray: 0 5000px;
+}
+
+.child
+{
+	cursor: pointer;
+}

@@ -1,0 +1,76 @@
+.start-edit{
+	position: fixed;
+	bottom: 10px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	font-size: 32px;
+}
+
+.md-fab {
+	background-color: #000000!important;
+}
+.form-container{
+	max-height: 500px;
+	width: 350px;
+	position: relative;
+	top: 10%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10;
+	padding: 15px;
+	margin: auto;
+	border-radius: 3px;
+	overflow-x: hidden!important;
+}
+.form-container form{
+	width: 100%;
+	margin: 0;
+}
+.form-container h4{
+	margin: 0;
+}
+label.label{
+	margin-right: 15px;
+}
+md-whiteframe{
+	padding: 10px;
+}
+.md-button.md-fab.md-mini {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.md-button.md-default-theme.md-fab {
+  line-height: 1;
+}
+.md-select {
+  margin-top: 0;
+}
+.md-button.close-button, .md-button.close-button:hover{
+	-ms-transform: rotate(45deg)!important;
+	-webkit-transform: rotate(45deg)!important;
+	transform: rotate45deg)!important;
+	width: 20px!important;
+	height: 20px!important;
+	right: 2px!important;
+	top: 2px!important;
+	font-size: 12px;
+	padding: 0px;
+}
+
+.create-child{
+	right: 0;
+	position: relative;
+	left: 0;
+	position: absolute;
+	margin: auto;
+	text-align: center;
+	top: 0;
+	bottom: 0;
+}
+
+.vrContent, .vrChild {
+  display: block;
+}
